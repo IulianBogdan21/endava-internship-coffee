@@ -16,6 +16,6 @@ public class CoffeeMiel extends BlackCoffee {
     }
 
     public String getCoffeeName() {
-        return "domain.Coffee Miel";
+        return "Coffee Miel";
     }
 }

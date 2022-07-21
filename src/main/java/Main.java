@@ -22,11 +22,8 @@ public class Main {
                     "When your order is done, introduce 0" + "\n");
             CoffeeOrder coffeeOrder = new CoffeeOrder(orderStatus);
             while (true){
-                System.out.println(openCoffeeShop.getAllBeverages() + "\n");
-                System.out.println("0 Finish order");
-                System.out.println("Introduce option: ");
-                int optionRead = scanner.nextInt();
-                scanner.nextLine();
+                System.out.println("0: Finish order\n" + openCoffeeShop.getAllBeverages());
+                int optionRead = getNumberCorrespondingToCoffeeOption(scanner);
                 Coffee orderedCoffee = switch (optionRead) {
                     case 1 -> new Espresso(customerName);
                     case 2 -> new Machiatto(customerName);
@@ -56,6 +53,29 @@ public class Main {
         }
     }
 
+    /**
+     * @param scanner Scanner
+     * @return integer between 0 and 5 corresponding to a coffee option
+     */
+    private static int getNumberCorrespondingToCoffeeOption(Scanner scanner) {
+        while (true) {
+            System.out.println("Introduce option: ");
+            try {
+                int optionRead = scanner.nextInt();
+                scanner.nextLine();
+                if(optionRead < 0 || optionRead > 5) {
+                    System.out.println("Invalid option! Please try again!");
+                    continue;
+                }
+                return optionRead;
+            }
+            catch (Exception ex){
+                System.out.println("Invalid option! Please try again!");
+                scanner.next();
+            }
+        }
+    }
+
     private static void printOrderedCoffeesAndTheirAmount(Map<Ingredients, Double> pricesForEachIngredient, CoffeeOrder coffeeOrder) {
         for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
             System.out.println(String.valueOf(coffeeOrder.getOrderedCoffeesAndQuantity().get(coffee)) +
@@ -64,6 +84,10 @@ public class Main {
         }
     }
 
+    /**
+     * @param statusOption Integer equal to 1 or 2
+     * @return PICKUP OrderStatus if integer 1, DELIVERY OrderStatus if integer 2
+     */
     @Nullable
     private static OrderStatus getStatusBasedOnChosenOption(int statusOption) {
         OrderStatus orderStatus = null;
@@ -76,16 +100,36 @@ public class Main {
         return orderStatus;
     }
 
+    /**
+     * @param scanner Scanner
+     * @return 1 if pickup order and 2 if delivery order
+     * if 1 or 2 not introduced, operation is retried
+     */
     private static int choosePickupOrDeliveryStatusForOrder(Scanner scanner) {
-        System.out.println("Pickup or delivery?" + "\n");
-        System.out.println("1: Pickup");
-        System.out.println("2: Delivery");
-        System.out.println("Introduce option: ");
-        int statusOption = scanner.nextInt();
-        scanner.nextLine();
-        return statusOption;
+        while(true) {
+            System.out.println("Pickup or delivery?" + "\n");
+            System.out.println("1: Pickup");
+            System.out.println("2: Delivery");
+            System.out.println("Introduce option: ");
+            try {
+                int statusOption = scanner.nextInt();
+                scanner.nextLine();
+                if (statusOption < 1 || statusOption > 2) {
+                    System.out.println("You did not introduce an integer! Try again!\n");
+                    continue;
+                }
+                return statusOption;
+            } catch (Exception ex) {
+                System.out.println("You did not introduce an integer! Try again!\n");
+                scanner.next();
+            }
+        }
     }
 
+    /**
+     * @param scanner Scanner
+     * @return String representing the customer's name
+     */
     private static String registerCustomerName(Scanner scanner) {
         System.out.println("Introduce your name: ");
         String customerName = scanner.nextLine();

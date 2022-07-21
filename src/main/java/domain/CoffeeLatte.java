@@ -15,6 +15,6 @@ public class CoffeeLatte extends Espresso {
     }
 
     public String getCoffeeName() {
-        return "domain.Coffee Latte";
+        return "Coffee Latte";
     }
 }
