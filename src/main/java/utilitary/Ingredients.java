@@ -1,5 +1,8 @@
 package utilitary;
 
+/**
+ * all possible ingredients for making a coffee
+ */
 public enum Ingredients {
     ESPRESSO,
     BLACK_COFFEE,

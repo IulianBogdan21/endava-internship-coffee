@@ -3,7 +3,13 @@ package utilitary;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * class with a single static method that builds the prices for every ingredient and returns a dictionary
+ */
 public class PricesBuilder {
+    /**
+     * @return dictionary where key is an ingredient and value is the price for 1 unit of that ingredient
+     */
     public static Map<Ingredients, Double> buildPricesForIngredients() {
         Map<Ingredients, Double> pricesForEachIngredient = new HashMap<Ingredients, Double>();
         pricesForEachIngredient.put(Ingredients.ESPRESSO, 2.5);

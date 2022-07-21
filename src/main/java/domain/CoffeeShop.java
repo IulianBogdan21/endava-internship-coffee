@@ -27,10 +27,13 @@ public class CoffeeShop {
         return profit;
     }
 
+    /**
+     * @return String (one under another : list format) - all the beverages that the shop sells
+     */
     public StringBuilder getAllBeverages() {
         StringBuilder allBeverages = new StringBuilder();
         for (int i = 0; i < allCoffees.size(); i++) {
-            allBeverages.append(String.valueOf(i + 1));
+            allBeverages.append(i + 1);
             allBeverages.append(": ");
             allBeverages.append(allCoffees.get(i).getCoffeeName());
             allBeverages.append("\n");
@@ -38,6 +41,10 @@ public class CoffeeShop {
         return allBeverages;
     }
 
+    /**
+     * adds the profit from a customer's order to the shop's profit
+     * @param sumToAdd integer = the profit to be added to the current one
+     */
     public void addToProfit(double sumToAdd) {
         this.profit += sumToAdd;
     }

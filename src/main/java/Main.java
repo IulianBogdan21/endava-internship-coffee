@@ -35,6 +35,7 @@ public class Main {
             CoffeeOrder coffeeOrder = new CoffeeOrder(orderStatus);
             while (true){
                 System.out.println(openCoffeeShop.getAllBeverages() + "\n");
+                System.out.println("0 Finish order");
                 System.out.println("Introduce option: ");
                 int optionRead = scanner.nextInt();
                 scanner.nextLine();
