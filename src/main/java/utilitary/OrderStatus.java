@@ -1,4 +1,4 @@
-package domain;
+package utilitary;
 
 public enum OrderStatus {
     PICKUP,

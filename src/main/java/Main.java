@@ -1,5 +1,6 @@
 import domain.*;
 import utilitary.Ingredients;
+import utilitary.OrderStatus;
 import utilitary.PricesBuilder;
 
 import java.util.*;
