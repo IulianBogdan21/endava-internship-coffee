@@ -1,12 +1,69 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
+        Scanner scanner= new Scanner(System.in);
         Map<Ingredients, Double> pricesForEachIngredient = PricesBuilder.buildPricesForIngredients();
+        CoffeeShop openCoffeeShop = new CoffeeShop();
+        while (true){
+            System.out.println("----------" + openCoffeeShop.getCoffeeShopName() + "----------" + "\n");
+            System.out.println("Introduce your name: ");
+            String customerName = scanner.nextLine();
+            System.out.println("\n");
+            System.out.println("Pickup or delivery?" + "\n");
+            System.out.println("1: Pickup");
+            System.out.println("2: Delivery");
+            System.out.println("Introduce option: ");
+            int statusOption = scanner.nextInt();
+            scanner.nextLine();
+            OrderStatus orderStatus = null;
+            if(statusOption == 1) {
+                orderStatus = OrderStatus.PICKUP;
+            }
+            else if(statusOption == 2) {
+                orderStatus = OrderStatus.DELIVERY;
+            }
+            System.out.println("\n");
+            System.out.println("Select the coffees you want. Introduce the number for the coffees you want and then the quantity. " +
+                    "When your order is done, introduce 0" + "\n");
+            CoffeeOrder coffeeOrder = new CoffeeOrder(orderStatus);
+            while (true){
+                System.out.println(openCoffeeShop.getAllBeverages() + "\n");
+                System.out.println("Introduce option: ");
+                int optionRead = scanner.nextInt();
+                scanner.nextLine();
+                Coffee orderedCoffee = switch (optionRead) {
+                    case 1 -> new Espresso(customerName);
+                    case 2 -> new Machiatto(customerName);
+                    case 3 -> new CoffeeLatte(customerName);
+                    case 4 -> new Cappucino(customerName);
+                    case 5 -> new CoffeeMiel(customerName);
+                    default -> null;
+                };
+                if(optionRead == 0){
+                    System.out.println("You ordered the following:\n");
+                    for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
+                        System.out.println(String.valueOf(coffeeOrder.getOrderedCoffeesAndQuantity().get(coffee)) +
+                                "X " + coffee.getCoffeeName() + " where 1 " + coffee.getCoffeeName() + " is " +
+                                String.valueOf(coffee.getPrice(pricesForEachIngredient)) + " euros");
+                    }
+                    double addedProfit = coffeeOrder.getPriceOfOrder(pricesForEachIngredient);
+                    System.out.println("\nTotal cost is: " + String.valueOf(addedProfit));
+                    openCoffeeShop.addToProfit(addedProfit);
+                    System.out.println("Shop's current profit is: " + String.valueOf(openCoffeeShop.getProfit()) + "\n");
+                    break;
+                }
+                if(orderedCoffee == null){
+                    System.out.println("You did not introduce a valid option. Try again!\n");
+                    continue;
+                }
+                System.out.println("\nIntroduce quantity: ");
+                int quantity = scanner.nextInt();
+                System.out.println("\nYou added to the order " + String.valueOf(quantity) + " " + orderedCoffee.getCoffeeName());
+                coffeeOrder.addCoffeeToOrder(orderedCoffee, quantity);
+            }
+        }
     }
 }
 
@@ -74,7 +131,7 @@ class Machiatto extends Espresso{
     public Machiatto(){}
 
     public Machiatto(String customerName) {
-        super();
+        super(customerName);
         ingredientsForCoffeeAndAmount.put(Ingredients.MILK_FOAM, 1);
         this.customerName = customerName;
     }
@@ -89,7 +146,7 @@ class CoffeeLatte extends Espresso{
     public CoffeeLatte(){}
 
     public CoffeeLatte(String customerName) {
-        super();
+        super(customerName);
         ingredientsForCoffeeAndAmount.put(Ingredients.STEAMED_MILK, 2);
         ingredientsForCoffeeAndAmount.put(Ingredients.MILK_FOAM, 1);
         this.customerName = customerName;
@@ -105,7 +162,7 @@ class Cappucino extends Espresso{
     public Cappucino(){}
 
     public Cappucino(String customerName) {
-        super();
+        super(customerName);
         ingredientsForCoffeeAndAmount.put(Ingredients.STEAMED_MILK, 1);
         ingredientsForCoffeeAndAmount.put(Ingredients.MILK_FOAM, 2);
         this.customerName = customerName;
@@ -121,7 +178,7 @@ class CoffeeMiel extends BlackCoffee{
     public CoffeeMiel(){}
 
     public CoffeeMiel(String customerName) {
-        super();
+        super(customerName);
         ingredientsForCoffeeAndAmount.put(Ingredients.HONEY, 1);
         ingredientsForCoffeeAndAmount.put(Ingredients.CINNAMON, 1);
         ingredientsForCoffeeAndAmount.put(Ingredients.STEAMED_MILK, 1);
@@ -146,6 +203,10 @@ class CoffeeOrder{
         orderedCoffeesAndQuantity = new HashMap<Coffee, Integer>();
     }
 
+    public Map<Coffee, Integer> getOrderedCoffeesAndQuantity() {
+        return orderedCoffeesAndQuantity;
+    }
+
     public void addCoffeeToOrder(Coffee coffeeToAdd, Integer quantity){
         orderedCoffeesAndQuantity.put(coffeeToAdd, quantity);
     }
@@ -162,14 +223,14 @@ class CoffeeOrder{
 class CoffeeShop{
     private String coffeeShopName;
     private List<Coffee> allCoffees;
-    private Integer profit;
+    private Double profit;
 
     CoffeeShop(){
         this.coffeeShopName = "Good to go";
-        this.profit = 0;
+        this.profit = 0.0;
         allCoffees = new ArrayList<>();
         allCoffees.add(new Espresso());
-        allCoffees.add(new BlackCoffee());
+        allCoffees.add(new Machiatto());
         allCoffees.add(new CoffeeLatte());
         allCoffees.add(new Cappucino());
         allCoffees.add(new CoffeeMiel());
@@ -177,6 +238,10 @@ class CoffeeShop{
 
     public String getCoffeeShopName(){
         return coffeeShopName;
+    }
+
+    public Double getProfit() {
+        return profit;
     }
 
     public StringBuilder getAllBeverages(){
@@ -188,6 +253,10 @@ class CoffeeShop{
             allBeverages.append("\n");
         }
         return allBeverages;
+    }
+
+    public void addToProfit(double sumToAdd){
+        this.profit += sumToAdd;
     }
 }
 
