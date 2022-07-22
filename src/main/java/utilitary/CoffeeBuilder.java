@@ -8,35 +8,22 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Scanner;
 
 public class CoffeeBuilder {
+    private static final int baseTypeLowerLimit = 1;
+    private static final int baseTypeHigherLimit = 2;
+    private static final int addIngredientLowerLimit = 0;
+    private static final int addIngredientHigherLimit = 5;
 
     public static Coffee buildCustomisableCoffee(@NotNull Scanner scanner, String customerName){
         while(true) {
             System.out.println("\nDesign your own coffee. Let's start with the base");
             System.out.println("What do you want as base? Black coffee or espresso shots?\n1: Espresso shots\n2: Black coffee\n");
             System.out.println("Introduce your option: ");
-            int optionRead;
-            try {
-                optionRead = scanner.nextInt();
-                scanner.nextLine();
-            }
-            catch (Exception ex){
-                System.out.println("Invalid option! Please try again!");
-                scanner.next();
-                continue;
-            }
+            int optionRead =
+                    OptionsValidGenerator.generateAndValidateIntegerFromCertainInterval(scanner, baseTypeLowerLimit, baseTypeHigherLimit);
             Coffee designedCoffee = null;
             System.out.println("\nIntroduce number of shots: ");
-            int numberOfShots;
-            try {
-                numberOfShots = scanner.nextInt();
-            }
-            catch (Exception ex){
-                System.out.println("Invalid option! Please try again");
-                scanner.next();
-                continue;
-            }
+            int numberOfShots = OptionsValidGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
             String baseCoffeeName = null;
-            scanner.nextLine();
             if (optionRead == 1) {
                 designedCoffee = new EspressoBasedBeverage(customerName, numberOfShots);
                 baseCoffeeName = "espresso";
@@ -48,16 +35,8 @@ public class CoffeeBuilder {
             while (true) {
                 System.out.println("0: Finish coffee\n1: Add milk foam\n2: Add steamed milk\n3: Add cinnamon\n4: Add honey\n5: Add syrup\n");
                 System.out.println("Introduce option: ");
-                int ingredientOption;
-                try {
-                    ingredientOption = scanner.nextInt();
-                    scanner.nextLine();
-                }
-                catch (Exception ex){
-                    System.out.println("Invalid option! Please try again");
-                    scanner.next();
-                    continue;
-                }
+                int ingredientOption = OptionsValidGenerator.generateAndValidateIntegerFromCertainInterval(
+                        scanner, addIngredientLowerLimit, addIngredientHigherLimit);
                 Ingredients chosenIngredient = null;
                 String nameOfIngredient = "";
                 switch (ingredientOption) {
@@ -85,16 +64,7 @@ public class CoffeeBuilder {
                         return designedCoffee;
                 }
                 System.out.println("\nIntroduce amount of ingredient(units): ");
-                int ingredientAmount;
-                try {
-                    ingredientAmount = scanner.nextInt();
-                    scanner.nextLine();
-                }
-                catch (Exception ex){
-                    System.out.println("Invalid option! Please try again");
-                    scanner.next();
-                    continue;
-                }
+                int ingredientAmount = OptionsValidGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
                 if (optionRead == 1) {
                     ((EspressoBasedBeverage) designedCoffee).addIngredientToCoffee(chosenIngredient, ingredientAmount);
                 } else if (optionRead == 2) {
@@ -104,4 +74,5 @@ public class CoffeeBuilder {
             }
         }
     }
+
 }

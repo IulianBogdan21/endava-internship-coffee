@@ -2,6 +2,9 @@ package domain;
 
 import utilitary.Ingredients;
 
+/**
+ * class for a custom coffee that has espresso shots as base
+ */
 public class EspressoBasedBeverage extends Coffee{
 
     public EspressoBasedBeverage(){}
