@@ -1,5 +1,6 @@
 import domain.*;
 import org.jetbrains.annotations.Nullable;
+import utilitary.CoffeeBuilder;
 import utilitary.Ingredients;
 import utilitary.OrderStatus;
 import utilitary.PricesBuilder;
@@ -22,7 +23,7 @@ public class Main {
                     "When your order is done, introduce 0" + "\n");
             CoffeeOrder coffeeOrder = new CoffeeOrder(orderStatus);
             while (true){
-                System.out.println("0: Finish order\n" + openCoffeeShop.getAllBeverages());
+                System.out.println("0: Finish order\n" + openCoffeeShop.getAllBeverages() + "6: Design your own coffee");
                 int optionRead = getNumberCorrespondingToCoffeeOption(scanner);
                 Coffee orderedCoffee = switch (optionRead) {
                     case 1 -> new Espresso(customerName);
@@ -30,6 +31,7 @@ public class Main {
                     case 3 -> new CoffeeLatte(customerName);
                     case 4 -> new Cappucino(customerName);
                     case 5 -> new CoffeeMiel(customerName);
+                    case 6 -> CoffeeBuilder.buildCustomisableCoffee(scanner, customerName);
                     default -> null;
                 };
                 if(optionRead == 0){
@@ -45,7 +47,7 @@ public class Main {
                     System.out.println("You did not introduce a valid option. Try again!\n");
                     continue;
                 }
-                System.out.println("\nIntroduce quantity: ");
+                System.out.println("\nHow many of this coffee do you want? ");
                 int quantity = scanner.nextInt();
                 System.out.println("\nYou added to the order " + String.valueOf(quantity) + " " + orderedCoffee.getCoffeeName());
                 coffeeOrder.addCoffeeToOrder(orderedCoffee, quantity);
@@ -63,7 +65,7 @@ public class Main {
             try {
                 int optionRead = scanner.nextInt();
                 scanner.nextLine();
-                if(optionRead < 0 || optionRead > 5) {
+                if(optionRead < 0 || optionRead > 6) {
                     System.out.println("Invalid option! Please try again!");
                     continue;
                 }

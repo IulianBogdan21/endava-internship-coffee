@@ -9,5 +9,6 @@ public enum Ingredients {
     MILK_FOAM,
     STEAMED_MILK,
     HONEY,
-    CINNAMON
+    CINNAMON,
+    SYRUP
 }
