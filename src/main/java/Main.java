@@ -86,7 +86,7 @@ public class Main {
 
     /**
      * @param statusOption Integer equal to 1 or 2
-     * @return PICKUP OrderStatus if integer 1, DELIVERY OrderStatus if integer 2
+     * @return PICKUP OrderStatus if integer is 1, DELIVERY OrderStatus if integer is 2
      */
     @Nullable
     private static OrderStatus getStatusBasedOnChosenOption(int statusOption) {
