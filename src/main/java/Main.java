@@ -6,65 +6,87 @@ import java.util.*;
 
 public class Main {
 
-    private static final int deliveryStatusLowerLimit = 1;
-    private static final int deliveryStatusHigherLimit = 2;
-    private static final int coffeeTypeLowerLimit = 0;
-    private static final int coffeeTypeHigherLimit = 6;
+    private static final int DELIVERY_STATUS_LOWER_LIMIT = 1;
+    private static final int DELIVERY_STATUS_HIGHER_LIMIT = 2;
+    private static final int COFFEE_TYPE_LOWER_LIMIT = 0;
+    private static final int COFFEE_TYPE_HIGHER_LIMIT = 6;
+    private static final int FINISH_ORDER = 0;
 
     public static void main(String[] args) {
-        Scanner scanner= new Scanner(System.in);
+        Scanner scanner = createScanner();
         Map<Ingredients, Double> pricesForEachIngredient = PricesBuilder.buildPricesForIngredients();
-        CoffeeShop openCoffeeShop = new CoffeeShop();
-        while (true){
-            printCoffeeShopName(openCoffeeShop);
+        CoffeeShop coffeeShop = openCoffeeShop();
+        handleOrdersFromClients(coffeeShop, pricesForEachIngredient, scanner);
+    }
+
+    @SuppressWarnings("InfiniteLoopStatement")
+    private static void handleOrdersFromClients(CoffeeShop coffeeShop, Map<Ingredients, Double> pricesForEachIngredient,
+                                                Scanner scanner){
+        while(true){
+            MessagePrinter.printCoffeeShopName(coffeeShop);
             String customerName = registerCustomerName(scanner);
-            System.out.println("Do you want to drink the coffee here or somewhere else?\n1: Pickup\n2: Delivery\n\nIntroduce option: ");
-            int statusOption = OptionsValidGenerator.generateAndValidateIntegerFromCertainInterval(
-                    scanner, deliveryStatusLowerLimit, deliveryStatusHigherLimit);
-            OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
-            System.out.println("\n");
-            System.out.println("Select the coffees you want. Introduce the number for the coffees you want and then the quantity. " +
-                    "When your order is done, introduce 0" + "\n");
-            CoffeeOrder coffeeOrder = new CoffeeOrder(orderStatus);
-            while (true){
-                System.out.println("0: Finish order\n" + openCoffeeShop.getAllBeverages() + "6: Design your own coffee\n\nIntroduce option: ");
-                int optionRead = OptionsValidGenerator.generateAndValidateIntegerFromCertainInterval(
-                        scanner, coffeeTypeLowerLimit, coffeeTypeHigherLimit);
-                Coffee orderedCoffee = switch (optionRead) {
-                    case 1 -> new Espresso(customerName);
-                    case 2 -> new Machiatto(customerName);
-                    case 3 -> new CoffeeLatte(customerName);
-                    case 4 -> new Cappucino(customerName);
-                    case 5 -> new CoffeeMiel(customerName);
-                    case 6 -> CoffeeBuilder.buildCustomisableCoffee(scanner, customerName);
-                    default -> null;
-                };
-                if(optionRead == 0){
-                    System.out.println("You ordered the following:\n");
-                    printOrderedCoffeesAndTheirAmount(pricesForEachIngredient, coffeeOrder);
-                    double addedProfit = coffeeOrder.getPriceOfOrder(pricesForEachIngredient);
-                    System.out.println("\nTotal cost is: " + String.valueOf(addedProfit));
-                    openCoffeeShop.addToProfit(addedProfit);
-                    System.out.println("Shop's current profit is: " + String.valueOf(openCoffeeShop.getProfit()) + "\n");
-                    break;
-                }
-                if(orderedCoffee == null){
-                    System.out.println("You did not introduce a valid option. Try again!\n");
-                    continue;
-                }
-                System.out.println("\nHow many of this coffee do you want? ");
-                int quantity = scanner.nextInt();
-                System.out.println("\nYou added to the order " + String.valueOf(quantity) + " " + orderedCoffee.getCoffeeName());
-                coffeeOrder.addCoffeeToOrder(orderedCoffee, quantity);
-            }
+            CoffeeOrder coffeeOrder = createNewCoffeeOrder(scanner);
+            getOrderFromClient(coffeeShop, customerName, coffeeOrder, pricesForEachIngredient, scanner);
         }
     }
 
-    private static void printOrderedCoffeesAndTheirAmount(Map<Ingredients, Double> pricesForEachIngredient, CoffeeOrder coffeeOrder) {
-        for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
-            System.out.println(String.valueOf(coffeeOrder.getOrderedCoffeesAndQuantity().get(coffee)) +
-                    "X " + coffee.getCoffeeName() + " where 1 " + coffee.getCoffeeName() + " is " +
-                    String.valueOf(coffee.getPrice(pricesForEachIngredient)) + " euros");
+    private static Scanner createScanner(){
+        return new Scanner(System.in);
+    }
+
+    private static CoffeeShop openCoffeeShop(){
+        return new CoffeeShop();
+    }
+
+    private static boolean optionChosenFromMenuIsInvalid(Coffee orderedCoffee){
+        return orderedCoffee == null;
+    }
+
+    private static CoffeeOrder createNewCoffeeOrder(Scanner scanner){
+        MessagePrinter.printOptionsForOrderStatus();
+        int statusOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
+                scanner, DELIVERY_STATUS_LOWER_LIMIT, DELIVERY_STATUS_HIGHER_LIMIT);
+        OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
+        MessagePrinter.printAdditionalInformationAboutTheMenu();
+        return new CoffeeOrder(orderStatus);
+    }
+
+    private static void finishCustomerOrder(CoffeeShop coffeeShop, CoffeeOrder coffeeOrder,
+                                            Map<Ingredients, Double> pricesForEachIngredient){
+        MessagePrinter.printOrderedCoffeesAndTheirAmount(pricesForEachIngredient, coffeeOrder);
+        double profitObtained = coffeeOrder.getPriceOfOrder(pricesForEachIngredient);
+        MessagePrinter.printCostOfOrder(profitObtained);
+        coffeeShop.addToProfit(profitObtained);
+        MessagePrinter.printCurrentProfitOfCoffeeShop(coffeeShop);
+    }
+
+    private static int getAmountOfOrderedCoffee(Scanner scanner){
+        MessagePrinter.printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
+        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
+    }
+
+    private static void updateCoffeeOrder(CoffeeOrder coffeeOrder, Coffee orderedCoffee, int amountOfCoffee){
+        MessagePrinter.printUpdatedOrder(orderedCoffee, amountOfCoffee);
+        coffeeOrder.addCoffeeToOrder(orderedCoffee, amountOfCoffee);
+    }
+
+    private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder,
+                                           Map<Ingredients, Double> pricesForEachIngredient, Scanner scanner){
+        while(true){
+            MessagePrinter.printMenu(coffeeShop);
+            int menuOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
+                    scanner, COFFEE_TYPE_LOWER_LIMIT, COFFEE_TYPE_HIGHER_LIMIT);
+            Coffee orderedCoffee = CoffeeBuilder.buildCoffeeFromMenu(menuOption, customerName, scanner);
+            if (menuOption == FINISH_ORDER) {
+                finishCustomerOrder(coffeeShop, coffeeOrder, pricesForEachIngredient);
+                return;
+            }
+            if (optionChosenFromMenuIsInvalid(orderedCoffee)) {
+                MessagePrinter.printMenuInvalidOption();
+                continue;
+            }
+            int amountOfCoffee = getAmountOfOrderedCoffee(scanner);
+            updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
         }
     }
 
@@ -93,10 +115,6 @@ public class Main {
         String customerName = scanner.nextLine();
         System.out.println("\n");
         return customerName;
-    }
-
-    static void printCoffeeShopName(CoffeeShop openCoffeeShop){
-        System.out.println("----------" + openCoffeeShop.getCoffeeShopName() + "----------" + "\n");
     }
 }
 

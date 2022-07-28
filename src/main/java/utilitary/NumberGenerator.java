@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * class with static methods that generate valid integers for the main menu (integers between certain intervals or just simple integers)
  */
-public class OptionsValidGenerator {
+public class NumberGenerator {
 
     /**
      * @param scanner Scanner

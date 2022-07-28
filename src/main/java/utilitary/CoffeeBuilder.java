@@ -1,8 +1,6 @@
 package utilitary;
 
-import domain.BlackCoffeeBasedBeverage;
-import domain.Coffee;
-import domain.EspressoBasedBeverage;
+import domain.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Scanner;
@@ -19,10 +17,10 @@ public class CoffeeBuilder {
             System.out.println("What do you want as base? Black coffee or espresso shots?\n1: Espresso shots\n2: Black coffee\n");
             System.out.println("Introduce your option: ");
             int optionRead =
-                    OptionsValidGenerator.generateAndValidateIntegerFromCertainInterval(scanner, baseTypeLowerLimit, baseTypeHigherLimit);
+                    NumberGenerator.generateAndValidateIntegerFromCertainInterval(scanner, baseTypeLowerLimit, baseTypeHigherLimit);
             Coffee designedCoffee = null;
             System.out.println("\nIntroduce number of shots: ");
-            int numberOfShots = OptionsValidGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
+            int numberOfShots = NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
             String baseCoffeeName = null;
             if (optionRead == 1) {
                 designedCoffee = new EspressoBasedBeverage(customerName, numberOfShots);
@@ -35,7 +33,7 @@ public class CoffeeBuilder {
             while (true) {
                 System.out.println("0: Finish coffee\n1: Add milk foam\n2: Add steamed milk\n3: Add cinnamon\n4: Add honey\n5: Add syrup\n");
                 System.out.println("Introduce option: ");
-                int ingredientOption = OptionsValidGenerator.generateAndValidateIntegerFromCertainInterval(
+                int ingredientOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
                         scanner, addIngredientLowerLimit, addIngredientHigherLimit);
                 Ingredients chosenIngredient = null;
                 String nameOfIngredient = "";
@@ -64,7 +62,7 @@ public class CoffeeBuilder {
                         return designedCoffee;
                 }
                 System.out.println("\nIntroduce amount of ingredient(units): ");
-                int ingredientAmount = OptionsValidGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
+                int ingredientAmount = NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
                 if (optionRead == 1) {
                     ((EspressoBasedBeverage) designedCoffee).addIngredientToCoffee(chosenIngredient, ingredientAmount);
                 } else if (optionRead == 2) {
@@ -73,6 +71,18 @@ public class CoffeeBuilder {
                 System.out.println("\nYou have added " + String.valueOf(ingredientAmount) + "X " + nameOfIngredient + " to your coffee");
             }
         }
+    }
+
+    public static Coffee buildCoffeeFromMenu(int menuOption, String customerName, Scanner scanner){
+        return switch (menuOption) {
+            case 1 -> new Espresso(customerName);
+            case 2 -> new Machiatto(customerName);
+            case 3 -> new CoffeeLatte(customerName);
+            case 4 -> new Cappucino(customerName);
+            case 5 -> new CoffeeMiel(customerName);
+            case 6 -> CoffeeBuilder.buildCustomisableCoffee(scanner, customerName);
+            default -> null;
+        };
     }
 
 }
