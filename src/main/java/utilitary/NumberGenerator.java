@@ -24,7 +24,7 @@ public class NumberGenerator {
                 continue;
             }
             if(optionRead < firstOption || optionRead > lastOption){
-                System.out.println("You need to introduce 1 or 2 depending on your option!");
+                System.out.println("You need to introduce a valid option!");
                 continue;
             }
             return optionRead;

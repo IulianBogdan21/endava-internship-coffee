@@ -73,6 +73,12 @@ public class CoffeeBuilder {
         }
     }
 
+    /**
+     * @param menuOption integer that represents an option from the menu
+     * @param customerName - the name of the customer - String
+     * @param scanner Scanner
+     * @return a new Coffee corresponding to the chosen menu option
+     */
     public static Coffee buildCoffeeFromMenu(int menuOption, String customerName, Scanner scanner){
         return switch (menuOption) {
             case 1 -> new Espresso(customerName);
