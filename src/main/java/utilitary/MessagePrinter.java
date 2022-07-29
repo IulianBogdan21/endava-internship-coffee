@@ -54,4 +54,31 @@ public class MessagePrinter {
         System.out.println("Select the coffees you want. Introduce the number for the coffees you want and then the quantity. " +
                 "When your order is done, introduce 0" + "\n");
     }
+
+    public static void printBaseOptionsForCustomisableCoffee(){
+        System.out.println("\nDesign your own coffee. Let's start with the base");
+        System.out.println("What do you want as base? Black coffee or espresso shots?\n1: Espresso shots\n2: Black coffee\n");
+        System.out.println("Introduce your option: ");
+    }
+
+    public static void printAskingForNumberOfShots(){
+        System.out.println("\nIntroduce number of shots: ");
+    }
+
+    public static void printConfirmationOfAddedBase(String baseCoffeeName, int numberOfShots){
+        System.out.println("\nYou added " + String.valueOf(numberOfShots) + "X " + baseCoffeeName + " to your coffee base\n");
+    }
+
+    public static void printMenuForCustomisableCoffee(){
+        System.out.println("0: Finish coffee\n1: Add milk foam\n2: Add steamed milk\n3: Add cinnamon\n4: Add honey\n5: Add syrup\n");
+        System.out.println("Introduce option: ");
+    }
+
+    public static void printMessageAskingForAmountOfIngredient(){
+        System.out.println("\nIntroduce amount of ingredient(units): ");
+    }
+
+    public static void printConfirmationOfAddedIngredient(String nameOfIngredient, int ingredientAmount){
+        System.out.println("\nYou have added " + String.valueOf(ingredientAmount) + "X " + nameOfIngredient + " to your coffee");
+    }
 }
