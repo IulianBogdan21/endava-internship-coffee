@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class CoffeeBuilder {
@@ -178,6 +179,18 @@ public class CoffeeBuilder {
             }
             MessagePrinter.printConfirmationOfAddedIngredient(nameOfIngredient, ingredientAmount);
         }
+    }
+
+    public Coffee makeCoffeeFromIngredients(Map<Ingredients, Integer> ingredients){
+        Integer amountOfEspresso = ingredients.get(Ingredients.ESPRESSO);
+        Integer amountOfBlackCoffee = ingredients.get(Ingredients.BLACK_COFFEE);
+        if(amountOfEspresso == null){
+            BlackCoffeeBasedBeverage newCoffee = new BlackCoffeeBasedBeverage("", amountOfBlackCoffee);
+        }
+        else{
+            EspressoBasedBeverage newCoffee = new EspressoBasedBeverage("", amountOfEspresso);
+        }
+        return null;
     }
 
 }

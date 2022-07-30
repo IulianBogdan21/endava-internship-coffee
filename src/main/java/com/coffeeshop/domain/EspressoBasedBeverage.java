@@ -5,7 +5,7 @@ import com.coffeeshop.utilitary.Ingredients;
 /**
  * class for a custom coffee that has espresso shots as base
  */
-public class EspressoBasedBeverage extends Coffee{
+public class EspressoBasedBeverage extends CoffeeBase{
 
     public EspressoBasedBeverage(){}
 
