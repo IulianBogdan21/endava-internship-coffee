@@ -1,6 +1,6 @@
-package domain;
+package com.coffeeshop.domain;
 
-import utilitary.Ingredients;
+import com.coffeeshop.utilitary.Ingredients;
 
 import java.util.HashMap;
 import java.util.Map;

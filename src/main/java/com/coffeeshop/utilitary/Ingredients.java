@@ -1,4 +1,4 @@
-package utilitary;
+package com.coffeeshop.utilitary;
 
 /**
  * all possible ingredients for making a coffee

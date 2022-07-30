@@ -1,6 +1,6 @@
-package domain;
+package com.coffeeshop.domain;
 
-import utilitary.Ingredients;
+import com.coffeeshop.utilitary.Ingredients;
 
 /**
  * class for a custom coffee that has black coffee shots as base

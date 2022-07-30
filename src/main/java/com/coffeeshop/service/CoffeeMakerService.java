@@ -1,8 +1,8 @@
-package service;
+package com.coffeeshop.service;
 
-import domain.Coffee;
-import repository.CoffeeMakerRepository;
-import utilitary.Ingredients;
+import com.coffeeshop.domain.Coffee;
+import com.coffeeshop.repository.CoffeeMakerRepository;
+import com.coffeeshop.utilitary.Ingredients;
 
 import java.util.Map;
 

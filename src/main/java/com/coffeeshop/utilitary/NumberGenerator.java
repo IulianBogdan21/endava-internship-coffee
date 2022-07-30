@@ -1,4 +1,4 @@
-package utilitary;
+package com.coffeeshop.utilitary;
 
 import java.util.Scanner;
 

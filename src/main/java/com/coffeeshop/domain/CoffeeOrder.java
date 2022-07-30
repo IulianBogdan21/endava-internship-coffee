@@ -1,7 +1,7 @@
-package domain;
+package com.coffeeshop.domain;
 
-import utilitary.Ingredients;
-import utilitary.OrderStatus;
+import com.coffeeshop.utilitary.Ingredients;
+import com.coffeeshop.utilitary.OrderStatus;
 
 import java.util.HashMap;
 import java.util.Map;

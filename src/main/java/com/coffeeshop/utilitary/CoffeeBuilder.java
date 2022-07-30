@@ -1,6 +1,6 @@
-package utilitary;
+package com.coffeeshop.utilitary;
 
-import domain.*;
+import com.coffeeshop.domain.*;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

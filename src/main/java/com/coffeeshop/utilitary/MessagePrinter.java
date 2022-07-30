@@ -1,8 +1,8 @@
-package utilitary;
+package com.coffeeshop.utilitary;
 
-import domain.Coffee;
-import domain.CoffeeOrder;
-import domain.CoffeeShop;
+import com.coffeeshop.domain.Coffee;
+import com.coffeeshop.domain.CoffeeOrder;
+import com.coffeeshop.domain.CoffeeShop;
 
 import java.util.Map;
 
