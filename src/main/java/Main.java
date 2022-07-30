@@ -1,86 +1,141 @@
 import domain.*;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import utilitary.Ingredients;
-import utilitary.OrderStatus;
-import utilitary.PricesBuilder;
+import utilitary.*;
 
 import java.util.*;
 
 public class Main {
 
+    private static final int DELIVERY_STATUS_LOWER_LIMIT = 1;
+    private static final int DELIVERY_STATUS_HIGHER_LIMIT = 2;
+    private static final int COFFEE_TYPE_LOWER_LIMIT = 0;
+    private static final int COFFEE_TYPE_HIGHER_LIMIT = 6;
+    private static final int FINISH_ORDER = 0;
+
     public static void main(String[] args) {
-        Scanner scanner= new Scanner(System.in);
+        Scanner scanner = createScanner();
         Map<Ingredients, Double> pricesForEachIngredient = PricesBuilder.buildPricesForIngredients();
-        CoffeeShop openCoffeeShop = new CoffeeShop();
-        while (true){
-            printCoffeeShopName(openCoffeeShop);
+        CoffeeShop coffeeShop = openCoffeeShop();
+        handleOrdersFromClients(coffeeShop, pricesForEachIngredient, scanner);
+    }
+
+    /**
+     * function that handles customer requests in an infinite loop
+     * @param coffeeShop - CoffeeShop
+     * @param pricesForEachIngredient - map that contains the prices for every ingredient
+     * @param scanner - Scanner
+     */
+    @SuppressWarnings("InfiniteLoopStatement")
+    private static void handleOrdersFromClients(CoffeeShop coffeeShop, Map<Ingredients, Double> pricesForEachIngredient,
+                                                Scanner scanner){
+        while(true){
+            MessagePrinter.printCoffeeShopName(coffeeShop);
             String customerName = registerCustomerName(scanner);
-            int statusOption = choosePickupOrDeliveryStatusForOrder(scanner);
-            OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
-            System.out.println("\n");
-            System.out.println("Select the coffees you want. Introduce the number for the coffees you want and then the quantity. " +
-                    "When your order is done, introduce 0" + "\n");
-            CoffeeOrder coffeeOrder = new CoffeeOrder(orderStatus);
-            while (true){
-                System.out.println("0: Finish order\n" + openCoffeeShop.getAllBeverages());
-                int optionRead = getNumberCorrespondingToCoffeeOption(scanner);
-                Coffee orderedCoffee = switch (optionRead) {
-                    case 1 -> new Espresso(customerName);
-                    case 2 -> new Machiatto(customerName);
-                    case 3 -> new CoffeeLatte(customerName);
-                    case 4 -> new Cappucino(customerName);
-                    case 5 -> new CoffeeMiel(customerName);
-                    default -> null;
-                };
-                if(optionRead == 0){
-                    System.out.println("You ordered the following:\n");
-                    printOrderedCoffeesAndTheirAmount(pricesForEachIngredient, coffeeOrder);
-                    double addedProfit = coffeeOrder.getPriceOfOrder(pricesForEachIngredient);
-                    System.out.println("\nTotal cost is: " + String.valueOf(addedProfit));
-                    openCoffeeShop.addToProfit(addedProfit);
-                    System.out.println("Shop's current profit is: " + String.valueOf(openCoffeeShop.getProfit()) + "\n");
-                    break;
-                }
-                if(orderedCoffee == null){
-                    System.out.println("You did not introduce a valid option. Try again!\n");
-                    continue;
-                }
-                System.out.println("\nIntroduce quantity: ");
-                int quantity = scanner.nextInt();
-                System.out.println("\nYou added to the order " + String.valueOf(quantity) + " " + orderedCoffee.getCoffeeName());
-                coffeeOrder.addCoffeeToOrder(orderedCoffee, quantity);
-            }
+            CoffeeOrder coffeeOrder = createNewCoffeeOrder(scanner);
+            getOrderFromClient(coffeeShop, customerName, coffeeOrder, pricesForEachIngredient, scanner);
         }
     }
 
     /**
-     * @param scanner Scanner
-     * @return integer between 0 and 5 corresponding to a coffee option
+     * @return new instance of Scanner class
      */
-    private static int getNumberCorrespondingToCoffeeOption(Scanner scanner) {
-        while (true) {
-            System.out.println("Introduce option: ");
-            try {
-                int optionRead = scanner.nextInt();
-                scanner.nextLine();
-                if(optionRead < 0 || optionRead > 5) {
-                    System.out.println("Invalid option! Please try again!");
-                    continue;
-                }
-                return optionRead;
-            }
-            catch (Exception ex){
-                System.out.println("Invalid option! Please try again!");
-                scanner.next();
-            }
-        }
+    @Contract(" -> new")
+    private static @NotNull Scanner createScanner(){
+        return new Scanner(System.in);
     }
 
-    private static void printOrderedCoffeesAndTheirAmount(Map<Ingredients, Double> pricesForEachIngredient, CoffeeOrder coffeeOrder) {
-        for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
-            System.out.println(String.valueOf(coffeeOrder.getOrderedCoffeesAndQuantity().get(coffee)) +
-                    "X " + coffee.getCoffeeName() + " where 1 " + coffee.getCoffeeName() + " is " +
-                    String.valueOf(coffee.getPrice(pricesForEachIngredient)) + " euros");
+    /**
+     * @return new instance of CoffeeShop class
+     */
+    @Contract(" -> new")
+    private static @NotNull CoffeeShop openCoffeeShop(){
+        return new CoffeeShop();
+    }
+
+    /**
+     * @param orderedCoffee - Coffee that has been ordered
+     * @return true if a valid option has been chosen from the menu, false otherwise
+     */
+    @Contract(value = "null -> true; !null -> false", pure = true)
+    private static boolean optionChosenFromMenuIsInvalid(Coffee orderedCoffee){
+        return orderedCoffee == null;
+    }
+
+    /**
+     * @param scanner Scanner
+     * @return a new order from a client that also contains its status(pickup or delivery)
+     */
+    @Contract("_ -> new")
+    private static @NotNull CoffeeOrder createNewCoffeeOrder(Scanner scanner){
+        MessagePrinter.printOptionsForOrderStatus();
+        int statusOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
+                scanner, DELIVERY_STATUS_LOWER_LIMIT, DELIVERY_STATUS_HIGHER_LIMIT);
+        OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
+        MessagePrinter.printAdditionalInformationAboutTheMenu();
+        return new CoffeeOrder(orderStatus);
+    }
+
+    /**
+     * function that finishes a customer's order and updates the profit
+     * @param coffeeShop CoffeeShop
+     * @param coffeeOrder - customer's order
+     * @param pricesForEachIngredient - map that contains prices for each ingredient
+     */
+    private static void finishCustomerOrder(@NotNull CoffeeShop coffeeShop, CoffeeOrder coffeeOrder,
+                                            Map<Ingredients, Double> pricesForEachIngredient){
+        MessagePrinter.printOrderedCoffeesAndTheirAmount(pricesForEachIngredient, coffeeOrder);
+        double profitObtained = coffeeOrder.getPriceOfOrder(pricesForEachIngredient);
+        MessagePrinter.printCostOfOrder(profitObtained);
+        coffeeShop.addToProfit(profitObtained);
+        MessagePrinter.printCurrentProfitOfCoffeeShop(coffeeShop);
+    }
+
+    /**
+     * @param scanner Scanner
+     * @return integer = number of coffees of a certain kind (the ordered one)
+     */
+    private static int getAmountOfOrderedCoffee(Scanner scanner){
+        MessagePrinter.printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
+        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
+    }
+
+    /**
+     * function that adds a coffee to a customer's order
+     * @param coffeeOrder - order made by a customer
+     * @param orderedCoffee - coffee chosen by the customer to be added to order
+     * @param amountOfCoffee - integer - number of coffees of a chosen option
+     */
+    private static void updateCoffeeOrder(@NotNull CoffeeOrder coffeeOrder, Coffee orderedCoffee, int amountOfCoffee){
+        MessagePrinter.printUpdatedOrder(orderedCoffee, amountOfCoffee);
+        coffeeOrder.addCoffeeToOrder(orderedCoffee, amountOfCoffee);
+    }
+
+    /**
+     * @param coffeeShop CoffeeShop
+     * @param customerName - the name of the customer
+     * @param coffeeOrder - the customer's order
+     * @param pricesForEachIngredient - map that contains the prices for each ingredient
+     * @param scanner Scanner
+     */
+    private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder,
+                                           Map<Ingredients, Double> pricesForEachIngredient, Scanner scanner){
+        while(true){
+            MessagePrinter.printMenu(coffeeShop);
+            int menuOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
+                    scanner, COFFEE_TYPE_LOWER_LIMIT, COFFEE_TYPE_HIGHER_LIMIT);
+            Coffee orderedCoffee = CoffeeBuilder.buildCoffeeFromMenu(menuOption, customerName, scanner);
+            if (menuOption == FINISH_ORDER) {
+                finishCustomerOrder(coffeeShop, coffeeOrder, pricesForEachIngredient);
+                return;
+            }
+            if (optionChosenFromMenuIsInvalid(orderedCoffee)) {
+                MessagePrinter.printMenuInvalidOption();
+                continue;
+            }
+            int amountOfCoffee = getAmountOfOrderedCoffee(scanner);
+            updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
         }
     }
 
@@ -102,43 +157,13 @@ public class Main {
 
     /**
      * @param scanner Scanner
-     * @return 1 if pickup order and 2 if delivery order
-     * if 1 or 2 not introduced, operation is retried
-     */
-    private static int choosePickupOrDeliveryStatusForOrder(Scanner scanner) {
-        while(true) {
-            System.out.println("Pickup or delivery?" + "\n");
-            System.out.println("1: Pickup");
-            System.out.println("2: Delivery");
-            System.out.println("Introduce option: ");
-            try {
-                int statusOption = scanner.nextInt();
-                scanner.nextLine();
-                if (statusOption < 1 || statusOption > 2) {
-                    System.out.println("You did not introduce an integer! Try again!\n");
-                    continue;
-                }
-                return statusOption;
-            } catch (Exception ex) {
-                System.out.println("You did not introduce an integer! Try again!\n");
-                scanner.next();
-            }
-        }
-    }
-
-    /**
-     * @param scanner Scanner
      * @return String representing the customer's name
      */
-    private static String registerCustomerName(Scanner scanner) {
+    private static String registerCustomerName(@NotNull Scanner scanner) {
         System.out.println("Introduce your name: ");
         String customerName = scanner.nextLine();
         System.out.println("\n");
         return customerName;
-    }
-
-    static void printCoffeeShopName(CoffeeShop openCoffeeShop){
-        System.out.println("----------" + openCoffeeShop.getCoffeeShopName() + "----------" + "\n");
     }
 }
 

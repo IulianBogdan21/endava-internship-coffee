@@ -18,6 +18,7 @@ public class PricesBuilder {
         pricesForEachIngredient.put(Ingredients.HONEY, 3.1);
         pricesForEachIngredient.put(Ingredients.MILK_FOAM, 3.5);
         pricesForEachIngredient.put(Ingredients.STEAMED_MILK, 3.6);
+        pricesForEachIngredient.put(Ingredients.SYRUP, 4.0);
         return pricesForEachIngredient;
     }
 }
