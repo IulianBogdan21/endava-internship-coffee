@@ -27,10 +27,11 @@ public class StockManager {
      */
     public static Map<Ingredients, Integer> evaluateAllIngredientsPerCoffeeCommand(Map<Ingredients, Integer> oneCoffeeIngredients,
                                                                                    Integer numberOfCoffees){
+        Map<Ingredients, Integer> allIngredientsPerCoffeeCommand = new HashMap<>();
         for(Ingredients ingredient: oneCoffeeIngredients.keySet()){
             int amountOfIngredient = oneCoffeeIngredients.get(ingredient);
-            oneCoffeeIngredients.put(ingredient, amountOfIngredient * numberOfCoffees);
+            allIngredientsPerCoffeeCommand.put(ingredient, amountOfIngredient * numberOfCoffees);
         }
-        return new HashMap<>(oneCoffeeIngredients);
+        return allIngredientsPerCoffeeCommand;
     }
 }
