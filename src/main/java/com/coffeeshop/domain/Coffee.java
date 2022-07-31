@@ -28,4 +28,8 @@ public abstract class Coffee {
     }
 
     public abstract String getCoffeeName();
+
+    public void setCustomerName(String customerName){
+        this.customerName = customerName;
+    }
 }

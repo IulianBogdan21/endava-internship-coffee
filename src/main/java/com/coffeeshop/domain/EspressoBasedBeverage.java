@@ -9,6 +9,10 @@ public class EspressoBasedBeverage extends CoffeeBase{
 
     public EspressoBasedBeverage(){}
 
+    public EspressoBasedBeverage(Integer shotsOfBlackCoffee) {
+        ingredientsForCoffeeAndAmount.put(Ingredients.BLACK_COFFEE, shotsOfBlackCoffee);
+    }
+
     public EspressoBasedBeverage(String customerName, Integer shotsOfBlackCoffee) {
         ingredientsForCoffeeAndAmount.put(Ingredients.BLACK_COFFEE, shotsOfBlackCoffee);
         this.customerName = customerName;
@@ -16,9 +20,5 @@ public class EspressoBasedBeverage extends CoffeeBase{
 
     public String getCoffeeName() {
         return this.customerName;
-    }
-
-    public void addIngredientToCoffee(Ingredients ingredientToAdd, Integer quantityOfIngredient){
-        ingredientsForCoffeeAndAmount.put(ingredientToAdd, quantityOfIngredient);
     }
 }

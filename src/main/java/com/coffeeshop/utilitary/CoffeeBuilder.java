@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -19,18 +20,18 @@ public class CoffeeBuilder {
 
     /**
      * @param scanner Scanner
-     * @param customerName - String = name of customer
      * @return a customised coffee , designed by the customer
      */
-    public static Coffee buildCustomisableCoffee(@NotNull Scanner scanner, String customerName){
+    public static Coffee buildCustomisableCoffee(@NotNull Scanner scanner){
+        Map<Ingredients, Integer> coffeeIngredients = new HashMap<>();
         MessagePrinter.printBaseOptionsForCustomisableCoffee();
         int baseOption =
                 NumberGenerator.generateAndValidateIntegerFromCertainInterval(scanner, BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
         int numberOfShots = getNumberOfShots(scanner);
-        Coffee designedCoffee = getCoffeeBase(baseOption, customerName, numberOfShots);
+        coffeeIngredients.put(getCoffeeBase(baseOption), numberOfShots);
         String baseCoffeeName = getCoffeeBaseName(baseOption);
         MessagePrinter.printConfirmationOfAddedBase(baseCoffeeName, numberOfShots);
-        return addOptionalIngredientsToCustomisedCoffee(designedCoffee, scanner, baseOption);
+        return addOptionalIngredientsToCustomisedCoffee(scanner, coffeeIngredients);
     }
 
     /**
@@ -40,15 +41,30 @@ public class CoffeeBuilder {
      * @return a new Coffee corresponding to the chosen menu option
      */
     public static Coffee buildCoffeeFromMenu(int menuOption, String customerName, Scanner scanner){
-        return switch (menuOption) {
-            case 1 -> new Espresso(customerName);
-            case 2 -> new Machiatto(customerName);
-            case 3 -> new CoffeeLatte(customerName);
-            case 4 -> new Cappucino(customerName);
-            case 5 -> new CoffeeMiel(customerName);
-            case 6 -> CoffeeBuilder.buildCustomisableCoffee(scanner, customerName);
-            default -> null;
+        Coffee customisedCoffee;
+        switch (menuOption) {
+            case 1:
+                customisedCoffee = new Espresso(customerName);
+                break;
+            case 2:
+                customisedCoffee = new Machiatto(customerName);
+                break;
+            case 3:
+                customisedCoffee = new CoffeeLatte(customerName);
+                break;
+            case 4:
+                customisedCoffee = new Cappucino(customerName);
+                break;
+            case 5:
+                customisedCoffee = new CoffeeMiel(customerName);
+                break;
+            case 6:
+                customisedCoffee = CoffeeBuilder.buildCustomisableCoffee(scanner);
+                customisedCoffee.setCustomerName(customerName);
+            default:
+                customisedCoffee = null;
         };
+        return customisedCoffee;
     }
 
     /**
@@ -74,16 +90,14 @@ public class CoffeeBuilder {
     }
 
     /**
+     * returns base ingredient corresponding to chosen option
      * @param baseOption - integer - option of a base coffee menu
-     * @param customerName - String - name of customer
-     * @param numberOfShots - integer - number of shots of a certain coffee
-     * @return - the designed coffee after adding the base
      */
-    private static Coffee getCoffeeBase(int baseOption, String customerName, int numberOfShots){
+    private static Ingredients getCoffeeBase(int baseOption){
         if (baseOption == 1) {
-            return new EspressoBasedBeverage(customerName, numberOfShots);
+            return Ingredients.ESPRESSO;
         } else if (baseOption == 2) {
-            return new BlackCoffeeBasedBeverage(customerName, numberOfShots);
+            return Ingredients.BLACK_COFFEE;
         }
         return null;
     }
@@ -156,41 +170,40 @@ public class CoffeeBuilder {
     }
 
     /**
-     * @param designedCoffee Coffee - the coffee that the customer creates
      * @param scanner Scanner
-     * @param baseOption integer - menu option for choosing the base for the customisable coffee
      * @return the final customised coffee after adding all the ingredients the customer wants
      */
-    @Contract("_, _, _ -> param1")
-    private static Coffee addOptionalIngredientsToCustomisedCoffee(Coffee designedCoffee, Scanner scanner, int baseOption){
+    private static Coffee addOptionalIngredientsToCustomisedCoffee(Scanner scanner, Map<Ingredients, Integer> coffeeIngredients){
         while(true){
             MessagePrinter.printMenuForCustomisableCoffee();
             int ingredientOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
                     scanner, ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
             if(ingredientOption == FINISH_CUSTOMISABLE_COFFEE)
-                return designedCoffee;
+                return makeCoffeeFromIngredients(coffeeIngredients);
             Ingredients chosenIngredient = getIngredientAccordingToChosenOption(ingredientOption);
             String nameOfIngredient = getIngredientNameAccordingToChosenOption(ingredientOption);
             int ingredientAmount = getAmountOfIngredient(scanner);
-            if (baseOption == ESPRESSO_BASE) {
-                ((EspressoBasedBeverage) designedCoffee).addIngredientToCoffee(chosenIngredient, ingredientAmount);
-            } else if (baseOption == BLACK_COFFEE_BASE) {
-                ((BlackCoffeeBasedBeverage) designedCoffee).addIngredientToCoffee(chosenIngredient, ingredientAmount);
-            }
+            coffeeIngredients.put(chosenIngredient, ingredientAmount);
             MessagePrinter.printConfirmationOfAddedIngredient(nameOfIngredient, ingredientAmount);
         }
     }
 
-    public Coffee makeCoffeeFromIngredients(Map<Ingredients, Integer> ingredients){
+    public static Coffee makeCoffeeFromIngredients(Map<Ingredients, Integer> ingredients){
         Integer amountOfEspresso = ingredients.get(Ingredients.ESPRESSO);
         Integer amountOfBlackCoffee = ingredients.get(Ingredients.BLACK_COFFEE);
+        CoffeeBase newCoffee;
         if(amountOfEspresso == null){
-            BlackCoffeeBasedBeverage newCoffee = new BlackCoffeeBasedBeverage("", amountOfBlackCoffee);
+            newCoffee = new BlackCoffeeBasedBeverage(amountOfBlackCoffee);
+            ingredients.remove(Ingredients.BLACK_COFFEE);
         }
         else{
-            EspressoBasedBeverage newCoffee = new EspressoBasedBeverage("", amountOfEspresso);
+            newCoffee = new EspressoBasedBeverage(amountOfEspresso);
+            ingredients.remove(Ingredients.ESPRESSO);
         }
-        return null;
+        for(Ingredients currentIngredient: ingredients.keySet()){
+            newCoffee.addIngredient(currentIngredient, ingredients.get(currentIngredient));
+        }
+        return newCoffee;
     }
 
 }
