@@ -27,6 +27,10 @@ public abstract class Coffee {
         return this.customerName;
     }
 
+    public Map<Ingredients, Integer> getIngredientsForCoffeeAndAmount(){
+        return ingredientsForCoffeeAndAmount;
+    }
+
     public abstract String getCoffeeName();
 
     public void setCustomerName(String customerName){

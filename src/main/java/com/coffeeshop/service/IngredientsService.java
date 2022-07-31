@@ -26,6 +26,6 @@ public class IngredientsService implements IIngredientsService {
 
     @Override
     public void updateStock(Map<Ingredients, Integer> consumedIngredients){
-
+        ingredientsRepository.updateIngredients(consumedIngredients);
     }
 }
