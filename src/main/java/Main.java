@@ -15,35 +15,24 @@ public class Main {
     private static final int FINISH_ORDER = 0;
 
     public static void main(String[] args) {
-        Scanner scanner = createScanner();
         Map<Ingredients, Double> pricesForEachIngredient = PricesBuilder.buildPricesForIngredients();
         CoffeeShop coffeeShop = openCoffeeShop();
-        handleOrdersFromClients(coffeeShop, pricesForEachIngredient, scanner);
+        handleOrdersFromClients(coffeeShop, pricesForEachIngredient);
     }
 
     /**
      * function that handles customer requests in an infinite loop
      * @param coffeeShop - CoffeeShop
      * @param pricesForEachIngredient - map that contains the prices for every ingredient
-     * @param scanner - Scanner
      */
     @SuppressWarnings("InfiniteLoopStatement")
-    private static void handleOrdersFromClients(CoffeeShop coffeeShop, Map<Ingredients, Double> pricesForEachIngredient,
-                                                Scanner scanner){
+    private static void handleOrdersFromClients(CoffeeShop coffeeShop, Map<Ingredients, Double> pricesForEachIngredient){
         while(true){
             MessagePrinter.printCoffeeShopName(coffeeShop);
-            String customerName = registerCustomerName(scanner);
-            CoffeeOrder coffeeOrder = createNewCoffeeOrder(scanner);
-            getOrderFromClient(coffeeShop, customerName, coffeeOrder, pricesForEachIngredient, scanner);
+            String customerName = registerCustomerName();
+            CoffeeOrder coffeeOrder = createNewCoffeeOrder();
+            getOrderFromClient(coffeeShop, customerName, coffeeOrder, pricesForEachIngredient);
         }
-    }
-
-    /**
-     * @return new instance of Scanner class
-     */
-    @Contract(" -> new")
-    private static @NotNull Scanner createScanner(){
-        return new Scanner(System.in);
     }
 
     /**
@@ -64,14 +53,12 @@ public class Main {
     }
 
     /**
-     * @param scanner Scanner
      * @return a new order from a client that also contains its status(pickup or delivery)
      */
-    @Contract("_ -> new")
-    private static @NotNull CoffeeOrder createNewCoffeeOrder(Scanner scanner){
+    private static @NotNull CoffeeOrder createNewCoffeeOrder(){
         MessagePrinter.printOptionsForOrderStatus();
-        int statusOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
-                scanner, DELIVERY_STATUS_LOWER_LIMIT, DELIVERY_STATUS_HIGHER_LIMIT);
+        int statusOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(DELIVERY_STATUS_LOWER_LIMIT,
+                DELIVERY_STATUS_HIGHER_LIMIT);
         OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
         MessagePrinter.printAdditionalInformationAboutTheMenu();
         return new CoffeeOrder(orderStatus);
@@ -93,12 +80,11 @@ public class Main {
     }
 
     /**
-     * @param scanner Scanner
      * @return integer = number of coffees of a certain kind (the ordered one)
      */
-    private static int getAmountOfOrderedCoffee(Scanner scanner){
+    private static int getAmountOfOrderedCoffee(){
         MessagePrinter.printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
-        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
+        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints();
     }
 
     /**
@@ -117,15 +103,14 @@ public class Main {
      * @param customerName - the name of the customer
      * @param coffeeOrder - the customer's order
      * @param pricesForEachIngredient - map that contains the prices for each ingredient
-     * @param scanner Scanner
      */
     private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder,
-                                           Map<Ingredients, Double> pricesForEachIngredient, Scanner scanner){
+                                           Map<Ingredients, Double> pricesForEachIngredient){
         while(true){
             MessagePrinter.printMenu(coffeeShop);
-            int menuOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
-                    scanner, COFFEE_TYPE_LOWER_LIMIT, COFFEE_TYPE_HIGHER_LIMIT);
-            Coffee orderedCoffee = CoffeeBuilder.buildCoffeeFromMenu(menuOption, customerName, scanner);
+            int menuOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(COFFEE_TYPE_LOWER_LIMIT,
+                    COFFEE_TYPE_HIGHER_LIMIT);
+            Coffee orderedCoffee = CoffeeBuilder.buildCoffeeFromMenu(menuOption, customerName);
             if (menuOption == FINISH_ORDER) {
                 finishCustomerOrder(coffeeShop, coffeeOrder, pricesForEachIngredient);
                 return;
@@ -134,7 +119,7 @@ public class Main {
                 MessagePrinter.printMenuInvalidOption();
                 continue;
             }
-            int amountOfCoffee = getAmountOfOrderedCoffee(scanner);
+            int amountOfCoffee = getAmountOfOrderedCoffee();
             updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
         }
     }
@@ -156,12 +141,11 @@ public class Main {
     }
 
     /**
-     * @param scanner Scanner
      * @return String representing the customer's name
      */
-    private static String registerCustomerName(@NotNull Scanner scanner) {
+    private static String registerCustomerName() {
         System.out.println("Introduce your name: ");
-        String customerName = scanner.nextLine();
+        String customerName = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class).nextLine();
         System.out.println("\n");
         return customerName;
     }

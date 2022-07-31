@@ -8,11 +8,13 @@ import java.util.Scanner;
 public class NumberGenerator {
 
     /**
-     * @param scanner Scanner
-     * @return Integer with value 1 or 2
+     * @param firstOption - Integer
+     * @param lastOption - Integer
+     * @return Integer with value between first option and lastOption
      */
-    public static int generateAndValidateIntegerFromCertainInterval(Scanner scanner, int firstOption, int lastOption){
+    public static int generateAndValidateIntegerFromCertainInterval(int firstOption, int lastOption){
         while (true){
+            Scanner scanner = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class);
             int optionRead;
             try {
                 optionRead = scanner.nextInt();
@@ -32,10 +34,10 @@ public class NumberGenerator {
     }
 
     /**
-     * @param scanner Scanner
      * @return Integer with no value constraints
      */
-    public static int generateAndValidateIntegerWithNoIntervalConstraints(Scanner scanner){
+    public static int generateAndValidateIntegerWithNoIntervalConstraints(){
+        Scanner scanner = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class);
         while (true){
             try {
                 int optionRead = scanner.nextInt();

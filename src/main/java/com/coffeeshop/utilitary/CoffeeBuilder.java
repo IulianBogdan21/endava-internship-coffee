@@ -3,12 +3,10 @@ package com.coffeeshop.utilitary;
 import com.coffeeshop.domain.*;
 import com.coffeeshop.service.CoffeeMakerService;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class CoffeeBuilder {
     private static final int BASE_TYPE_LOWER_LIMIT = 1;
@@ -20,28 +18,26 @@ public class CoffeeBuilder {
     private static final int BLACK_COFFEE_BASE = 2;
 
     /**
-     * @param scanner Scanner
      * @return a customised coffee , designed by the customer
      */
-    public static Coffee buildCustomisableCoffee(@NotNull Scanner scanner){
+    public static Coffee buildCustomisableCoffee(){
         Map<Ingredients, Integer> coffeeIngredients = new HashMap<>();
         MessagePrinter.printBaseOptionsForCustomisableCoffee();
         int baseOption =
-                NumberGenerator.generateAndValidateIntegerFromCertainInterval(scanner, BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
-        int numberOfShots = getNumberOfShots(scanner);
+                NumberGenerator.generateAndValidateIntegerFromCertainInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
+        int numberOfShots = getNumberOfShots();
         coffeeIngredients.put(getCoffeeBase(baseOption), numberOfShots);
         String baseCoffeeName = getCoffeeBaseName(baseOption);
         MessagePrinter.printConfirmationOfAddedBase(baseCoffeeName, numberOfShots);
-        return addOptionalIngredientsToCustomisedCoffee(scanner, coffeeIngredients);
+        return addOptionalIngredientsToCustomisedCoffee(coffeeIngredients);
     }
 
     /**
      * @param menuOption integer that represents an option from the menu
      * @param customerName - the name of the customer - String
-     * @param scanner Scanner
      * @return a new Coffee corresponding to the chosen menu option
      */
-    public static Coffee buildCoffeeFromMenu(int menuOption, String customerName, Scanner scanner){
+    public static Coffee buildCoffeeFromMenu(int menuOption, String customerName){
         Coffee customisedCoffee;
         switch (menuOption) {
             case 1 -> customisedCoffee = new Espresso(customerName);
@@ -50,7 +46,7 @@ public class CoffeeBuilder {
             case 4 -> customisedCoffee = new Cappucino(customerName);
             case 5 -> customisedCoffee = new CoffeeMiel(customerName);
             case 6 -> {
-                customisedCoffee = CoffeeBuilder.buildCustomisableCoffee(scanner);
+                customisedCoffee = CoffeeBuilder.buildCustomisableCoffee();
                 customisedCoffee.setCustomerName(customerName);
             }
             default -> customisedCoffee = null;
@@ -59,12 +55,11 @@ public class CoffeeBuilder {
     }
 
     /**
-     * @param scanner Scanner
      * @return integer - number of shots of a certain coffee
      */
-    private static int getNumberOfShots(Scanner scanner){
+    private static int getNumberOfShots(){
         MessagePrinter.printAskingForNumberOfShots();
-        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
+        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints();
     }
 
     /**
@@ -152,29 +147,27 @@ public class CoffeeBuilder {
     }
 
     /**
-     * @param scanner Scanner
      * @return integer - how much of chosen ingredient to put in coffee
      */
-    private static int getAmountOfIngredient(Scanner scanner){
+    private static int getAmountOfIngredient(){
         MessagePrinter.printMessageAskingForAmountOfIngredient();
-        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints(scanner);
+        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints();
     }
 
     /**
-     * @param scanner Scanner
      * @return the final customised coffee after adding all the ingredients the customer wants
      */
-    private static Coffee addOptionalIngredientsToCustomisedCoffee(Scanner scanner, Map<Ingredients, Integer> coffeeIngredients){
+    private static Coffee addOptionalIngredientsToCustomisedCoffee(Map<Ingredients, Integer> coffeeIngredients){
         while(true){
             MessagePrinter.printMenuForCustomisableCoffee();
             int ingredientOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
-                    scanner, ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
+                    ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
             if(ingredientOption == FINISH_CUSTOMISABLE_COFFEE)
                 return ApplicationContextFactory.getInstance()
                         .getBean("coffeeMakerService", CoffeeMakerService.class).brewCoffeeAfterRecipe(coffeeIngredients);
             Ingredients chosenIngredient = getIngredientAccordingToChosenOption(ingredientOption);
             String nameOfIngredient = getIngredientNameAccordingToChosenOption(ingredientOption);
-            int ingredientAmount = getAmountOfIngredient(scanner);
+            int ingredientAmount = getAmountOfIngredient();
             coffeeIngredients.put(chosenIngredient, ingredientAmount);
             MessagePrinter.printConfirmationOfAddedIngredient(nameOfIngredient, ingredientAmount);
         }
