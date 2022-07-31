@@ -89,4 +89,13 @@ public class MessagePrinter {
     public static void printNewLine(){
         System.out.println("\n");
     }
+
+    public static void printNameOfIngredientAndQuantity(Map<Ingredients, Integer> stock, Ingredients iteratedIngredient,
+                                                        Map<Ingredients, String> nameOfIngredients){
+        System.out.println(stock.get(iteratedIngredient) + "X " + nameOfIngredients.get(iteratedIngredient));
+    }
+
+    public static void printLines() {
+        System.out.println("----------");
+    }
 }

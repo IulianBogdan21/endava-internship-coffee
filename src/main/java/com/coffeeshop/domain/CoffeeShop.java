@@ -1,12 +1,17 @@
 package com.coffeeshop.domain;
 
+import com.coffeeshop.utilitary.Ingredients;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CoffeeShop {
     private String coffeeShopName;
     private List<Coffee> allCoffees;
     private Double profit;
+    private static Map<Ingredients, String> nameOfIngredients;
 
     public CoffeeShop() {
         this.coffeeShopName = "Good to go";
@@ -47,5 +52,19 @@ public class CoffeeShop {
      */
     public void addToProfit(double sumToAdd) {
         this.profit += sumToAdd;
+    }
+
+    public static Map<Ingredients, String> getNameOfIngredients(){
+        if(nameOfIngredients == null){
+            nameOfIngredients = new HashMap<>();
+            nameOfIngredients.put(Ingredients.ESPRESSO, "espresso");
+            nameOfIngredients.put(Ingredients.BLACK_COFFEE, "black coffee");
+            nameOfIngredients.put(Ingredients.STEAMED_MILK, "steamed milk");
+            nameOfIngredients.put(Ingredients.MILK_FOAM, "milk foam");
+            nameOfIngredients.put(Ingredients.CINNAMON, "cinnamon");
+            nameOfIngredients.put(Ingredients.HONEY, "honey");
+            nameOfIngredients.put(Ingredients.SYRUP, "syrup");
+        }
+        return nameOfIngredients;
     }
 }

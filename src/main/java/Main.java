@@ -1,5 +1,4 @@
 import com.coffeeshop.domain.*;
-import com.coffeeshop.repository.IngredientsRepository;
 import com.coffeeshop.service.IngredientsService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +18,7 @@ public class Main {
     public static void main(String[] args) {
         Map<Ingredients, Double> pricesForEachIngredient = PricesBuilder.buildPricesForIngredients();
         CoffeeShop coffeeShop = openCoffeeShop();
+        Scheduler.scheduleInventoryCheck();
         handleOrdersFromClients(coffeeShop, pricesForEachIngredient);
     }
 
