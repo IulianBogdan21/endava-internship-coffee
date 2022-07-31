@@ -21,7 +21,7 @@ public class IngredientsService implements IIngredientsService {
 
     @Override
     public Map<Ingredients, Integer> getAllIngredients(){
-        return null;
+        return ingredientsRepository.getAll();
     }
 
     @Override

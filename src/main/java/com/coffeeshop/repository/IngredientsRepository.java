@@ -2,9 +2,9 @@ package com.coffeeshop.repository;
 
 import com.coffeeshop.utilitary.Ingredients;
 import com.coffeeshop.utilitary.StockBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 
 @Repository("ingredientsRepository")
@@ -14,8 +14,8 @@ public class IngredientsRepository implements IIngredientsRepository {
 
     public IngredientsRepository(){}
 
-    @Autowired
-    public void setStockOfIngredients(){
+    @PostConstruct
+    public void initializeStock(){
         this.stockOfIngredients = StockBuilder.buildInitialStocks();
     }
 

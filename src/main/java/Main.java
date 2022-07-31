@@ -1,4 +1,5 @@
 import com.coffeeshop.domain.*;
+import com.coffeeshop.repository.IngredientsRepository;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
