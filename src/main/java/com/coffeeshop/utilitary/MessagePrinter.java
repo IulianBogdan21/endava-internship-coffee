@@ -98,4 +98,12 @@ public class MessagePrinter {
     public static void printLines() {
         System.out.println("----------");
     }
+
+    public static void printWarningMessage(){
+        System.out.println("WARNING! THE SHOP IS LOW ON SOME SUPPLIES");
+    }
+
+    public static void printStockMessage(){
+        System.out.println("Current stock:");
+    }
 }

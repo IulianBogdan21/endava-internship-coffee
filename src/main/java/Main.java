@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
         Map<Ingredients, Double> pricesForEachIngredient = PricesBuilder.buildPricesForIngredients();
         CoffeeShop coffeeShop = openCoffeeShop();
-        Scheduler.scheduleInventoryCheck();
+        coffeeShop.scheduleInventoryCheck();
         handleOrdersFromClients(coffeeShop, pricesForEachIngredient);
     }
 
