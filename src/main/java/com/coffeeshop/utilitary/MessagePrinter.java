@@ -15,9 +15,9 @@ public class MessagePrinter {
     public static void printOrderedCoffeesAndTheirAmount(Map<Ingredients, Double> pricesForEachIngredient, CoffeeOrder coffeeOrder) {
         System.out.println("You ordered the following:\n");
         for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
-            System.out.println(String.valueOf(coffeeOrder.getOrderedCoffeesAndQuantity().get(coffee)) +
+            System.out.println(coffeeOrder.getOrderedCoffeesAndQuantity().get(coffee) +
                     "X " + coffee.getCoffeeName() + " where 1 " + coffee.getCoffeeName() + " is " +
-                    String.valueOf(coffee.getPrice(pricesForEachIngredient)) + " euros");
+                    coffee.getPrice(pricesForEachIngredient) + " euros");
         }
     }
 
@@ -30,11 +30,11 @@ public class MessagePrinter {
     }
 
     public static void printCostOfOrder(double addedProfit){
-        System.out.println("\nTotal cost is: " + String.valueOf(addedProfit));
+        System.out.println("\nTotal cost is: " + addedProfit);
     }
 
     public static void printCurrentProfitOfCoffeeShop(CoffeeShop coffeeShop){
-        System.out.println("Shop's current profit is: " + String.valueOf(coffeeShop.getProfit()) + "\n");
+        System.out.println("Shop's current profit is: " + coffeeShop.getProfit() + "\n");
     }
 
     public static void printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant(){
@@ -42,7 +42,7 @@ public class MessagePrinter {
     }
 
     public static void printUpdatedOrder(Coffee orderedCoffee, int amountOfCoffee){
-        System.out.println("\nYou added to the order " + String.valueOf(amountOfCoffee) + " " + orderedCoffee.getCoffeeName());
+        System.out.println("\nYou added to the order " + amountOfCoffee + " " + orderedCoffee.getCoffeeName());
     }
 
     public static void printOptionsForOrderStatus(){
@@ -66,7 +66,7 @@ public class MessagePrinter {
     }
 
     public static void printConfirmationOfAddedBase(String baseCoffeeName, int numberOfShots){
-        System.out.println("\nYou added " + String.valueOf(numberOfShots) + "X " + baseCoffeeName + " to your coffee base\n");
+        System.out.println("\nYou added " + numberOfShots + "X " + baseCoffeeName + " to your coffee base\n");
     }
 
     public static void printMenuForCustomisableCoffee(){
@@ -79,6 +79,6 @@ public class MessagePrinter {
     }
 
     public static void printConfirmationOfAddedIngredient(String nameOfIngredient, int ingredientAmount){
-        System.out.println("\nYou have added " + String.valueOf(ingredientAmount) + "X " + nameOfIngredient + " to your coffee");
+        System.out.println("\nYou have added " + ingredientAmount + "X " + nameOfIngredient + " to your coffee");
     }
 }

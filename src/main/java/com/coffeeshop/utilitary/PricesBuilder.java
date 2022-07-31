@@ -11,7 +11,7 @@ public class PricesBuilder {
      * @return dictionary where key is an ingredient and value is the price for 1 unit of that ingredient
      */
     public static Map<Ingredients, Double> buildPricesForIngredients() {
-        Map<Ingredients, Double> pricesForEachIngredient = new HashMap<Ingredients, Double>();
+        Map<Ingredients, Double> pricesForEachIngredient = new HashMap<>();
         pricesForEachIngredient.put(Ingredients.ESPRESSO, 2.5);
         pricesForEachIngredient.put(Ingredients.BLACK_COFFEE, 1.5);
         pricesForEachIngredient.put(Ingredients.CINNAMON, 2.0);

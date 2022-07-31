@@ -43,27 +43,17 @@ public class CoffeeBuilder {
     public static Coffee buildCoffeeFromMenu(int menuOption, String customerName, Scanner scanner){
         Coffee customisedCoffee;
         switch (menuOption) {
-            case 1:
-                customisedCoffee = new Espresso(customerName);
-                break;
-            case 2:
-                customisedCoffee = new Machiatto(customerName);
-                break;
-            case 3:
-                customisedCoffee = new CoffeeLatte(customerName);
-                break;
-            case 4:
-                customisedCoffee = new Cappucino(customerName);
-                break;
-            case 5:
-                customisedCoffee = new CoffeeMiel(customerName);
-                break;
-            case 6:
+            case 1 -> customisedCoffee = new Espresso(customerName);
+            case 2 -> customisedCoffee = new Machiatto(customerName);
+            case 3 -> customisedCoffee = new CoffeeLatte(customerName);
+            case 4 -> customisedCoffee = new Cappucino(customerName);
+            case 5 -> customisedCoffee = new CoffeeMiel(customerName);
+            case 6 -> {
                 customisedCoffee = CoffeeBuilder.buildCustomisableCoffee(scanner);
                 customisedCoffee.setCustomerName(customerName);
-            default:
-                customisedCoffee = null;
-        };
+            }
+            default -> customisedCoffee = null;
+        }
         return customisedCoffee;
     }
 
@@ -94,9 +84,9 @@ public class CoffeeBuilder {
      * @param baseOption - integer - option of a base coffee menu
      */
     private static Ingredients getCoffeeBase(int baseOption){
-        if (baseOption == 1) {
+        if (baseOption == ESPRESSO_BASE) {
             return Ingredients.ESPRESSO;
-        } else if (baseOption == 2) {
+        } else if (baseOption == BLACK_COFFEE_BASE) {
             return Ingredients.BLACK_COFFEE;
         }
         return null;
@@ -137,7 +127,7 @@ public class CoffeeBuilder {
      */
     @Contract(pure = true)
     private static @Nullable String getIngredientNameAccordingToChosenOption(int ingredientOption){
-        String ingredientName = "";
+        String ingredientName;
         switch(ingredientOption){
             case 1:
                 ingredientName = "milk foam";
