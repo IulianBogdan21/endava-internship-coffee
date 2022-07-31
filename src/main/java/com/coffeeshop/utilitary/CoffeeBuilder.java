@@ -81,9 +81,9 @@ public class CoffeeBuilder {
      * @return String - espresso if option 1, black coffee if 2
      */
     private static String getCoffeeBaseName(int baseOption){
-        if (baseOption == 1) {
+        if (baseOption == ESPRESSO_BASE) {
             return "espresso";
-        }else if(baseOption == 2) {
+        }else if(baseOption == BLACK_COFFEE_BASE) {
             return "black coffee";
         }
         return null;
