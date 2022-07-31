@@ -81,4 +81,12 @@ public class MessagePrinter {
     public static void printConfirmationOfAddedIngredient(String nameOfIngredient, int ingredientAmount){
         System.out.println("\nYou have added " + ingredientAmount + "X " + nameOfIngredient + " to your coffee");
     }
+
+    public static void printRegisteringNameMessage(){
+        System.out.println("Introduce your name: ");
+    }
+
+    public static void printNewLine(){
+        System.out.println("\n");
+    }
 }

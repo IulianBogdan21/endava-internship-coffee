@@ -57,7 +57,7 @@ public class Main {
      */
     private static @NotNull CoffeeOrder createNewCoffeeOrder(){
         MessagePrinter.printOptionsForOrderStatus();
-        int statusOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(DELIVERY_STATUS_LOWER_LIMIT,
+        int statusOption = NumberGenerator.generateIntegerWithinInterval(DELIVERY_STATUS_LOWER_LIMIT,
                 DELIVERY_STATUS_HIGHER_LIMIT);
         OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
         MessagePrinter.printAdditionalInformationAboutTheMenu();
@@ -84,7 +84,7 @@ public class Main {
      */
     private static int getAmountOfOrderedCoffee(){
         MessagePrinter.printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
-        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints();
+        return NumberGenerator.generateInteger();
     }
 
     /**
@@ -108,7 +108,7 @@ public class Main {
                                            Map<Ingredients, Double> pricesForEachIngredient){
         while(true){
             MessagePrinter.printMenu(coffeeShop);
-            int menuOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(COFFEE_TYPE_LOWER_LIMIT,
+            int menuOption = NumberGenerator.generateIntegerWithinInterval(COFFEE_TYPE_LOWER_LIMIT,
                     COFFEE_TYPE_HIGHER_LIMIT);
             Coffee orderedCoffee = CoffeeBuilder.buildCoffeeFromMenu(menuOption, customerName);
             if (menuOption == FINISH_ORDER) {
@@ -144,9 +144,9 @@ public class Main {
      * @return String representing the customer's name
      */
     private static String registerCustomerName() {
-        System.out.println("Introduce your name: ");
+        MessagePrinter.printRegisteringNameMessage();
         String customerName = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class).nextLine();
-        System.out.println("\n");
+        MessagePrinter.printNewLine();
         return customerName;
     }
 }

@@ -10,9 +10,9 @@ public class NumberGenerator {
     /**
      * @param firstOption - Integer
      * @param lastOption - Integer
-     * @return Integer with value between first option and lastOption
+     * @return Integer with value between firstOption and lastOption
      */
-    public static int generateAndValidateIntegerFromCertainInterval(int firstOption, int lastOption){
+    public static int generateIntegerWithinInterval(int firstOption, int lastOption){
         while (true){
             Scanner scanner = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class);
             int optionRead;
@@ -26,7 +26,7 @@ public class NumberGenerator {
                 continue;
             }
             if(optionRead < firstOption || optionRead > lastOption){
-                System.out.println("You need to introduce a valid option!");
+                System.out.println("You need to introduce an option within the interval!");
                 continue;
             }
             return optionRead;
@@ -36,7 +36,7 @@ public class NumberGenerator {
     /**
      * @return Integer with no value constraints
      */
-    public static int generateAndValidateIntegerWithNoIntervalConstraints(){
+    public static int generateInteger(){
         Scanner scanner = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class);
         while (true){
             try {

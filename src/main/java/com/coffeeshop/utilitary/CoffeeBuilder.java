@@ -24,7 +24,7 @@ public class CoffeeBuilder {
         Map<Ingredients, Integer> coffeeIngredients = new HashMap<>();
         MessagePrinter.printBaseOptionsForCustomisableCoffee();
         int baseOption =
-                NumberGenerator.generateAndValidateIntegerFromCertainInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
+                NumberGenerator.generateIntegerWithinInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
         int numberOfShots = getNumberOfShots();
         coffeeIngredients.put(getCoffeeBase(baseOption), numberOfShots);
         String baseCoffeeName = getCoffeeBaseName(baseOption);
@@ -59,7 +59,7 @@ public class CoffeeBuilder {
      */
     private static int getNumberOfShots(){
         MessagePrinter.printAskingForNumberOfShots();
-        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints();
+        return NumberGenerator.generateInteger();
     }
 
     /**
@@ -151,7 +151,7 @@ public class CoffeeBuilder {
      */
     private static int getAmountOfIngredient(){
         MessagePrinter.printMessageAskingForAmountOfIngredient();
-        return NumberGenerator.generateAndValidateIntegerWithNoIntervalConstraints();
+        return NumberGenerator.generateInteger();
     }
 
     /**
@@ -160,7 +160,7 @@ public class CoffeeBuilder {
     private static Coffee addOptionalIngredientsToCustomisedCoffee(Map<Ingredients, Integer> coffeeIngredients){
         while(true){
             MessagePrinter.printMenuForCustomisableCoffee();
-            int ingredientOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
+            int ingredientOption = NumberGenerator.generateIntegerWithinInterval(
                     ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
             if(ingredientOption == FINISH_CUSTOMISABLE_COFFEE)
                 return ApplicationContextFactory.getInstance()
