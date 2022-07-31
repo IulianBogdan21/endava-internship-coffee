@@ -1,6 +1,7 @@
 package com.coffeeshop.utilitary;
 
 import com.coffeeshop.domain.*;
+import com.coffeeshop.service.CoffeeMakerService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -169,7 +170,8 @@ public class CoffeeBuilder {
             int ingredientOption = NumberGenerator.generateAndValidateIntegerFromCertainInterval(
                     scanner, ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
             if(ingredientOption == FINISH_CUSTOMISABLE_COFFEE)
-                return makeCoffeeFromIngredients(coffeeIngredients);
+                return ApplicationContextFactory.getInstance()
+                        .getBean("coffeeMakerService", CoffeeMakerService.class).brewCoffeeAfterRecipe(coffeeIngredients);
             Ingredients chosenIngredient = getIngredientAccordingToChosenOption(ingredientOption);
             String nameOfIngredient = getIngredientNameAccordingToChosenOption(ingredientOption);
             int ingredientAmount = getAmountOfIngredient(scanner);
@@ -178,6 +180,10 @@ public class CoffeeBuilder {
         }
     }
 
+    /**
+     * @param ingredients map containing ingredients and amount for creating a coffee
+     * @return a new coffee with the given ingredients
+     */
     public static Coffee makeCoffeeFromIngredients(Map<Ingredients, Integer> ingredients){
         Integer amountOfEspresso = ingredients.get(Ingredients.ESPRESSO);
         Integer amountOfBlackCoffee = ingredients.get(Ingredients.BLACK_COFFEE);

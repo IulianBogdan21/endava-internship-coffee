@@ -6,5 +6,5 @@ import com.coffeeshop.utilitary.Ingredients;
 import java.util.Map;
 
 public interface ICoffeeMakerService {
-    Coffee brewCoffeeAfterRecipe(Map<Ingredients, Ingredients> ingredients);
+    Coffee brewCoffeeAfterRecipe(Map<Ingredients, Integer> ingredients);
 }
