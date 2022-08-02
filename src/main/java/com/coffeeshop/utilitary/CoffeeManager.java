@@ -2,13 +2,14 @@ package com.coffeeshop.utilitary;
 
 import com.coffeeshop.domain.*;
 import com.coffeeshop.service.CoffeeMakerService;
+import com.coffeeshop.service.IngredientsService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CoffeeBuilder {
+public class CoffeeManager {
     private static final int BASE_TYPE_LOWER_LIMIT = 1;
     private static final int BASE_TYPE_HIGHER_LIMIT = 2;
     private static final int ADD_INGREDIENT_LOWER_LIMIT = 0;
@@ -46,7 +47,7 @@ public class CoffeeBuilder {
             case 4 -> customisedCoffee = new Cappucino(customerName);
             case 5 -> customisedCoffee = new CoffeeMiel(customerName);
             case 6 -> {
-                customisedCoffee = CoffeeBuilder.buildCustomisableCoffee();
+                customisedCoffee = CoffeeManager.buildCustomisableCoffee();
                 customisedCoffee.setCustomerName(customerName);
             }
             default -> customisedCoffee = null;
