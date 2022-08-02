@@ -1,4 +1,5 @@
 import com.coffeeshop.domain.*;
+import com.coffeeshop.service.IngredientsService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +18,7 @@ public class Main {
     public static void main(String[] args) {
         Map<Ingredients, Double> pricesForEachIngredient = PricesBuilder.buildPricesForIngredients();
         CoffeeShop coffeeShop = openCoffeeShop();
+        coffeeShop.scheduleInventoryCheck();
         handleOrdersFromClients(coffeeShop, pricesForEachIngredient);
     }
 
@@ -110,7 +112,7 @@ public class Main {
             MessagePrinter.printMenu(coffeeShop);
             int menuOption = NumberGenerator.generateIntegerWithinInterval(COFFEE_TYPE_LOWER_LIMIT,
                     COFFEE_TYPE_HIGHER_LIMIT);
-            Coffee orderedCoffee = CoffeeBuilder.buildCoffeeFromMenu(menuOption, customerName);
+            Coffee orderedCoffee = CoffeeManager.buildCoffeeFromMenu(menuOption, customerName);
             if (menuOption == FINISH_ORDER) {
                 finishCustomerOrder(coffeeShop, coffeeOrder, pricesForEachIngredient);
                 return;
@@ -121,6 +123,8 @@ public class Main {
             }
             int amountOfCoffee = getAmountOfOrderedCoffee();
             updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
+            ApplicationContextFactory.getInstance().getBean("ingredientsService", IngredientsService.class)
+                    .updateStock(StockManager.evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getIngredientsForCoffeeAndAmount(), amountOfCoffee));
         }
     }
 

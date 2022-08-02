@@ -1,12 +1,23 @@
 package com.coffeeshop.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.coffeeshop.service.IngredientsService;
+import com.coffeeshop.utilitary.ApplicationContextFactory;
+import com.coffeeshop.utilitary.Ingredients;
+import com.coffeeshop.utilitary.MessagePrinter;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
 public class CoffeeShop {
     private String coffeeShopName;
     private List<Coffee> allCoffees;
     private Double profit;
+    private static Map<Ingredients, String> nameOfIngredients;
 
     public CoffeeShop() {
         this.coffeeShopName = "Good to go";
@@ -47,5 +58,42 @@ public class CoffeeShop {
      */
     public void addToProfit(double sumToAdd) {
         this.profit += sumToAdd;
+    }
+
+    /**
+     * @return a map with a string equivalent for every enum Ingredient
+     */
+    public static Map<Ingredients, String> getNameOfIngredients(){
+        if(nameOfIngredients == null){
+            nameOfIngredients = new HashMap<>();
+            nameOfIngredients.put(Ingredients.ESPRESSO, "espresso");
+            nameOfIngredients.put(Ingredients.BLACK_COFFEE, "black coffee");
+            nameOfIngredients.put(Ingredients.STEAMED_MILK, "steamed milk");
+            nameOfIngredients.put(Ingredients.MILK_FOAM, "milk foam");
+            nameOfIngredients.put(Ingredients.CINNAMON, "cinnamon");
+            nameOfIngredients.put(Ingredients.HONEY, "honey");
+            nameOfIngredients.put(Ingredients.SYRUP, "syrup");
+        }
+        return nameOfIngredients;
+    }
+
+    /**
+     * every 20 seconds, this function realises an inventory check on the shop's ingredients
+     */
+    @Scheduled(fixedDelay = 1000 * 20, initialDelay = 1000 * 10)
+    public void scheduleInventoryCheck(){
+        IngredientsService ingredientsService = ApplicationContextFactory.getInstance()
+                .getBean("ingredientsService", IngredientsService.class);
+        Map<Ingredients, Integer> stock = ingredientsService.getAllIngredients();
+        Map<Ingredients, String> nameOfIngredients = getNameOfIngredients();
+        if(ingredientsService.areSuppliesLow(stock)) {
+            MessagePrinter.printLines();
+            MessagePrinter.printWarningMessage();
+            MessagePrinter.printStockMessage();
+            for (Ingredients iteratedIngredient : stock.keySet()) {
+                MessagePrinter.printNameOfIngredientAndQuantity(stock, iteratedIngredient, nameOfIngredients);
+            }
+            MessagePrinter.printLines();
+        }
     }
 }
