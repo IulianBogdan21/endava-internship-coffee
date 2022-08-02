@@ -1,6 +1,5 @@
 .gradle
 .idea
-build/classes
-build/generated
-build/tmp
+build
+tmp/
 gradle
