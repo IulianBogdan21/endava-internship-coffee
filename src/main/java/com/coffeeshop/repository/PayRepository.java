@@ -24,7 +24,8 @@ public class PayRepository implements IPayRepository {
     }
 
     @Override
-    public void save(Pay payToSave){
+    public Pay save(Pay payToSave){
         allPays.add(payToSave);
+        return payToSave;
     }
 }
