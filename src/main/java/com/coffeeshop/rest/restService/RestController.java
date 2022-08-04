@@ -1,8 +1,8 @@
 package com.coffeeshop.rest.restService;
 
 import com.coffeeshop.models.customer.Pay;
-import com.coffeeshop.repository.IPayRepository;
-import com.coffeeshop.repository.PayRepository;
+import com.coffeeshop.repository.interfaces.IPayRepository;
+import com.coffeeshop.repository.implementations.PayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

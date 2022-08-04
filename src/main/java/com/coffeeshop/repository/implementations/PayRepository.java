@@ -1,6 +1,7 @@
-package com.coffeeshop.repository;
+package com.coffeeshop.repository.implementations;
 
 import com.coffeeshop.models.customer.Pay;
+import com.coffeeshop.repository.interfaces.IPayRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;

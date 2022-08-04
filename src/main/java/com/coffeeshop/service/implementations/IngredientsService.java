@@ -1,6 +1,7 @@
-package com.coffeeshop.service;
+package com.coffeeshop.service.implementations;
 
-import com.coffeeshop.repository.IngredientsRepository;
+import com.coffeeshop.repository.implementations.IngredientsRepository;
+import com.coffeeshop.service.interfaces.IIngredientsService;
 import com.coffeeshop.utilitary.Ingredients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

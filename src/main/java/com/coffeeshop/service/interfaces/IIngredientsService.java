@@ -1,4 +1,4 @@
-package com.coffeeshop.service;
+package com.coffeeshop.service.interfaces;
 
 import com.coffeeshop.utilitary.Ingredients;
 

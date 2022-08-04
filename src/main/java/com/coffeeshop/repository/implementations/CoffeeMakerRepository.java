@@ -1,6 +1,7 @@
-package com.coffeeshop.repository;
+package com.coffeeshop.repository.implementations;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
+import com.coffeeshop.repository.interfaces.ICoffeeMakerRepository;
 import com.coffeeshop.utilitary.CoffeeManager;
 import com.coffeeshop.utilitary.Ingredients;
 import org.springframework.stereotype.Repository;

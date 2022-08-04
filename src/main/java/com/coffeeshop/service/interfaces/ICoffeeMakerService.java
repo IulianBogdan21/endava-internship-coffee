@@ -1,4 +1,4 @@
-package com.coffeeshop.service;
+package com.coffeeshop.service.interfaces;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.utilitary.Ingredients;

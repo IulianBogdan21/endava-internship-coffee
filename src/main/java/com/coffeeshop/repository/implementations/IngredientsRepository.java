@@ -1,5 +1,6 @@
-package com.coffeeshop.repository;
+package com.coffeeshop.repository.implementations;
 
+import com.coffeeshop.repository.interfaces.IIngredientsRepository;
 import com.coffeeshop.utilitary.Ingredients;
 import com.coffeeshop.utilitary.StockManager;
 import org.springframework.stereotype.Repository;

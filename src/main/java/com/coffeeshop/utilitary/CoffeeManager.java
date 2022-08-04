@@ -5,7 +5,7 @@ import com.coffeeshop.models.coffeeRoot.CoffeeBase;
 import com.coffeeshop.models.customisedBaseCoffees.BlackCoffeeBasedBeverage;
 import com.coffeeshop.models.customisedBaseCoffees.EspressoBasedBeverage;
 import com.coffeeshop.models.defaultCoffees.*;
-import com.coffeeshop.service.CoffeeMakerService;
+import com.coffeeshop.service.implementations.CoffeeMakerService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
