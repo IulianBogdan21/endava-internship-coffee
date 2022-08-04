@@ -14,6 +14,7 @@ import java.util.Map;
 public class CoffeeOrder {
     private OrderStatus orderStatus;
     private Map<Coffee, Integer> orderedCoffeesAndQuantity;
+    private String customerName;
 
     public CoffeeOrder() {
         orderedCoffeesAndQuantity = new HashMap<Coffee, Integer>();
@@ -22,6 +23,17 @@ public class CoffeeOrder {
     public CoffeeOrder(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
         orderedCoffeesAndQuantity = new HashMap<Coffee, Integer>();
+    }
+
+    public CoffeeOrder(OrderStatus orderStatus, String customerName) {
+        this.orderStatus = orderStatus;
+        orderedCoffeesAndQuantity = new HashMap<Coffee, Integer>();
+        this.customerName = customerName;
+    }
+
+    public CoffeeOrder(String customerName, Map<Coffee, Integer> orderedCoffees){
+        this.customerName =customerName;
+        this.orderedCoffeesAndQuantity = orderedCoffees;
     }
 
     public Map<Coffee, Integer> getOrderedCoffeesAndQuantity() {
@@ -42,5 +54,13 @@ public class CoffeeOrder {
             orderTotalPay += orderedCoffeesAndQuantity.get(coffee) * coffee.getPrice(ingredientsAndTheirPrices);
         }
         return orderTotalPay;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 }
