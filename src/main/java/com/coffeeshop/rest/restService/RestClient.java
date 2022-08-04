@@ -1,6 +1,6 @@
 package com.coffeeshop.rest.restService;
 
-import com.coffeeshop.domain.Pay;
+import com.coffeeshop.models.customer.Pay;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;

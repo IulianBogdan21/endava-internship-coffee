@@ -1,4 +1,4 @@
-package com.coffeeshop.domain;
+package com.coffeeshop.models.coffeeRoot;
 
 import com.coffeeshop.utilitary.Ingredients;
 

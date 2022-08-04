@@ -1,5 +1,6 @@
-package com.coffeeshop.domain;
+package com.coffeeshop.models.customer;
 
+import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.utilitary.Ingredients;
 import com.coffeeshop.utilitary.OrderStatus;
 

@@ -1,6 +1,6 @@
 package com.coffeeshop.repository;
 
-import com.coffeeshop.domain.Pay;
+import com.coffeeshop.models.customer.Pay;
 
 import java.util.List;
 

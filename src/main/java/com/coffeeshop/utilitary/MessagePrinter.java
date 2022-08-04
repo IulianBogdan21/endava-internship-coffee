@@ -1,8 +1,8 @@
 package com.coffeeshop.utilitary;
 
-import com.coffeeshop.domain.Coffee;
-import com.coffeeshop.domain.CoffeeOrder;
-import com.coffeeshop.domain.CoffeeShop;
+import com.coffeeshop.models.coffeeRoot.Coffee;
+import com.coffeeshop.models.customer.CoffeeOrder;
+import com.coffeeshop.models.shop.CoffeeShop;
 
 import java.util.Map;
 

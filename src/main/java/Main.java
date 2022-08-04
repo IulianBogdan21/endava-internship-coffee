@@ -1,4 +1,6 @@
-import com.coffeeshop.domain.*;
+import com.coffeeshop.models.coffeeRoot.Coffee;
+import com.coffeeshop.models.customer.CoffeeOrder;
+import com.coffeeshop.models.shop.CoffeeShop;
 import com.coffeeshop.service.IngredientsService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package com.coffeeshop.domain;
+package com.coffeeshop.models.customer;
 
 import java.util.Map;
 

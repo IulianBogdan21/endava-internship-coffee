@@ -1,6 +1,6 @@
 package com.coffeeshop.rest.restService;
 
-import com.coffeeshop.domain.Pay;
+import com.coffeeshop.models.customer.Pay;
 import com.coffeeshop.repository.IPayRepository;
 import com.coffeeshop.repository.PayRepository;
 import org.springframework.beans.factory.annotation.Autowired;

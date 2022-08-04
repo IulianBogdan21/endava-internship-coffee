@@ -1,6 +1,6 @@
 package com.coffeeshop.service;
 
-import com.coffeeshop.domain.Coffee;
+import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.repository.CoffeeMakerRepository;
 import com.coffeeshop.utilitary.Ingredients;
 import org.springframework.beans.factory.annotation.Autowired;

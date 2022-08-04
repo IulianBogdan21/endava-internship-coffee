@@ -1,5 +1,7 @@
-package com.coffeeshop.domain;
+package com.coffeeshop.models.shop;
 
+import com.coffeeshop.models.coffeeRoot.Coffee;
+import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.IngredientsService;
 import com.coffeeshop.utilitary.ApplicationContextFactory;
 import com.coffeeshop.utilitary.Ingredients;

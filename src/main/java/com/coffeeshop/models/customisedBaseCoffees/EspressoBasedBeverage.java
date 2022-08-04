@@ -1,11 +1,12 @@
-package com.coffeeshop.domain;
+package com.coffeeshop.models.customisedBaseCoffees;
 
+import com.coffeeshop.models.coffeeRoot.CoffeeBase;
 import com.coffeeshop.utilitary.Ingredients;
 
 /**
  * class for a custom coffee that has espresso shots as base
  */
-public class EspressoBasedBeverage extends CoffeeBase{
+public class EspressoBasedBeverage extends CoffeeBase {
 
     public EspressoBasedBeverage(){}
 
