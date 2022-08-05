@@ -2,7 +2,7 @@ package com.coffeeshop.models.customer;
 
 import java.util.Map;
 
-public class Pay {
+public class Payment {
     private String cardNumber;
     private String cardholderName;
     private String expiryDate;
@@ -10,7 +10,7 @@ public class Pay {
     private String customerName;
     private Map<String, Integer> orderedCoffees;
 
-    public Pay(String cardNumber, String cardholderName, String expiryDate, Integer civ, String customerName, Map<String, Integer> orderedCoffees) {
+    public Payment(String cardNumber, String cardholderName, String expiryDate, Integer civ, String customerName, Map<String, Integer> orderedCoffees) {
         this.cardNumber = cardNumber;
         this.cardholderName = cardholderName;
         this.expiryDate = expiryDate;

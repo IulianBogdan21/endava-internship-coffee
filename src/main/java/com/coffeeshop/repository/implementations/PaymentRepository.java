@@ -1,7 +1,7 @@
 package com.coffeeshop.repository.implementations;
 
-import com.coffeeshop.models.customer.Pay;
-import com.coffeeshop.repository.interfaces.IPayRepository;
+import com.coffeeshop.models.customer.Payment;
+import com.coffeeshop.repository.interfaces.IPaymentRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository("payRepository")
-public class PayRepository implements IPayRepository {
-    private List<Pay> allPays;
+public class PaymentRepository implements IPaymentRepository {
+    private List<Payment> allPays;
 
-    public PayRepository(){}
+    public PaymentRepository(){}
 
     @PostConstruct
     public void initializePayRepository(){
@@ -20,13 +20,13 @@ public class PayRepository implements IPayRepository {
     }
 
     @Override
-    public List<Pay> getAll(){
+    public List<Payment> getAll(){
         return allPays;
     }
 
     @Override
-    public Pay save(Pay payToSave){
-        allPays.add(payToSave);
-        return payToSave;
+    public Payment save(Payment paymentToSave){
+        allPays.add(paymentToSave);
+        return paymentToSave;
     }
 }
