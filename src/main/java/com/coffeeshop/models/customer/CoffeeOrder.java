@@ -11,6 +11,7 @@ import java.util.Map;
  * coffees of type A)
  */
 public class CoffeeOrder {
+    private int orderId;
     private  OrderStatus orderStatus;
     private  Map<Coffee, Integer> orderedCoffeesAndQuantity;
     private String customerName;
@@ -64,5 +65,13 @@ public class CoffeeOrder {
 
     public void setCustomerName(String customerName){
         this.customerName = customerName;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 }

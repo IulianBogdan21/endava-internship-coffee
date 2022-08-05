@@ -1,7 +1,8 @@
-package com.coffeeshop.utilitary.manager;
+package com.coffeeshop.utilitary.managers;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.coffeeRoot.CoffeeBase;
+import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.customisedBaseCoffees.BlackCoffeeBasedBeverage;
 import com.coffeeshop.models.customisedBaseCoffees.EspressoBasedBeverage;
 import com.coffeeshop.models.defaultCoffees.*;
@@ -202,6 +203,20 @@ public class CoffeeManager {
             newCoffee.addIngredient(currentIngredient, ingredients.get(currentIngredient));
         }
         return newCoffee;
+    }
+
+    /**
+     * @param coffeeOrder - customer's order
+     * @return a map where key entities are replaced with their name (String)
+     */
+    public static Map<String, Integer> getIngredientsAndAmountFromOrder(CoffeeOrder coffeeOrder) {
+        Map<String, Integer> coffeesAndQuantityFromOrderWithStringKeys = new HashMap<>();
+        Map<Coffee, Integer> orderedCoffees = coffeeOrder.getOrderedCoffeesAndQuantity();
+        for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
+            String nameOfCoffee = coffee.getCoffeeName();
+            coffeesAndQuantityFromOrderWithStringKeys.put(nameOfCoffee, orderedCoffees.get(coffee));
+        }
+        return coffeesAndQuantityFromOrderWithStringKeys;
     }
 
 }

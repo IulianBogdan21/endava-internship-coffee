@@ -2,17 +2,16 @@ package configuration;
 
 import com.coffeeshop.rest.RestClient;
 import com.coffeeshop.utilitary.generators.IdGenerator;
+import com.coffeeshop.utilitary.managers.ConsoleManager;
 import com.coffeeshop.utilitary.printers.Printer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Random;
 import java.util.Scanner;
 
 @Configuration
@@ -44,5 +43,10 @@ public class AppConfig {
     @Bean(name = "idGenerator")
     public IdGenerator getIdGenerator(){
         return new IdGenerator();
+    }
+
+    @Bean(name = "consoleManager")
+    public ConsoleManager getConsoleManager(){
+        return new ConsoleManager();
     }
 }

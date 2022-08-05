@@ -118,5 +118,23 @@ public class Printer {
         System.out.println("You need to introduce an option within the interval!");
     }
 
+    public void printCardIntroduction(){
+        System.out.println("Now please introduce your card details: \n");
+    }
 
+    public void printIntroduceCard(){
+        System.out.println("Introduce card number: ");
+    }
+
+    public void printIntroduceCardHolder(){
+        System.out.println("Introduce the name on the card: ");
+    }
+
+    public void printIntroduceCardExpiryDate(){
+        System.out.println("Introduce expiry date of card: ");
+    }
+
+    public void printIntroduceCardCiv(){
+        System.out.println("Introduce CIV: ");
+    }
 }

@@ -11,8 +11,9 @@ import com.coffeeshop.service.implementations.IngredientsService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.IdGenerator;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
-import com.coffeeshop.utilitary.manager.CoffeeManager;
-import com.coffeeshop.utilitary.manager.StockManager;
+import com.coffeeshop.utilitary.managers.CoffeeManager;
+import com.coffeeshop.utilitary.managers.ConsoleManager;
+import com.coffeeshop.utilitary.managers.StockManager;
 import com.coffeeshop.utilitary.printers.Printer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -141,33 +142,23 @@ public class Main {
         }
     }
 
+    /**
+     * method that deals with the online payment
+     * @param coffeeOrder current order of a customer
+     */
     private static void proceedWithPayment(CoffeeOrder coffeeOrder) {
-        Scanner scanner = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class);
-        System.out.println("Now please introduce your card details: \n");
-        System.out.println("Introduce card number: ");
-        String cardNumber = scanner.nextLine();
-        System.out.println("Introduce the name on the card: ");
-        String cardOwner = scanner.nextLine();
-        System.out.println("Introduce expiry date of card: ");
-        String dateOfExpiry = scanner.nextLine();
-        System.out.println("Introduce CIV: ");
-        int civ = NumberGenerator.generateInteger();
+        Printer printer = ApplicationContextFactory.getInstance().getBean("printer", Printer.class);
+        ConsoleManager consoleManager = ApplicationContextFactory.getInstance().getBean("consoleManager", ConsoleManager.class);
+        printer.printCardIntroduction();
+        String cardNumber = consoleManager.getCardNumber();
+        String cardOwner = consoleManager.getCardOwner();
+        String dateOfExpiry = consoleManager.getDateOfExpiry();
+        int civ = consoleManager.getCiv();
         Card card = new Card(cardNumber, cardOwner, dateOfExpiry, civ);
-        Map<String, Integer> orderedCoffees = getOrderForPost(coffeeOrder);
-        Payment payment = new Payment(card, coffeeOrder.getCustomerName(), orderedCoffees);
+        Payment payment = new Payment(card, coffeeOrder.getCustomerName(), CoffeeManager.getIngredientsAndAmountFromOrder(coffeeOrder));
         payment.setPaymentId(ApplicationContextFactory.getInstance().getBean("idGenerator", IdGenerator.class).generateId());
         RestClient client = ApplicationContextFactory.getInstance().getBean("client", RestClient.class);
         client.create(payment);
-    }
-
-    private static Map<String, Integer> getOrderForPost(CoffeeOrder coffeeOrder) {
-        Map<String, Integer> createMap = new HashMap<>();
-        Map<Coffee, Integer> orderedCoffees = coffeeOrder.getOrderedCoffeesAndQuantity();
-        for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
-            String nameOfCoffee = coffee.getCoffeeName();
-            createMap.put(nameOfCoffee, orderedCoffees.get(coffee));
-        }
-        return createMap;
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.coffeeshop.utilitary.manager;
+package com.coffeeshop.utilitary.managers;
 
 import com.coffeeshop.models.shop.Ingredients;
 

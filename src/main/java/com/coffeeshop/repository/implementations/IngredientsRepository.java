@@ -2,7 +2,7 @@ package com.coffeeshop.repository.implementations;
 
 import com.coffeeshop.repository.interfaces.IIngredientsRepository;
 import com.coffeeshop.models.shop.Ingredients;
-import com.coffeeshop.utilitary.manager.StockManager;
+import com.coffeeshop.utilitary.managers.StockManager;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;

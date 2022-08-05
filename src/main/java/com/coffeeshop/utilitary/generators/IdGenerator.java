@@ -1,6 +1,5 @@
 package com.coffeeshop.utilitary.generators;
 
-import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
