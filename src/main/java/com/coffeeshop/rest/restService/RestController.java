@@ -30,7 +30,7 @@ public class RestController {
    @RequestMapping(method = RequestMethod.GET)
    public ResponseEntity<?> getPays(){
       List<Pay> allPays = payRepository.getAll();
-      return new ResponseEntity<List<Pay>>(allPays, HttpStatus.OK);
+      return new ResponseEntity<>(allPays, HttpStatus.OK);
    }
 
    @ExceptionHandler({Exception.class})
