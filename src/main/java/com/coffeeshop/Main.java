@@ -4,7 +4,6 @@ import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.customer.OrderStatus;
 import com.coffeeshop.models.shop.CoffeeShop;
-import com.coffeeshop.rest.startRest.StartRest;
 import com.coffeeshop.service.implementations.IngredientsService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
