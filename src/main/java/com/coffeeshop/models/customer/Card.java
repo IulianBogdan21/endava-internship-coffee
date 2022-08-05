@@ -1,6 +1,12 @@
 package com.coffeeshop.models.customer;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Card {
+    @Id
     private String cardNumber;
     private String cardholderName;
     private String expiryDate;

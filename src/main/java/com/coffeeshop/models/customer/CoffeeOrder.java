@@ -11,13 +11,28 @@ import java.util.Map;
  * coffees of type A)
  */
 public class CoffeeOrder {
-    private final OrderStatus orderStatus;
-    private final Map<Coffee, Integer> orderedCoffeesAndQuantity;
+    private  OrderStatus orderStatus;
+    private  Map<Coffee, Integer> orderedCoffeesAndQuantity;
     private String customerName;
 
-    public CoffeeOrder(OrderStatus orderStatus) {
+    public CoffeeOrder(){}
+
+    public CoffeeOrder(OrderStatus orderStatus, String customerName) {
         this.orderStatus = orderStatus;
+        this.customerName = customerName;
         orderedCoffeesAndQuantity = new HashMap<>();
+    }
+
+    public CoffeeOrder(int numberOfOrder, OrderStatus orderStatus, String customerName) {
+        this.orderStatus = orderStatus;
+        this.customerName = customerName;
+        orderedCoffeesAndQuantity = new HashMap<>();
+    }
+
+    public CoffeeOrder(int numberOfOrder, OrderStatus orderStatus, Map<Coffee, Integer> orderedCoffees, String customerName) {
+        this.orderStatus = orderStatus;
+        this.customerName = customerName;
+        orderedCoffeesAndQuantity = orderedCoffees;
     }
 
     public Map<Coffee, Integer> getOrderedCoffeesAndQuantity() {

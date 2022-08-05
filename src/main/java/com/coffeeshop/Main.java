@@ -1,9 +1,12 @@
 package com.coffeeshop;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
+import com.coffeeshop.models.customer.Card;
 import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.customer.OrderStatus;
+import com.coffeeshop.models.customer.Payment;
 import com.coffeeshop.models.shop.CoffeeShop;
+import com.coffeeshop.rest.RestClient;
 import com.coffeeshop.service.implementations.IngredientsService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
@@ -16,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 @SpringBootApplication
@@ -43,7 +47,7 @@ public class Main {
         while(true){
             ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCoffeeShopName(coffeeShop);
             String customerName = registerCustomerName();
-            CoffeeOrder coffeeOrder = createNewCoffeeOrder();
+            CoffeeOrder coffeeOrder = createNewCoffeeOrder(customerName);
             getOrderFromClient(coffeeShop, customerName, coffeeOrder);
         }
     }
@@ -66,15 +70,16 @@ public class Main {
     }
 
     /**
+     * @param customerName - String - name of the customer
      * @return a new order from a client that also contains its status(pickup or delivery)
      */
-    private static @NotNull CoffeeOrder createNewCoffeeOrder(){
+    private static @NotNull CoffeeOrder createNewCoffeeOrder(String customerName){
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printOptionsForOrderStatus();
         int statusOption = NumberGenerator.generateIntegerWithinInterval(DELIVERY_STATUS_LOWER_LIMIT,
                 DELIVERY_STATUS_HIGHER_LIMIT);
         OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAdditionalInformationAboutTheMenu();
-        return new CoffeeOrder(orderStatus);
+        return new CoffeeOrder(orderStatus, customerName);
     }
 
     /**
@@ -121,6 +126,7 @@ public class Main {
                     COFFEE_TYPE_HIGHER_LIMIT);
             Coffee orderedCoffee = CoffeeManager.buildCoffeeFromMenu(menuOption, customerName);
             if (menuOption == FINISH_ORDER) {
+                proceedWithPayment(coffeeOrder);
                 finishCustomerOrder(coffeeShop, coffeeOrder);
                 return;
             }
@@ -133,6 +139,34 @@ public class Main {
             ApplicationContextFactory.getInstance().getBean("ingredientsService", IngredientsService.class)
                     .updateStock(StockManager.evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getIngredientsForCoffeeAndAmount(), amountOfCoffee));
         }
+    }
+
+    private static void proceedWithPayment(CoffeeOrder coffeeOrder) {
+        Scanner scanner = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class);
+        System.out.println("Now please introduce your card details: \n");
+        System.out.println("Introduce card number: ");
+        String cardNumber = scanner.nextLine();
+        System.out.println("Introduce the name on the card: ");
+        String cardOwner = scanner.nextLine();
+        System.out.println("Introduce expiry date of card: ");
+        String dateOfExpiry = scanner.nextLine();
+        System.out.println("Introduce CIV: ");
+        int civ = NumberGenerator.generateInteger();
+        Card card = new Card(cardNumber, cardOwner, dateOfExpiry, civ);
+        Map<String, Integer> orderedCoffees = getOrderForPost(coffeeOrder);
+        Payment payment = new Payment(card, coffeeOrder.getCustomerName(), orderedCoffees);
+        RestClient client = ApplicationContextFactory.getInstance().getBean("client", RestClient.class);
+        client.create(payment);
+    }
+
+    private static Map<String, Integer> getOrderForPost(CoffeeOrder coffeeOrder) {
+        Map<String, Integer> createMap = new HashMap<>();
+        Map<Coffee, Integer> orderedCoffees = coffeeOrder.getOrderedCoffeesAndQuantity();
+        for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
+            String nameOfCoffee = coffee.getCoffeeName();
+            createMap.put(nameOfCoffee, orderedCoffees.get(coffee));
+        }
+        return createMap;
     }
 
     /**

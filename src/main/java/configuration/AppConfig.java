@@ -1,5 +1,6 @@
 package configuration;
 
+import com.coffeeshop.rest.RestClient;
 import com.coffeeshop.utilitary.printers.Printer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Scanner;
 
@@ -28,5 +30,11 @@ public class AppConfig {
     @Bean
     public TaskScheduler taskScheduler() {
         return new ConcurrentTaskScheduler();
+    }
+
+    @Bean(name = "client")
+    public RestClient getRestClient(){
+        new RestTemplate();
+        return new RestClient();
     }
 }

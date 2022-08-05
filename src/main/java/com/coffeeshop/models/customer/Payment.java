@@ -1,54 +1,54 @@
 package com.coffeeshop.models.customer;
 
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.Map;
 
+@Entity
+@TypeDef(name = "json", typeClass = JsonStringEncoder.class)
 public class Payment {
-    private String cardNumber;
-    private String cardholderName;
-    private String expiryDate;
-    private Integer civ;
+    @Id
+    private int paymentId;
+    @OneToOne
+    private Card customerCard;
     private String customerName;
+    @Type(type = "json")
     private Map<String, Integer> orderedCoffees;
 
-    public Payment(String cardNumber, String cardholderName, String expiryDate, Integer civ, String customerName, Map<String, Integer> orderedCoffees) {
-        this.cardNumber = cardNumber;
-        this.cardholderName = cardholderName;
-        this.expiryDate = expiryDate;
-        this.civ = civ;
+    public Payment() {}
+
+    public Payment(int paymentId, Card customerCard, String customerName, Map<String, Integer> orderedCoffees) {
+        this.paymentId = paymentId;
+        this.customerCard = customerCard;
         this.customerName = customerName;
         this.orderedCoffees = orderedCoffees;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public Payment(Card customerCard, String customerName, Map<String, Integer> orderedCoffees) {
+        this.customerCard = customerCard;
+        this.customerName = customerName;
+        this.orderedCoffees = orderedCoffees;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public int getPaymentId() {
+        return paymentId;
     }
 
-    public String getCardholderName() {
-        return cardholderName;
+    public void setPaymentId(int paymentId) {
+        this.paymentId = paymentId;
     }
 
-    public void setCardholderName(String cardholderName) {
-        this.cardholderName = cardholderName;
+    public Card getCustomerCard() {
+        return customerCard;
     }
 
-    public String getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(String expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public Integer getCiv() {
-        return civ;
-    }
-
-    public void setCiv(Integer civ) {
-        this.civ = civ;
+    public void setCustomerCard(Card customerCard) {
+        this.customerCard = customerCard;
     }
 
     public String getCustomerName() {
