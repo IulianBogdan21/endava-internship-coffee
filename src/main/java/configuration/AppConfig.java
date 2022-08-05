@@ -1,4 +1,4 @@
-package com.coffeeshop.configuration;
+package configuration;
 
 import com.coffeeshop.utilitary.printers.Printer;
 import org.springframework.context.annotation.Bean;
