@@ -1,4 +1,4 @@
-package com.coffeeshop.rest.restService;
+package com.coffeeshop.rest;
 
 import com.coffeeshop.models.customer.Pay;
 import com.coffeeshop.repository.interfaces.IPayRepository;

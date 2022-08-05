@@ -1,7 +1,10 @@
+package com.coffeeshop;
+
 import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.customer.OrderStatus;
 import com.coffeeshop.models.shop.CoffeeShop;
+import com.coffeeshop.rest.startRest.StartRest;
 import com.coffeeshop.service.implementations.IngredientsService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
@@ -11,9 +14,12 @@ import com.coffeeshop.utilitary.printers.Printer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.*;
 
+@SpringBootApplication
 public class Main {
 
     private static final int DELIVERY_STATUS_LOWER_LIMIT = 1;
@@ -23,6 +29,7 @@ public class Main {
     private static final int FINISH_ORDER = 0;
 
     public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
         CoffeeShop coffeeShop = openCoffeeShop();
         coffeeShop.scheduleInventoryCheck();
         handleOrdersFromClients(coffeeShop);
