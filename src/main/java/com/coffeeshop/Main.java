@@ -9,6 +9,7 @@ import com.coffeeshop.models.shop.CoffeeShop;
 import com.coffeeshop.rest.RestClient;
 import com.coffeeshop.service.implementations.IngredientsService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
+import com.coffeeshop.utilitary.generators.IdGenerator;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
 import com.coffeeshop.utilitary.manager.CoffeeManager;
 import com.coffeeshop.utilitary.manager.StockManager;
@@ -155,6 +156,7 @@ public class Main {
         Card card = new Card(cardNumber, cardOwner, dateOfExpiry, civ);
         Map<String, Integer> orderedCoffees = getOrderForPost(coffeeOrder);
         Payment payment = new Payment(card, coffeeOrder.getCustomerName(), orderedCoffees);
+        payment.setPaymentId(ApplicationContextFactory.getInstance().getBean("idGenerator", IdGenerator.class).generateId());
         RestClient client = ApplicationContextFactory.getInstance().getBean("client", RestClient.class);
         client.create(payment);
     }
