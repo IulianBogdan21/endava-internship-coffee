@@ -8,8 +8,8 @@ import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.implementations.CoffeeMakerService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.models.shop.Ingredients;
-import com.coffeeshop.utilitary.printers.MessagePrinter;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
+import com.coffeeshop.utilitary.printers.Printer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,13 +30,13 @@ public class CoffeeManager {
      */
     public static Coffee buildCustomisableCoffee(){
         Map<Ingredients, Integer> coffeeIngredients = new HashMap<>();
-        MessagePrinter.printBaseOptionsForCustomisableCoffee();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printBaseOptionsForCustomisableCoffee();
         int baseOption =
                 NumberGenerator.generateIntegerWithinInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
         int numberOfShots = getNumberOfShots();
         coffeeIngredients.put(getCoffeeBase(baseOption), numberOfShots);
         String baseCoffeeName = getCoffeeBaseName(baseOption);
-        MessagePrinter.printConfirmationOfAddedBase(baseCoffeeName, numberOfShots);
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printConfirmationOfAddedBase(baseCoffeeName, numberOfShots);
         return addOptionalIngredientsToCustomisedCoffee(coffeeIngredients);
     }
 
@@ -66,7 +66,7 @@ public class CoffeeManager {
      * @return integer - number of shots of a certain coffee
      */
     private static int getNumberOfShots(){
-        MessagePrinter.printAskingForNumberOfShots();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAskingForNumberOfShots();
         return NumberGenerator.generateInteger();
     }
 
@@ -158,7 +158,7 @@ public class CoffeeManager {
      * @return integer - how much of chosen ingredient to put in coffee
      */
     private static int getAmountOfIngredient(){
-        MessagePrinter.printMessageAskingForAmountOfIngredient();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMessageAskingForAmountOfIngredient();
         return NumberGenerator.generateInteger();
     }
 
@@ -167,7 +167,7 @@ public class CoffeeManager {
      */
     private static Coffee addOptionalIngredientsToCustomisedCoffee(Map<Ingredients, Integer> coffeeIngredients){
         while(true){
-            MessagePrinter.printMenuForCustomisableCoffee();
+            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenuForCustomisableCoffee();
             int ingredientOption = NumberGenerator.generateIntegerWithinInterval(
                     ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
             if(ingredientOption == FINISH_CUSTOMISABLE_COFFEE)
@@ -177,7 +177,8 @@ public class CoffeeManager {
             String nameOfIngredient = getIngredientNameAccordingToChosenOption(ingredientOption);
             int ingredientAmount = getAmountOfIngredient();
             coffeeIngredients.put(chosenIngredient, ingredientAmount);
-            MessagePrinter.printConfirmationOfAddedIngredient(nameOfIngredient, ingredientAmount);
+            ApplicationContextFactory.getInstance().getBean("printer", Printer.class)
+                    .printConfirmationOfAddedIngredient(nameOfIngredient, ingredientAmount);
         }
     }
 

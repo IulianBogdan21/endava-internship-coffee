@@ -4,7 +4,7 @@ import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.implementations.IngredientsService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
-import com.coffeeshop.utilitary.printers.MessagePrinter;
+import com.coffeeshop.utilitary.printers.Printer;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +15,8 @@ import java.util.Map;
 
 @Component
 public class CoffeeShop {
-    private String coffeeShopName;
-    private List<Coffee> allCoffees;
+    private final String coffeeShopName;
+    private final List<Coffee> allCoffees;
     private Double profit;
     private static Map<Ingredients, String> nameOfIngredients;
 
@@ -88,13 +88,14 @@ public class CoffeeShop {
         Map<Ingredients, Integer> stock = ingredientsService.getAllIngredients();
         Map<Ingredients, String> nameOfIngredients = getNameOfIngredients();
         if(ingredientsService.areSuppliesLow(stock)) {
-            MessagePrinter.printLines();
-            MessagePrinter.printWarningMessage();
-            MessagePrinter.printStockMessage();
+            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printLines();
+            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printWarningMessage();
+            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printStockMessage();
             for (Ingredients iteratedIngredient : stock.keySet()) {
-                MessagePrinter.printNameOfIngredientAndQuantity(stock, iteratedIngredient, nameOfIngredients);
+                ApplicationContextFactory.getInstance().getBean("printer", Printer.class)
+                        .printNameOfIngredientAndQuantity(stock, iteratedIngredient, nameOfIngredients);
             }
-            MessagePrinter.printLines();
+            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printLines();
         }
     }
 }

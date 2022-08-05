@@ -1,6 +1,7 @@
 package com.coffeeshop.utilitary.generators;
 
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
+import com.coffeeshop.utilitary.printers.Printer;
 
 import java.util.Scanner;
 
@@ -23,12 +24,12 @@ public class NumberGenerator {
                 scanner.nextLine();
             }
             catch (Exception ex){
-                System.out.println("Invalid option! You have not introduced a number!");
+                ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printInvalidNumberMessage();
                 scanner.next();
                 continue;
             }
             if(optionRead < firstOption || optionRead > lastOption){
-                System.out.println("You need to introduce an option within the interval!");
+                ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printNumberNotWithinInterval();
                 continue;
             }
             return optionRead;
@@ -47,7 +48,7 @@ public class NumberGenerator {
                 return optionRead;
             }
             catch (Exception ex){
-                System.out.println("Invalid option! You have not introduced a number!");
+                ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printInvalidNumberMessage();
                 scanner.next();
             }
         }

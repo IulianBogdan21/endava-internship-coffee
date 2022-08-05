@@ -7,7 +7,7 @@ import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
 import com.coffeeshop.utilitary.manager.CoffeeManager;
 import com.coffeeshop.utilitary.manager.StockManager;
-import com.coffeeshop.utilitary.printers.MessagePrinter;
+import com.coffeeshop.utilitary.printers.Printer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +35,7 @@ public class Main {
     @SuppressWarnings("InfiniteLoopStatement")
     private static void handleOrdersFromClients(CoffeeShop coffeeShop){
         while(true){
-            MessagePrinter.printCoffeeShopName(coffeeShop);
+            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCoffeeShopName(coffeeShop);
             String customerName = registerCustomerName();
             CoffeeOrder coffeeOrder = createNewCoffeeOrder();
             getOrderFromClient(coffeeShop, customerName, coffeeOrder);
@@ -63,11 +63,11 @@ public class Main {
      * @return a new order from a client that also contains its status(pickup or delivery)
      */
     private static @NotNull CoffeeOrder createNewCoffeeOrder(){
-        MessagePrinter.printOptionsForOrderStatus();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printOptionsForOrderStatus();
         int statusOption = NumberGenerator.generateIntegerWithinInterval(DELIVERY_STATUS_LOWER_LIMIT,
                 DELIVERY_STATUS_HIGHER_LIMIT);
         OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
-        MessagePrinter.printAdditionalInformationAboutTheMenu();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAdditionalInformationAboutTheMenu();
         return new CoffeeOrder(orderStatus);
     }
 
@@ -77,18 +77,18 @@ public class Main {
      * @param coffeeOrder - customer's order
      */
     private static void finishCustomerOrder(@NotNull CoffeeShop coffeeShop, CoffeeOrder coffeeOrder){
-        MessagePrinter.printOrderedCoffeesAndTheirAmount(coffeeOrder);
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printOrderedCoffeesAndTheirAmount(coffeeOrder);
         double profitObtained = coffeeOrder.getPriceOfOrder();
-        MessagePrinter.printCostOfOrder(profitObtained);
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCostOfOrder(profitObtained);
         coffeeShop.addToProfit(profitObtained);
-        MessagePrinter.printCurrentProfitOfCoffeeShop(coffeeShop);
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCurrentProfitOfCoffeeShop(coffeeShop);
     }
 
     /**
      * @return integer = number of coffees of a certain kind (the ordered one)
      */
     private static int getAmountOfOrderedCoffee(){
-        MessagePrinter.printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
         return NumberGenerator.generateInteger();
     }
 
@@ -99,7 +99,7 @@ public class Main {
      * @param amountOfCoffee - integer - number of coffees of a chosen option
      */
     private static void updateCoffeeOrder(@NotNull CoffeeOrder coffeeOrder, Coffee orderedCoffee, int amountOfCoffee){
-        MessagePrinter.printUpdatedOrder(orderedCoffee, amountOfCoffee);
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printUpdatedOrder(orderedCoffee, amountOfCoffee);
         coffeeOrder.addCoffeeToOrder(orderedCoffee, amountOfCoffee);
     }
 
@@ -110,7 +110,7 @@ public class Main {
      */
     private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder){
         while(true){
-            MessagePrinter.printMenu(coffeeShop);
+            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenu(coffeeShop);
             int menuOption = NumberGenerator.generateIntegerWithinInterval(COFFEE_TYPE_LOWER_LIMIT,
                     COFFEE_TYPE_HIGHER_LIMIT);
             Coffee orderedCoffee = CoffeeManager.buildCoffeeFromMenu(menuOption, customerName);
@@ -119,7 +119,7 @@ public class Main {
                 return;
             }
             if (optionChosenFromMenuIsInvalid(orderedCoffee)) {
-                MessagePrinter.printMenuInvalidOption();
+                ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenuInvalidOption();
                 continue;
             }
             int amountOfCoffee = getAmountOfOrderedCoffee();
@@ -149,9 +149,9 @@ public class Main {
      * @return String representing the customer's name
      */
     private static String registerCustomerName() {
-        MessagePrinter.printRegisteringNameMessage();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printRegisteringNameMessage();
         String customerName = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class).nextLine();
-        MessagePrinter.printNewLine();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printNewLine();
         return customerName;
     }
 }
