@@ -1,6 +1,7 @@
 package com.coffeeshop.models.coffeeRoot;
 
 import com.coffeeshop.utilitary.Ingredients;
+import com.coffeeshop.utilitary.PricesManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,10 +14,10 @@ public abstract class Coffee {
     protected Map<Ingredients, Integer> ingredientsForCoffeeAndAmount = new HashMap<>();
 
     /**
-     * @param ingredientsPrices  = map with all the ingredients and their prices
      * @return double = the price of the coffee (in euros)
      */
-    public double getPrice(Map<Ingredients, Double> ingredientsPrices) {
+    public double getPrice() {
+        Map<Ingredients, Double> ingredientsPrices = PricesManager.getPricesForIngredients();
         double finalPriceOfCoffee = 0;
         for (Ingredients ingredient : ingredientsForCoffeeAndAmount.keySet())
             finalPriceOfCoffee += ingredientsForCoffeeAndAmount.get(ingredient) * ingredientsPrices.get(ingredient);

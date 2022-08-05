@@ -46,13 +46,12 @@ public class CoffeeOrder {
     }
 
     /**
-     * @param ingredientsAndTheirPrices  = map with all the prices for every ingredient
      * @return double - the price of the entire order made by the customer
      */
-    public double getPriceOfOrder(Map<Ingredients, Double> ingredientsAndTheirPrices) {
+    public double getPriceOfOrder() {
         double orderTotalPay = 0;
         for (Coffee coffee : orderedCoffeesAndQuantity.keySet()) {
-            orderTotalPay += orderedCoffeesAndQuantity.get(coffee) * coffee.getPrice(ingredientsAndTheirPrices);
+            orderTotalPay += orderedCoffeesAndQuantity.get(coffee) * coffee.getPrice();
         }
         return orderTotalPay;
     }

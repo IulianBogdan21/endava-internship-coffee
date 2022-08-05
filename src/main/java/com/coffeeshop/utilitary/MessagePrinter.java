@@ -12,12 +12,12 @@ public class MessagePrinter {
         System.out.println("----------" + openCoffeeShop.getCoffeeShopName() + "----------" + "\n");
     }
 
-    public static void printOrderedCoffeesAndTheirAmount(Map<Ingredients, Double> pricesForEachIngredient, CoffeeOrder coffeeOrder) {
+    public static void printOrderedCoffeesAndTheirAmount(CoffeeOrder coffeeOrder) {
         System.out.println("You ordered the following:\n");
         for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){
             System.out.println(coffeeOrder.getOrderedCoffeesAndQuantity().get(coffee) +
                     "X " + coffee.getCoffeeName() + " where 1 " + coffee.getCoffeeName() + " is " +
-                    coffee.getPrice(pricesForEachIngredient) + " euros");
+                    coffee.getPrice() + " euros");
         }
     }
 

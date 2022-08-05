@@ -18,24 +18,22 @@ public class Main {
     private static final int FINISH_ORDER = 0;
 
     public static void main(String[] args) {
-        Map<Ingredients, Double> pricesForEachIngredient = PricesBuilder.buildPricesForIngredients();
         CoffeeShop coffeeShop = openCoffeeShop();
         coffeeShop.scheduleInventoryCheck();
-        handleOrdersFromClients(coffeeShop, pricesForEachIngredient);
+        handleOrdersFromClients(coffeeShop);
     }
 
     /**
      * function that handles customer requests in an infinite loop
      * @param coffeeShop - CoffeeShop
-     * @param pricesForEachIngredient - map that contains the prices for every ingredient
      */
     @SuppressWarnings("InfiniteLoopStatement")
-    private static void handleOrdersFromClients(CoffeeShop coffeeShop, Map<Ingredients, Double> pricesForEachIngredient){
+    private static void handleOrdersFromClients(CoffeeShop coffeeShop){
         while(true){
             MessagePrinter.printCoffeeShopName(coffeeShop);
             String customerName = registerCustomerName();
             CoffeeOrder coffeeOrder = createNewCoffeeOrder();
-            getOrderFromClient(coffeeShop, customerName, coffeeOrder, pricesForEachIngredient);
+            getOrderFromClient(coffeeShop, customerName, coffeeOrder);
         }
     }
 
@@ -72,12 +70,10 @@ public class Main {
      * function that finishes a customer's order and updates the profit
      * @param coffeeShop CoffeeShop
      * @param coffeeOrder - customer's order
-     * @param pricesForEachIngredient - map that contains prices for each ingredient
      */
-    private static void finishCustomerOrder(@NotNull CoffeeShop coffeeShop, CoffeeOrder coffeeOrder,
-                                            Map<Ingredients, Double> pricesForEachIngredient){
-        MessagePrinter.printOrderedCoffeesAndTheirAmount(pricesForEachIngredient, coffeeOrder);
-        double profitObtained = coffeeOrder.getPriceOfOrder(pricesForEachIngredient);
+    private static void finishCustomerOrder(@NotNull CoffeeShop coffeeShop, CoffeeOrder coffeeOrder){
+        MessagePrinter.printOrderedCoffeesAndTheirAmount(coffeeOrder);
+        double profitObtained = coffeeOrder.getPriceOfOrder();
         MessagePrinter.printCostOfOrder(profitObtained);
         coffeeShop.addToProfit(profitObtained);
         MessagePrinter.printCurrentProfitOfCoffeeShop(coffeeShop);
@@ -106,17 +102,15 @@ public class Main {
      * @param coffeeShop CoffeeShop
      * @param customerName - the name of the customer
      * @param coffeeOrder - the customer's order
-     * @param pricesForEachIngredient - map that contains the prices for each ingredient
      */
-    private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder,
-                                           Map<Ingredients, Double> pricesForEachIngredient){
+    private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder){
         while(true){
             MessagePrinter.printMenu(coffeeShop);
             int menuOption = NumberGenerator.generateIntegerWithinInterval(COFFEE_TYPE_LOWER_LIMIT,
                     COFFEE_TYPE_HIGHER_LIMIT);
             Coffee orderedCoffee = CoffeeManager.buildCoffeeFromMenu(menuOption, customerName);
             if (menuOption == FINISH_ORDER) {
-                finishCustomerOrder(coffeeShop, coffeeOrder, pricesForEachIngredient);
+                finishCustomerOrder(coffeeShop, coffeeOrder);
                 return;
             }
             if (optionChosenFromMenuIsInvalid(orderedCoffee)) {
