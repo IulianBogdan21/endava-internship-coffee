@@ -1,7 +1,7 @@
 package com.coffeeshop.models.coffeeRoot;
 
-import com.coffeeshop.utilitary.Ingredients;
-import com.coffeeshop.utilitary.PricesManager;
+import com.coffeeshop.models.shop.Ingredients;
+import com.coffeeshop.utilitary.manager.PricesManager;
 
 import java.util.HashMap;
 import java.util.Map;

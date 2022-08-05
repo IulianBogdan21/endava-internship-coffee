@@ -1,6 +1,6 @@
 package com.coffeeshop.repository.interfaces;
 
-import com.coffeeshop.utilitary.Ingredients;
+import com.coffeeshop.models.shop.Ingredients;
 
 import java.util.Map;
 

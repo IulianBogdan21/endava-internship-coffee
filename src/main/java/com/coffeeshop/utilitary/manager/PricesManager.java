@@ -1,4 +1,6 @@
-package com.coffeeshop.utilitary;
+package com.coffeeshop.utilitary.manager;
+
+import com.coffeeshop.models.shop.Ingredients;
 
 import java.util.HashMap;
 import java.util.Map;

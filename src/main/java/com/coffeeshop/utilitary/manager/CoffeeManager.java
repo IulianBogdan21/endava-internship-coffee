@@ -1,4 +1,4 @@
-package com.coffeeshop.utilitary;
+package com.coffeeshop.utilitary.manager;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.coffeeRoot.CoffeeBase;
@@ -6,6 +6,10 @@ import com.coffeeshop.models.customisedBaseCoffees.BlackCoffeeBasedBeverage;
 import com.coffeeshop.models.customisedBaseCoffees.EspressoBasedBeverage;
 import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.implementations.CoffeeMakerService;
+import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
+import com.coffeeshop.models.shop.Ingredients;
+import com.coffeeshop.utilitary.printers.MessagePrinter;
+import com.coffeeshop.utilitary.generators.NumberGenerator;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 

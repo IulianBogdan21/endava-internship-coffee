@@ -1,7 +1,6 @@
 package com.coffeeshop.models.defaultCoffees;
 
-import com.coffeeshop.models.defaultCoffees.Espresso;
-import com.coffeeshop.utilitary.Ingredients;
+import com.coffeeshop.models.shop.Ingredients;
 
 public class Cappucino extends Espresso {
 

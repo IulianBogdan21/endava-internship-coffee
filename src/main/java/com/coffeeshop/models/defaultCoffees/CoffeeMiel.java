@@ -1,7 +1,6 @@
 package com.coffeeshop.models.defaultCoffees;
 
-import com.coffeeshop.models.defaultCoffees.BlackCoffee;
-import com.coffeeshop.utilitary.Ingredients;
+import com.coffeeshop.models.shop.Ingredients;
 
 public class CoffeeMiel extends BlackCoffee {
 

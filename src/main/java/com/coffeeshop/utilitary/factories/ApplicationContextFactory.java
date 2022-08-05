@@ -1,4 +1,4 @@
-package com.coffeeshop.utilitary;
+package com.coffeeshop.utilitary.factories;
 
 import configuration.AppConfig;
 import org.springframework.context.ApplicationContext;

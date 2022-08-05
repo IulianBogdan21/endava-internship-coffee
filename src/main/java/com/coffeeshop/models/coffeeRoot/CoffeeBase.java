@@ -1,7 +1,6 @@
 package com.coffeeshop.models.coffeeRoot;
 
-import com.coffeeshop.models.coffeeRoot.Coffee;
-import com.coffeeshop.utilitary.Ingredients;
+import com.coffeeshop.models.shop.Ingredients;
 
 /**
  * class that extends the base Coffee class

@@ -1,4 +1,6 @@
-package com.coffeeshop.utilitary;
+package com.coffeeshop.utilitary.generators;
+
+import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 
 import java.util.Scanner;
 

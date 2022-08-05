@@ -3,9 +3,8 @@ package com.coffeeshop.models.shop;
 import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.implementations.IngredientsService;
-import com.coffeeshop.utilitary.ApplicationContextFactory;
-import com.coffeeshop.utilitary.Ingredients;
-import com.coffeeshop.utilitary.MessagePrinter;
+import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
+import com.coffeeshop.utilitary.printers.MessagePrinter;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

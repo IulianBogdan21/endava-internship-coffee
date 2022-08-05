@@ -1,8 +1,9 @@
-package com.coffeeshop.utilitary;
+package com.coffeeshop.utilitary.printers;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.shop.CoffeeShop;
+import com.coffeeshop.models.shop.Ingredients;
 
 import java.util.Map;
 

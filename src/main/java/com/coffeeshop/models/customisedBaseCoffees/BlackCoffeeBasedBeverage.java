@@ -1,7 +1,7 @@
 package com.coffeeshop.models.customisedBaseCoffees;
 
 import com.coffeeshop.models.coffeeRoot.CoffeeBase;
-import com.coffeeshop.utilitary.Ingredients;
+import com.coffeeshop.models.shop.Ingredients;
 
 /**
  * class for a custom coffee that has black coffee shots as base
