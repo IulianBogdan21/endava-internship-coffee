@@ -1,6 +1,7 @@
 package com.coffeeshop.models.coffeeRoot;
 
 import com.coffeeshop.models.shop.Ingredients;
+import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.managers.PricesManager;
 
 import java.util.HashMap;
@@ -18,7 +19,8 @@ public abstract class Coffee {
      * @return double = the price of the coffee (in euros)
      */
     public double getPrice() {
-        Map<Ingredients, Double> ingredientsPrices = PricesManager.getPricesForIngredients();
+        Map<Ingredients, Double> ingredientsPrices = ApplicationContextFactory.getInstance()
+                .getBean("pricesManager", PricesManager.class).getPricesForIngredients();
         double finalPriceOfCoffee = 0;
         for (Ingredients ingredient : ingredientsForCoffeeAndAmount.keySet())
             finalPriceOfCoffee += ingredientsForCoffeeAndAmount.get(ingredient) * ingredientsPrices.get(ingredient);
