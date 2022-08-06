@@ -30,4 +30,20 @@ public class ConsoleManager {
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printIntroduceCardCiv();
         return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
     }
+
+    /**
+     * @return integer - how much of chosen ingredient to put in coffee
+     */
+    public Integer getAmountOfIngredient(){
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMessageAskingForAmountOfIngredient();
+        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
+    }
+
+    /**
+     * @return integer - number of shots of a certain coffee
+     */
+    public Integer getNumberOfShots(){
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAskingForNumberOfShots();
+        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
+    }
 }

@@ -5,6 +5,7 @@ import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.implementations.CoffeeMakerService;
 import com.coffeeshop.models.shop.Ingredients;
+import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
 import com.coffeeshop.utilitary.printers.Printer;
 import org.jetbrains.annotations.Contract;
@@ -55,7 +56,7 @@ public class CoffeeManager {
         Map<Ingredients, Integer> coffeeIngredients = new HashMap<>();
         printer.printBaseOptionsForCustomisableCoffee();
         int baseOption = numberGenerator.generateIntegerWithinInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
-        int numberOfShots = getNumberOfShots();
+        int numberOfShots = ApplicationContextFactory.getInstance().getBean("consoleManager", ConsoleManager.class).getNumberOfShots();
         coffeeIngredients.put(getCoffeeBase(baseOption), numberOfShots);
         String baseCoffeeName = getCoffeeBaseName(baseOption);
         printer.printConfirmationOfAddedBase(baseCoffeeName, numberOfShots);
@@ -82,14 +83,6 @@ public class CoffeeManager {
             default -> customisedCoffee = null;
         }
         return customisedCoffee;
-    }
-
-    /**
-     * @return integer - number of shots of a certain coffee
-     */
-    private int getNumberOfShots(){
-        printer.printAskingForNumberOfShots();
-        return numberGenerator.generateInteger();
     }
 
     /**
@@ -177,14 +170,6 @@ public class CoffeeManager {
     }
 
     /**
-     * @return integer - how much of chosen ingredient to put in coffee
-     */
-    private int getAmountOfIngredient(){
-        printer.printMessageAskingForAmountOfIngredient();
-        return numberGenerator.generateInteger();
-    }
-
-    /**
      * @return the final customised coffee after adding all the ingredients the customer wants
      */
     private Coffee addOptionalIngredientsToCustomisedCoffee(Map<Ingredients, Integer> coffeeIngredients){
@@ -195,7 +180,8 @@ public class CoffeeManager {
                 return coffeeMakerService.brewCoffeeAfterRecipe(coffeeIngredients);
             Ingredients chosenIngredient = getIngredientAccordingToChosenOption(ingredientOption);
             String nameOfIngredient = getIngredientNameAccordingToChosenOption(ingredientOption);
-            int ingredientAmount = getAmountOfIngredient();
+            int ingredientAmount = ApplicationContextFactory.getInstance().getBean("consoleManager", ConsoleManager.class)
+                    .getAmountOfIngredient();
             coffeeIngredients.put(chosenIngredient, ingredientAmount);
             printer.printConfirmationOfAddedIngredient(nameOfIngredient, ingredientAmount);
         }
