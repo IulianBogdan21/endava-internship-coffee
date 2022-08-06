@@ -88,14 +88,14 @@ public class CoffeeShop {
         Map<Ingredients, Integer> stock = ingredientsService.getAllIngredients();
         Map<Ingredients, String> nameOfIngredients = getNameOfIngredients();
         if(ingredientsService.areSuppliesLow(stock)) {
-            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printLines();
-            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printWarningMessage();
-            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printStockMessage();
+            Printer printer = ApplicationContextFactory.getInstance().getBean("printer", Printer.class);
+            printer.printLines();
+            printer.printWarningMessage();
+            printer.printStockMessage();
             for (Ingredients iteratedIngredient : stock.keySet()) {
-                ApplicationContextFactory.getInstance().getBean("printer", Printer.class)
-                        .printNameOfIngredientAndQuantity(stock, iteratedIngredient, nameOfIngredients);
+                printer.printNameOfIngredientAndQuantity(stock, iteratedIngredient, nameOfIngredients);
             }
-            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printLines();
+            printer.printLines();
         }
     }
 }

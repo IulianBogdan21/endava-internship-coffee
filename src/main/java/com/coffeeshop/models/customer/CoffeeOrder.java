@@ -24,13 +24,7 @@ public class CoffeeOrder {
         orderedCoffeesAndQuantity = new HashMap<>();
     }
 
-    public CoffeeOrder(int numberOfOrder, OrderStatus orderStatus, String customerName) {
-        this.orderStatus = orderStatus;
-        this.customerName = customerName;
-        orderedCoffeesAndQuantity = new HashMap<>();
-    }
-
-    public CoffeeOrder(int numberOfOrder, OrderStatus orderStatus, Map<Coffee, Integer> orderedCoffees, String customerName) {
+    public CoffeeOrder(OrderStatus orderStatus, Map<Coffee, Integer> orderedCoffees, String customerName) {
         this.orderStatus = orderStatus;
         this.customerName = customerName;
         orderedCoffeesAndQuantity = orderedCoffees;
