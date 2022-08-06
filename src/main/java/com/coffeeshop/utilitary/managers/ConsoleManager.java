@@ -46,4 +46,22 @@ public class ConsoleManager {
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAskingForNumberOfShots();
         return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
     }
+
+    /**
+     * @return String representing the customer's name
+     */
+    public String registerCustomerName() {
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printRegisteringNameMessage();
+        String customerName = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class).nextLine();
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printNewLine();
+        return customerName;
+    }
+
+    /**
+     * @return integer = number of coffees of a certain kind (the ordered one)
+     */
+    public Integer getAmountOfOrderedCoffee(){
+        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
+        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
+    }
 }

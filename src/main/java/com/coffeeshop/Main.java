@@ -17,11 +17,8 @@ import com.coffeeshop.utilitary.managers.StockManager;
 import com.coffeeshop.utilitary.printers.Printer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.*;
 
 @SpringBootApplication
 public class Main {
@@ -47,7 +44,8 @@ public class Main {
     private static void handleOrdersFromClients(CoffeeShop coffeeShop){
         while(true){
             ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCoffeeShopName(coffeeShop);
-            String customerName = registerCustomerName();
+            String customerName = ApplicationContextFactory.getInstance().getBean("consoleManager", ConsoleManager.class)
+                    .registerCustomerName();
             CoffeeOrder coffeeOrder = createNewCoffeeOrder(customerName);
             getOrderFromClient(coffeeShop, customerName, coffeeOrder);
         }
@@ -78,7 +76,8 @@ public class Main {
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printOptionsForOrderStatus();
         int statusOption = ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class)
                 .generateIntegerWithinInterval(DELIVERY_STATUS_LOWER_LIMIT, DELIVERY_STATUS_HIGHER_LIMIT);
-        OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
+        OrderStatus orderStatus = ApplicationContextFactory.getInstance().getBean("coffeeManager", CoffeeManager.class)
+                .getStatusBasedOnChosenOption(statusOption);
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAdditionalInformationAboutTheMenu();
         return new CoffeeOrder(orderStatus, customerName);
     }
@@ -94,14 +93,6 @@ public class Main {
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCostOfOrder(profitObtained);
         coffeeShop.addToProfit(profitObtained);
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCurrentProfitOfCoffeeShop(coffeeShop);
-    }
-
-    /**
-     * @return integer = number of coffees of a certain kind (the ordered one)
-     */
-    private static int getAmountOfOrderedCoffee(){
-        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
-        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
     }
 
     /**
@@ -136,7 +127,8 @@ public class Main {
                 ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenuInvalidOption();
                 continue;
             }
-            int amountOfCoffee = getAmountOfOrderedCoffee();
+            int amountOfCoffee = ApplicationContextFactory.getInstance().getBean("consoleManager", ConsoleManager.class)
+                    .getAmountOfOrderedCoffee();
             updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
             ApplicationContextFactory.getInstance().getBean("ingredientsService", IngredientsService.class)
                     .updateStock(ApplicationContextFactory.getInstance().getBean("stockManager", StockManager.class)
@@ -163,32 +155,6 @@ public class Main {
         payment.setPaymentId(ApplicationContextFactory.getInstance().getBean("idGenerator", IdGenerator.class).generateId());
         RestClient client = ApplicationContextFactory.getInstance().getBean("client", RestClient.class);
         client.makePayment(payment);
-    }
-
-    /**
-     * @param statusOption Integer equal to 1 or 2
-     * @return PICKUP OrderStatus if integer is 1, DELIVERY OrderStatus if integer is 2
-     */
-    @Nullable
-    private static OrderStatus getStatusBasedOnChosenOption(int statusOption) {
-        OrderStatus orderStatus = null;
-        if(statusOption == 1) {
-            orderStatus = OrderStatus.PICKUP;
-        }
-        else if(statusOption == 2) {
-            orderStatus = OrderStatus.DELIVERY;
-        }
-        return orderStatus;
-    }
-
-    /**
-     * @return String representing the customer's name
-     */
-    private static String registerCustomerName() {
-        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printRegisteringNameMessage();
-        String customerName = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class).nextLine();
-        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printNewLine();
-        return customerName;
     }
 }
 

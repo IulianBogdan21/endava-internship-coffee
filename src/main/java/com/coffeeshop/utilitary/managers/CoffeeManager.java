@@ -2,6 +2,7 @@ package com.coffeeshop.utilitary.managers;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.customer.CoffeeOrder;
+import com.coffeeshop.models.customer.OrderStatus;
 import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.implementations.CoffeeMakerService;
 import com.coffeeshop.models.shop.Ingredients;
@@ -109,6 +110,22 @@ public class CoffeeManager {
             return Ingredients.BLACK_COFFEE;
         }
         return null;
+    }
+
+    /**
+     * @param statusOption Integer equal to 1 or 2
+     * @return PICKUP OrderStatus if integer is 1, DELIVERY OrderStatus if integer is 2
+     */
+    @Nullable
+    public OrderStatus getStatusBasedOnChosenOption(int statusOption) {
+        OrderStatus orderStatus = null;
+        if(statusOption == 1) {
+            orderStatus = OrderStatus.PICKUP;
+        }
+        else if(statusOption == 2) {
+            orderStatus = OrderStatus.DELIVERY;
+        }
+        return orderStatus;
     }
 
     /**
