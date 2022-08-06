@@ -76,8 +76,8 @@ public class Main {
      */
     private static @NotNull CoffeeOrder createNewCoffeeOrder(String customerName){
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printOptionsForOrderStatus();
-        int statusOption = NumberGenerator.generateIntegerWithinInterval(DELIVERY_STATUS_LOWER_LIMIT,
-                DELIVERY_STATUS_HIGHER_LIMIT);
+        int statusOption = ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class)
+                .generateIntegerWithinInterval(DELIVERY_STATUS_LOWER_LIMIT, DELIVERY_STATUS_HIGHER_LIMIT);
         OrderStatus orderStatus = getStatusBasedOnChosenOption(statusOption);
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAdditionalInformationAboutTheMenu();
         return new CoffeeOrder(orderStatus, customerName);
@@ -101,7 +101,7 @@ public class Main {
      */
     private static int getAmountOfOrderedCoffee(){
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printQuestionHowManyOfTheChosenCoffeeDoesTheCustomerWant();
-        return NumberGenerator.generateInteger();
+        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
     }
 
     /**
@@ -123,8 +123,8 @@ public class Main {
     private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder){
         while(true){
             ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenu(coffeeShop);
-            int menuOption = NumberGenerator.generateIntegerWithinInterval(COFFEE_TYPE_LOWER_LIMIT,
-                    COFFEE_TYPE_HIGHER_LIMIT);
+            int menuOption = ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class)
+                    .generateIntegerWithinInterval(COFFEE_TYPE_LOWER_LIMIT, COFFEE_TYPE_HIGHER_LIMIT);
             Coffee orderedCoffee = CoffeeManager.buildCoffeeFromMenu(menuOption, customerName);
             if (menuOption == FINISH_ORDER) {
                 proceedWithPayment(coffeeOrder);

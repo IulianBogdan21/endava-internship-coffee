@@ -2,34 +2,39 @@ package com.coffeeshop.utilitary.generators;
 
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.printers.Printer;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
 /**
  * class with static methods that generate valid integers for the main menu (integers between certain intervals or just simple integers)
  */
+@Component
 public class NumberGenerator {
+
+    public NumberGenerator(){}
 
     /**
      * @param firstOption - Integer
      * @param lastOption - Integer
      * @return Integer with value between firstOption and lastOption
      */
-    public static int generateIntegerWithinInterval(int firstOption, int lastOption){
+    public int generateIntegerWithinInterval(int firstOption, int lastOption){
         while (true){
             Scanner scanner = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class);
+            Printer printer = ApplicationContextFactory.getInstance().getBean("printer", Printer.class);
             int optionRead;
             try {
                 optionRead = scanner.nextInt();
                 scanner.nextLine();
             }
             catch (Exception ex){
-                ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printInvalidNumberMessage();
+                printer.printInvalidNumberMessage();
                 scanner.next();
                 continue;
             }
             if(optionRead < firstOption || optionRead > lastOption){
-                ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printNumberNotWithinInterval();
+                printer.printNumberNotWithinInterval();
                 continue;
             }
             return optionRead;
@@ -39,7 +44,7 @@ public class NumberGenerator {
     /**
      * @return Integer with no value constraints
      */
-    public static int generateInteger(){
+    public int generateInteger(){
         Scanner scanner = ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class);
         while (true){
             try {

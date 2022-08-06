@@ -33,7 +33,8 @@ public class CoffeeManager {
         Map<Ingredients, Integer> coffeeIngredients = new HashMap<>();
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printBaseOptionsForCustomisableCoffee();
         int baseOption =
-                NumberGenerator.generateIntegerWithinInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
+                ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class)
+                        .generateIntegerWithinInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
         int numberOfShots = getNumberOfShots();
         coffeeIngredients.put(getCoffeeBase(baseOption), numberOfShots);
         String baseCoffeeName = getCoffeeBaseName(baseOption);
@@ -68,7 +69,7 @@ public class CoffeeManager {
      */
     private static int getNumberOfShots(){
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAskingForNumberOfShots();
-        return NumberGenerator.generateInteger();
+        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
     }
 
     /**
@@ -160,7 +161,7 @@ public class CoffeeManager {
      */
     private static int getAmountOfIngredient(){
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMessageAskingForAmountOfIngredient();
-        return NumberGenerator.generateInteger();
+        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
     }
 
     /**
@@ -169,8 +170,9 @@ public class CoffeeManager {
     private static Coffee addOptionalIngredientsToCustomisedCoffee(Map<Ingredients, Integer> coffeeIngredients){
         while(true){
             ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenuForCustomisableCoffee();
-            int ingredientOption = NumberGenerator.generateIntegerWithinInterval(
-                    ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
+            int ingredientOption = ApplicationContextFactory.getInstance()
+                    .getBean("numberGenerator", NumberGenerator.class).generateIntegerWithinInterval(
+                        ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
             if(ingredientOption == FINISH_CUSTOMISABLE_COFFEE)
                 return ApplicationContextFactory.getInstance()
                         .getBean("coffeeMakerService", CoffeeMakerService.class).brewCoffeeAfterRecipe(coffeeIngredients);

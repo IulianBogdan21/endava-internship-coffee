@@ -28,6 +28,6 @@ public class ConsoleManager {
 
     public Integer getCiv(){
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printIntroduceCardCiv();
-        return NumberGenerator.generateInteger();
+        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
     }
 }

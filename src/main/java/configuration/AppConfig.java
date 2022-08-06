@@ -2,6 +2,7 @@ package configuration;
 
 import com.coffeeshop.rest.RestClient;
 import com.coffeeshop.utilitary.generators.IdGenerator;
+import com.coffeeshop.utilitary.generators.NumberGenerator;
 import com.coffeeshop.utilitary.managers.ConsoleManager;
 import com.coffeeshop.utilitary.printers.Printer;
 import org.springframework.context.annotation.Bean;
@@ -48,5 +49,10 @@ public class AppConfig {
     @Bean(name = "consoleManager")
     public ConsoleManager getConsoleManager(){
         return new ConsoleManager();
+    }
+
+    @Bean(name = "numberGenerator")
+    public NumberGenerator getNumberGenerator(){
+        return new NumberGenerator();
     }
 }
