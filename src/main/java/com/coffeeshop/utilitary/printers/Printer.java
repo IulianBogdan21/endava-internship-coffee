@@ -4,9 +4,11 @@ import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.shop.CoffeeShop;
 import com.coffeeshop.models.shop.Ingredients;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+@Component
 public class Printer {
 
     public Printer(){}

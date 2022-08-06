@@ -3,6 +3,7 @@ package configuration;
 import com.coffeeshop.rest.RestClient;
 import com.coffeeshop.utilitary.generators.IdGenerator;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
+import com.coffeeshop.utilitary.managers.CoffeeManager;
 import com.coffeeshop.utilitary.managers.ConsoleManager;
 import com.coffeeshop.utilitary.managers.PricesManager;
 import com.coffeeshop.utilitary.managers.StockManager;
@@ -66,5 +67,10 @@ public class AppConfig {
     @Bean(name = "stockManager")
     public StockManager getStockManager(){
         return new StockManager();
+    }
+
+    @Bean(name = "coffeeManager")
+    public CoffeeManager getCoffeeManager(){
+        return new CoffeeManager();
     }
 }

@@ -1,22 +1,23 @@
 package com.coffeeshop.utilitary.managers;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
-import com.coffeeshop.models.coffeeRoot.CoffeeBase;
 import com.coffeeshop.models.customer.CoffeeOrder;
-import com.coffeeshop.models.customisedBaseCoffees.BlackCoffeeBasedBeverage;
-import com.coffeeshop.models.customisedBaseCoffees.EspressoBasedBeverage;
 import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.implementations.CoffeeMakerService;
-import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.models.shop.Ingredients;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
 import com.coffeeshop.utilitary.printers.Printer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
+@DependsOn(value = {"printer", "numberGenerator", "coffeeMakerService"})
 public class CoffeeManager {
     private static final int BASE_TYPE_LOWER_LIMIT = 1;
     private static final int BASE_TYPE_HIGHER_LIMIT = 2;
@@ -26,19 +27,38 @@ public class CoffeeManager {
     private static final int ESPRESSO_BASE = 1;
     private static final int BLACK_COFFEE_BASE = 2;
 
+    private Printer printer;
+    private NumberGenerator numberGenerator;
+    private CoffeeMakerService coffeeMakerService;
+
+    public CoffeeManager(){}
+
+    @Autowired
+    public void setCoffeeMaker(CoffeeMakerService coffeeMakerService){
+        this.coffeeMakerService = coffeeMakerService;
+    }
+
+    @Autowired
+    public void setPrinter(Printer printer){
+        this.printer = printer;
+    }
+
+    @Autowired
+    public void setNumberGenerator(NumberGenerator numberGenerator){
+        this.numberGenerator = numberGenerator;
+    }
+
     /**
      * @return a customised coffee , designed by the customer
      */
-    public static Coffee buildCustomisableCoffee(){
+    public Coffee buildCustomisableCoffee(){
         Map<Ingredients, Integer> coffeeIngredients = new HashMap<>();
-        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printBaseOptionsForCustomisableCoffee();
-        int baseOption =
-                ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class)
-                        .generateIntegerWithinInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
+        printer.printBaseOptionsForCustomisableCoffee();
+        int baseOption = numberGenerator.generateIntegerWithinInterval(BASE_TYPE_LOWER_LIMIT, BASE_TYPE_HIGHER_LIMIT);
         int numberOfShots = getNumberOfShots();
         coffeeIngredients.put(getCoffeeBase(baseOption), numberOfShots);
         String baseCoffeeName = getCoffeeBaseName(baseOption);
-        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printConfirmationOfAddedBase(baseCoffeeName, numberOfShots);
+        printer.printConfirmationOfAddedBase(baseCoffeeName, numberOfShots);
         return addOptionalIngredientsToCustomisedCoffee(coffeeIngredients);
     }
 
@@ -47,7 +67,7 @@ public class CoffeeManager {
      * @param customerName - the name of the customer - String
      * @return a new Coffee corresponding to the chosen menu option
      */
-    public static Coffee buildCoffeeFromMenu(int menuOption, String customerName){
+    public Coffee buildCoffeeFromMenu(int menuOption, String customerName){
         Coffee customisedCoffee;
         switch (menuOption) {
             case 1 -> customisedCoffee = new Espresso(customerName);
@@ -56,7 +76,7 @@ public class CoffeeManager {
             case 4 -> customisedCoffee = new Cappucino(customerName);
             case 5 -> customisedCoffee = new CoffeeMiel(customerName);
             case 6 -> {
-                customisedCoffee = CoffeeManager.buildCustomisableCoffee();
+                customisedCoffee = buildCustomisableCoffee();
                 customisedCoffee.setCustomerName(customerName);
             }
             default -> customisedCoffee = null;
@@ -67,16 +87,16 @@ public class CoffeeManager {
     /**
      * @return integer - number of shots of a certain coffee
      */
-    private static int getNumberOfShots(){
-        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printAskingForNumberOfShots();
-        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
+    private int getNumberOfShots(){
+        printer.printAskingForNumberOfShots();
+        return numberGenerator.generateInteger();
     }
 
     /**
      * @param baseOption integer - option for the coffee base - can be 1 or 2
      * @return String - espresso if option 1, black coffee if 2
      */
-    private static String getCoffeeBaseName(int baseOption){
+    private String getCoffeeBaseName(int baseOption){
         if (baseOption == ESPRESSO_BASE) {
             return "espresso";
         }else if(baseOption == BLACK_COFFEE_BASE) {
@@ -89,7 +109,7 @@ public class CoffeeManager {
      * returns base ingredient corresponding to chosen option
      * @param baseOption - integer - option of a base coffee menu
      */
-    private static Ingredients getCoffeeBase(int baseOption){
+    private Ingredients getCoffeeBase(int baseOption){
         if (baseOption == ESPRESSO_BASE) {
             return Ingredients.ESPRESSO;
         } else if (baseOption == BLACK_COFFEE_BASE) {
@@ -103,7 +123,7 @@ public class CoffeeManager {
      * @return Ingredients enum - the ingredient corresponding to the chosen option
      */
     @Contract(pure = true)
-    private static @Nullable Ingredients getIngredientAccordingToChosenOption(int ingredientOption){
+    private @Nullable Ingredients getIngredientAccordingToChosenOption(int ingredientOption){
         Ingredients chosenIngredient;
         switch(ingredientOption){
             case 1:
@@ -132,7 +152,7 @@ public class CoffeeManager {
      * @return String - the name of the ingredient corresponding to the chosen option from menu
      */
     @Contract(pure = true)
-    private static @Nullable String getIngredientNameAccordingToChosenOption(int ingredientOption){
+    private @Nullable String getIngredientNameAccordingToChosenOption(int ingredientOption){
         String ingredientName;
         switch(ingredientOption){
             case 1:
@@ -159,59 +179,33 @@ public class CoffeeManager {
     /**
      * @return integer - how much of chosen ingredient to put in coffee
      */
-    private static int getAmountOfIngredient(){
-        ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMessageAskingForAmountOfIngredient();
-        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
+    private int getAmountOfIngredient(){
+        printer.printMessageAskingForAmountOfIngredient();
+        return numberGenerator.generateInteger();
     }
 
     /**
      * @return the final customised coffee after adding all the ingredients the customer wants
      */
-    private static Coffee addOptionalIngredientsToCustomisedCoffee(Map<Ingredients, Integer> coffeeIngredients){
+    private Coffee addOptionalIngredientsToCustomisedCoffee(Map<Ingredients, Integer> coffeeIngredients){
         while(true){
-            ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenuForCustomisableCoffee();
-            int ingredientOption = ApplicationContextFactory.getInstance()
-                    .getBean("numberGenerator", NumberGenerator.class).generateIntegerWithinInterval(
-                        ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
+            printer.printMenuForCustomisableCoffee();
+            int ingredientOption = numberGenerator.generateIntegerWithinInterval(ADD_INGREDIENT_LOWER_LIMIT, ADD_INGREDIENT_HIGHER_LIMIT);
             if(ingredientOption == FINISH_CUSTOMISABLE_COFFEE)
-                return ApplicationContextFactory.getInstance()
-                        .getBean("coffeeMakerService", CoffeeMakerService.class).brewCoffeeAfterRecipe(coffeeIngredients);
+                return coffeeMakerService.brewCoffeeAfterRecipe(coffeeIngredients);
             Ingredients chosenIngredient = getIngredientAccordingToChosenOption(ingredientOption);
             String nameOfIngredient = getIngredientNameAccordingToChosenOption(ingredientOption);
             int ingredientAmount = getAmountOfIngredient();
             coffeeIngredients.put(chosenIngredient, ingredientAmount);
-            ApplicationContextFactory.getInstance().getBean("printer", Printer.class)
-                    .printConfirmationOfAddedIngredient(nameOfIngredient, ingredientAmount);
+            printer.printConfirmationOfAddedIngredient(nameOfIngredient, ingredientAmount);
         }
-    }
-
-    /**
-     * @param ingredients map containing ingredients and amount for creating a coffee
-     * @return a new coffee with the given ingredients
-     */
-    public static Coffee makeCoffeeFromIngredients(Map<Ingredients, Integer> ingredients){
-        Integer amountOfEspresso = ingredients.get(Ingredients.ESPRESSO);
-        Integer amountOfBlackCoffee = ingredients.get(Ingredients.BLACK_COFFEE);
-        CoffeeBase newCoffee;
-        if(amountOfEspresso == null){
-            newCoffee = new BlackCoffeeBasedBeverage(amountOfBlackCoffee);
-            ingredients.remove(Ingredients.BLACK_COFFEE);
-        }
-        else{
-            newCoffee = new EspressoBasedBeverage(amountOfEspresso);
-            ingredients.remove(Ingredients.ESPRESSO);
-        }
-        for(Ingredients currentIngredient: ingredients.keySet()){
-            newCoffee.addIngredient(currentIngredient, ingredients.get(currentIngredient));
-        }
-        return newCoffee;
     }
 
     /**
      * @param coffeeOrder - customer's order
      * @return a map where key entities are replaced with their name (String)
      */
-    public static Map<String, Integer> getIngredientsAndAmountFromOrder(CoffeeOrder coffeeOrder) {
+    public Map<String, Integer> getIngredientsAndAmountFromOrder(CoffeeOrder coffeeOrder) {
         Map<String, Integer> coffeesAndQuantityFromOrderWithStringKeys = new HashMap<>();
         Map<Coffee, Integer> orderedCoffees = coffeeOrder.getOrderedCoffeesAndQuantity();
         for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()){

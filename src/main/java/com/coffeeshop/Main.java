@@ -125,7 +125,8 @@ public class Main {
             ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenu(coffeeShop);
             int menuOption = ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class)
                     .generateIntegerWithinInterval(COFFEE_TYPE_LOWER_LIMIT, COFFEE_TYPE_HIGHER_LIMIT);
-            Coffee orderedCoffee = CoffeeManager.buildCoffeeFromMenu(menuOption, customerName);
+            Coffee orderedCoffee = ApplicationContextFactory.getInstance().getBean("coffeeManager", CoffeeManager.class)
+                    .buildCoffeeFromMenu(menuOption, customerName);
             if (menuOption == FINISH_ORDER) {
                 proceedWithPayment(coffeeOrder);
                 finishCustomerOrder(coffeeShop, coffeeOrder);
@@ -156,7 +157,9 @@ public class Main {
         String dateOfExpiry = consoleManager.getDateOfExpiry();
         int civ = consoleManager.getCiv();
         Card card = new Card(cardNumber, cardOwner, dateOfExpiry, civ);
-        Payment payment = new Payment(card, coffeeOrder.getCustomerName(), CoffeeManager.getIngredientsAndAmountFromOrder(coffeeOrder));
+        Payment payment = new Payment(card, coffeeOrder.getCustomerName(),
+                ApplicationContextFactory.getInstance().getBean("coffeeManager", CoffeeManager.class)
+                        .getIngredientsAndAmountFromOrder(coffeeOrder));
         payment.setPaymentId(ApplicationContextFactory.getInstance().getBean("idGenerator", IdGenerator.class).generateId());
         RestClient client = ApplicationContextFactory.getInstance().getBean("client", RestClient.class);
         client.makePayment(payment);

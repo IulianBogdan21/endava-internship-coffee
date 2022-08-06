@@ -2,7 +2,6 @@ package com.coffeeshop.repository.implementations;
 
 import com.coffeeshop.repository.interfaces.IIngredientsRepository;
 import com.coffeeshop.models.shop.Ingredients;
-import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.managers.StockManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
