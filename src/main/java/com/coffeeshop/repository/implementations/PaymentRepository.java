@@ -4,18 +4,14 @@ import com.coffeeshop.models.customer.Payment;
 import com.coffeeshop.repository.interfaces.IPaymentRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository("payRepository")
 public class PaymentRepository implements IPaymentRepository {
-    private List<Payment> allPays;
+    private final List<Payment> allPays;
 
-    public PaymentRepository(){}
-
-    @PostConstruct
-    public void initializePayRepository(){
+    public PaymentRepository(){
         this.allPays = new ArrayList<>();
     }
 

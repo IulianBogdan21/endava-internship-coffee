@@ -11,12 +11,9 @@ import java.util.Map;
 @Repository("ingredientsRepository")
 public class IngredientsRepository implements IIngredientsRepository {
 
-    private Map<Ingredients, Integer> stockOfIngredients;
+    private final Map<Ingredients, Integer> stockOfIngredients;
 
-    public IngredientsRepository(){}
-
-    @PostConstruct
-    public void initializeStock(){
+    public IngredientsRepository(){
         this.stockOfIngredients = StockManager.buildInitialStocks();
     }
 
