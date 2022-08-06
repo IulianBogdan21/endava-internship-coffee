@@ -138,7 +138,8 @@ public class Main {
             int amountOfCoffee = getAmountOfOrderedCoffee();
             updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
             ApplicationContextFactory.getInstance().getBean("ingredientsService", IngredientsService.class)
-                    .updateStock(StockManager.evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getIngredientsForCoffeeAndAmount(), amountOfCoffee));
+                    .updateStock(ApplicationContextFactory.getInstance().getBean("stockManager", StockManager.class)
+                            .evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getIngredientsForCoffeeAndAmount(), amountOfCoffee));
         }
     }
 

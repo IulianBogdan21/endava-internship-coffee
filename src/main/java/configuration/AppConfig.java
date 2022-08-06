@@ -5,6 +5,7 @@ import com.coffeeshop.utilitary.generators.IdGenerator;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
 import com.coffeeshop.utilitary.managers.ConsoleManager;
 import com.coffeeshop.utilitary.managers.PricesManager;
+import com.coffeeshop.utilitary.managers.StockManager;
 import com.coffeeshop.utilitary.printers.Printer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -60,5 +61,10 @@ public class AppConfig {
     @Bean(name = "pricesManager")
     public PricesManager getPricesManager(){
         return new PricesManager();
+    }
+
+    @Bean(name = "stockManager")
+    public StockManager getStockManager(){
+        return new StockManager();
     }
 }

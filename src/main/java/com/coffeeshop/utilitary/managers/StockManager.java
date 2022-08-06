@@ -1,6 +1,7 @@
 package com.coffeeshop.utilitary.managers;
 
 import com.coffeeshop.models.shop.Ingredients;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +9,12 @@ import java.util.Map;
 /**
  * class used to initially build the stock of supplies (at the beginning of the day)
  */
+@Component
 public class StockManager {
 
-    public static Map<Ingredients, Integer> buildInitialStocks(){
+    public StockManager(){}
+
+    public Map<Ingredients, Integer> buildInitialStocks(){
         Map<Ingredients, Integer> stocksPerDay = new HashMap<>();
         stocksPerDay.put(Ingredients.ESPRESSO, 20);
         stocksPerDay.put(Ingredients.BLACK_COFFEE, 20);
@@ -27,7 +31,7 @@ public class StockManager {
      * @param numberOfCoffees - number of coffees of a kind
      * @return - total ingredients for an ordered amount of coffee
      */
-    public static Map<Ingredients, Integer> evaluateAllIngredientsPerCoffeeCommand(Map<Ingredients, Integer> oneCoffeeIngredients,
+    public Map<Ingredients, Integer> evaluateAllIngredientsPerCoffeeCommand(Map<Ingredients, Integer> oneCoffeeIngredients,
                                                                                    Integer numberOfCoffees){
         Map<Ingredients, Integer> allIngredientsPerCoffeeCommand = new HashMap<>();
         for(Ingredients ingredient: oneCoffeeIngredients.keySet()){
