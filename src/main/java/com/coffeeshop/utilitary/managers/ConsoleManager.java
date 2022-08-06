@@ -26,9 +26,9 @@ public class ConsoleManager {
         return ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class).nextLine();
     }
 
-    public Integer getCiv(){
+    public String getCiv(){
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printIntroduceCardCiv();
-        return ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class).generateInteger();
+        return ApplicationContextFactory.getInstance().getBean("scanner", Scanner.class).nextLine();
     }
 
     /**

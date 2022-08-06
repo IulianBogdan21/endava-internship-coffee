@@ -9,11 +9,11 @@ public class Card {
     private String cardNumber;
     private String cardholderName;
     private String expiryDate;
-    private Integer civ;
+    private String civ;
 
     public Card() {}
 
-    public Card(String cardNumber, String cardholderName, String expiryDate, Integer civ) {
+    public Card(String cardNumber, String cardholderName, String expiryDate, String civ) {
         this.cardNumber = cardNumber;
         this.cardholderName = cardholderName;
         this.expiryDate = expiryDate;
@@ -44,11 +44,11 @@ public class Card {
         this.expiryDate = expiryDate;
     }
 
-    public Integer getCiv() {
+    public String getCiv() {
         return civ;
     }
 
-    public void setCiv(Integer civ) {
+    public void setCiv(String civ) {
         this.civ = civ;
     }
 }

@@ -147,7 +147,7 @@ public class Main {
         String cardNumber = consoleManager.getCardNumber();
         String cardOwner = consoleManager.getCardOwner();
         String dateOfExpiry = consoleManager.getDateOfExpiry();
-        int civ = consoleManager.getCiv();
+        String civ = consoleManager.getCiv();
         Card card = new Card(cardNumber, cardOwner, dateOfExpiry, civ);
         Payment payment = new Payment(card, coffeeOrder.getCustomerName(),
                 ApplicationContextFactory.getInstance().getBean("coffeeManager", CoffeeManager.class)
