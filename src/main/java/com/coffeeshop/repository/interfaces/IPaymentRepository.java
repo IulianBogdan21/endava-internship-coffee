@@ -7,5 +7,5 @@ import java.util.List;
 public interface IPaymentRepository {
     List<Payment> getAll();
 
-    Payment save(Payment payToSave);
+    void save(Payment payToSave);
 }

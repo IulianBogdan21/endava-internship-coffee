@@ -24,7 +24,7 @@ public class PaymentService implements com.coffeeshop.service.interfaces.IPaymen
     }
 
     @Override
-    public Payment savePayment(Payment paymentToSave){
-        return paymentRepository.save(paymentToSave);
+    public void savePayment(Payment paymentToSave){
+        paymentRepository.save(paymentToSave);
     }
 }

@@ -21,8 +21,7 @@ public class PaymentRepository implements IPaymentRepository {
     }
 
     @Override
-    public Payment save(Payment paymentToSave){
+    public void save(Payment paymentToSave){
         allPays.add(paymentToSave);
-        return paymentToSave;
     }
 }
