@@ -1,8 +1,6 @@
 package com.coffeeshop.rest;
 
 import com.coffeeshop.models.customer.Payment;
-import com.coffeeshop.repository.interfaces.IPaymentRepository;
-import com.coffeeshop.repository.implementations.PaymentRepository;
 import com.coffeeshop.service.implementations.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,12 +22,11 @@ public class RestController {
    }
 
    @RequestMapping(method = RequestMethod.POST)
-   public Payment create(@RequestBody Payment paymentToCreate){
-      return paymentService.savePayment(paymentToCreate);
+   public void makePayment(@RequestBody Payment paymentToCreate){ paymentService.savePayment(paymentToCreate);
    }
 
    @RequestMapping(method = RequestMethod.GET)
-   public ResponseEntity<?> getPays(){
+   public ResponseEntity<?> getPayments(){
       List<Payment> allPayments = paymentService.getAllPayments();
       return new ResponseEntity<>(allPayments, HttpStatus.OK);
    }

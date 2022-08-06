@@ -19,11 +19,11 @@ public class RestClient {
         return null;
     }
 
-    public Payment create(Payment paymentToCreate){
-        return execute(() -> restTemplate.postForObject(URL, paymentToCreate, Payment.class));
+    public void makePayment(Payment paymentToCreate){
+        execute(() -> restTemplate.postForObject(URL, paymentToCreate, Payment.class));
     }
 
-    public Payment[] getPays(){
+    public Payment[] getPayments(){
         return execute(() -> restTemplate.getForObject(URL, Payment[].class));
     }
 }

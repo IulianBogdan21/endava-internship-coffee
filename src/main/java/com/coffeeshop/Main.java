@@ -158,7 +158,7 @@ public class Main {
         Payment payment = new Payment(card, coffeeOrder.getCustomerName(), CoffeeManager.getIngredientsAndAmountFromOrder(coffeeOrder));
         payment.setPaymentId(ApplicationContextFactory.getInstance().getBean("idGenerator", IdGenerator.class).generateId());
         RestClient client = ApplicationContextFactory.getInstance().getBean("client", RestClient.class);
-        client.create(payment);
+        client.makePayment(payment);
     }
 
     /**
