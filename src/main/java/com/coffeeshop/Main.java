@@ -1,5 +1,6 @@
 package com.coffeeshop;
 
+import com.coffeeshop.exceptions.CardException;
 import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.customer.Card;
 import com.coffeeshop.models.customer.CoffeeOrder;
@@ -7,6 +8,7 @@ import com.coffeeshop.models.customer.OrderStatus;
 import com.coffeeshop.models.customer.Payment;
 import com.coffeeshop.models.shop.CoffeeShop;
 import com.coffeeshop.rest.RestClient;
+import com.coffeeshop.service.implementations.CardValidationService;
 import com.coffeeshop.service.implementations.IngredientsService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.IdGenerator;
@@ -119,9 +121,15 @@ public class Main {
             Coffee orderedCoffee = ApplicationContextFactory.getInstance().getBean("coffeeManager", CoffeeManager.class)
                     .buildCoffeeFromMenu(menuOption, customerName);
             if (menuOption == FINISH_ORDER) {
-                proceedWithPayment(coffeeOrder);
-                finishCustomerOrder(coffeeShop, coffeeOrder);
-                return;
+                try {
+                    proceedWithPayment(coffeeOrder);
+                    finishCustomerOrder(coffeeShop, coffeeOrder);
+                    return;
+                }
+                catch (CardException ex){
+                    ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printExceptionMessage(ex.getMessage());
+                    return;
+                }
             }
             if (optionChosenFromMenuIsInvalid(orderedCoffee)) {
                 ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenuInvalidOption();
@@ -149,6 +157,7 @@ public class Main {
         String dateOfExpiry = consoleManager.getDateOfExpiry();
         String civ = consoleManager.getCiv();
         Card card = new Card(cardNumber, cardOwner, dateOfExpiry, civ);
+        ApplicationContextFactory.getInstance().getBean("cardValidationService", CardValidationService.class).validateCard(card);
         Payment payment = new Payment(card, coffeeOrder.getCustomerName(),
                 ApplicationContextFactory.getInstance().getBean("coffeeManager", CoffeeManager.class)
                         .getIngredientsAndAmountFromOrder(coffeeOrder));

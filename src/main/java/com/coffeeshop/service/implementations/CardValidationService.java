@@ -62,10 +62,9 @@ public class CardValidationService implements com.coffeeshop.service.interfaces.
      * assume expiration years are allowed until 2039
      */
     private boolean isDateValid(String expiryDate) {
-        String regularDateRegex = "[12][0-9]/[23][0-9]";
-        String zeroFirstRegex = "[0][1-9]/[23][0-9]";
-        String threeFirstRegex = "[3][01]/[23][0-9]";
-        return expiryDate.matches(regularDateRegex) || expiryDate.matches(zeroFirstRegex) || expiryDate.matches(threeFirstRegex);
+        String regularDateRegex = "[0][1-9]/[23][0-9]";
+        String oneFirstRegex = "[1][0-2]/[23][0-9]";
+        return expiryDate.matches(regularDateRegex) || expiryDate.matches(oneFirstRegex);
     }
 
     /**
