@@ -1,18 +1,31 @@
 package com.coffeeshop.service.implementations;
 
+import com.coffeeshop.exceptions.CardException;
 import com.coffeeshop.models.customer.Card;
 import org.springframework.stereotype.Service;
 
 @Service("cardValidationService")
-public class CardValidationService {
+public class CardValidationService implements com.coffeeshop.service.interfaces.ICardValidationService {
 
     public CardValidationService(){}
 
-    public boolean isCardValid(Card cardToValidate){
-        return isNameValid(cardToValidate.getCardholderName())
-                && isCivValid(cardToValidate.getCiv())
-                && isDateValid(cardToValidate.getExpiryDate())
-                && isCardNumberValid(cardToValidate.getCardNumber());
+    /**
+     * @param cardToValidate - Card instance - the card that needs to be validated
+     * @throws CardException - if card is not valid(number, civ, name or expiry date are invalid )
+     */
+    @Override
+    public void validateCard(Card cardToValidate) throws CardException {
+        String validationString = "";
+        if(!isCardNumberValid(cardToValidate.getCardNumber()))
+            validationString += "Card number is invalid!\n";
+        if(!isDateValid(cardToValidate.getExpiryDate()))
+            validationString += "Expiry date is invalid!\n";
+        if(!isCivValid(cardToValidate.getCiv()))
+            validationString += "Civ is invalid!\n";
+        if(!isNameValid(cardToValidate.getCardholderName()))
+            validationString += "Cardholder name is invalid!\n";
+        if(!validationString.equals(""))
+            throw new CardException(validationString);
     }
 
     /**

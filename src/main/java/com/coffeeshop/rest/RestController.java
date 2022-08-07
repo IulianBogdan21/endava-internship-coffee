@@ -1,5 +1,6 @@
 package com.coffeeshop.rest;
 
+import com.coffeeshop.exceptions.RestException;
 import com.coffeeshop.models.customer.Payment;
 import com.coffeeshop.service.implementations.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,9 @@ public class RestController {
       return new ResponseEntity<>(allPayments, HttpStatus.OK);
    }
 
-   @ExceptionHandler({Exception.class})
+   @ExceptionHandler({RestException.class})
    @ResponseStatus(HttpStatus.BAD_REQUEST)
-   public String entityError(Exception ex) {
+   public String entityError(RestException ex) {
       return ex.getMessage();
    }
 }

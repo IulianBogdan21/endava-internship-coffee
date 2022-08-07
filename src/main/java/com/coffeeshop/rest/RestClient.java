@@ -1,5 +1,6 @@
 package com.coffeeshop.rest;
 
+import com.coffeeshop.exceptions.RestException;
 import com.coffeeshop.models.customer.Payment;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,7 +11,7 @@ public class RestClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private <T> T execute(Callable<T> callable) {
+    private <T> T execute(Callable<T> callable){
         try {
             return callable.call();
         } catch (Exception e) {
