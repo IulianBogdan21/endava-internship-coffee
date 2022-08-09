@@ -9,6 +9,10 @@ import com.coffeeshop.utilitary.managers.ConsoleManager;
 import com.coffeeshop.utilitary.managers.PricesManager;
 import com.coffeeshop.utilitary.managers.StockManager;
 import com.coffeeshop.utilitary.printers.Printer;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -78,5 +82,18 @@ public class AppConfig {
     @Bean(name = "cardValidationService")
     public CardValidationService getCardValidationService(){
         return new CardValidationService();
+    }
+
+    @Bean(name = "sessionFactory")
+    public SessionFactory getSessionFactory(){
+        StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+        try{
+            return new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        }
+        catch (Exception exception){
+            System.err.println("Exception: " + exception);
+            StandardServiceRegistryBuilder.destroy(registry);
+        }
+        return null;
     }
 }
