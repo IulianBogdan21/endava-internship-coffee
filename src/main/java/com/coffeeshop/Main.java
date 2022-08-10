@@ -31,7 +31,7 @@ public class Main {
     private static final int COFFEE_TYPE_HIGHER_LIMIT = 6;
     private static final int FINISH_ORDER = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
         CoffeeShop coffeeShop = openCoffeeShop();
         coffeeShop.scheduleInventoryCheck();

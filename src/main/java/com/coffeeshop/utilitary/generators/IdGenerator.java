@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * class used to generate id's for client orders
  */
-@Component
+@Component("idGenerator")
 public class IdGenerator{
     private final List<Integer> listOfPossibleIds;
     private final Random randomizer;

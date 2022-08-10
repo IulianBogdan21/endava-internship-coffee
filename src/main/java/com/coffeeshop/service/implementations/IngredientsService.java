@@ -25,7 +25,7 @@ public class IngredientsService implements IIngredientsService {
     }
 
     @Override
-    public Map<Ingredients, Integer> getAllIngredients(){
+    public Map<Ingredients, Integer> getAllIngredients() throws Exception {
         return ingredientsRepository.getAll();
     }
 

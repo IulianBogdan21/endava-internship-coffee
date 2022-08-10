@@ -5,7 +5,7 @@ import com.coffeeshop.models.shop.Ingredients;
 import java.util.Map;
 
 public interface IIngredientsService {
-    Map<Ingredients, Integer> getAllIngredients();
+    Map<Ingredients, Integer> getAllIngredients() throws Exception;
 
     void updateStock(Map<Ingredients, Integer> consumedIngredients);
 

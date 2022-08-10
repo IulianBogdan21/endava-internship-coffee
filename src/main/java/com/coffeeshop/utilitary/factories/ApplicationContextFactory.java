@@ -1,6 +1,6 @@
 package com.coffeeshop.utilitary.factories;
 
-import configuration.AppConfig;
+import com.coffeeshop.configuration.AppConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

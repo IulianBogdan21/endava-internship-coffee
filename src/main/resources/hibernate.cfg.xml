@@ -15,7 +15,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Echo all executed SQL to stdout -->
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
         <property name="format_sql">true</property>
+        <mapping class="com.coffeeshop.models.dtos.IngredientDto"/>
     </session-factory>
 </hibernate-configuration>
