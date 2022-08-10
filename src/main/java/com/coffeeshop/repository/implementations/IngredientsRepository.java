@@ -1,66 +1,31 @@
 package com.coffeeshop.repository.implementations;
 
+import com.coffeeshop.dao.implementations.IngredientsDao;
 import com.coffeeshop.models.dtos.IngredientDto;
-import com.coffeeshop.repository.interfaces.IIngredientsRepository;
-import com.coffeeshop.models.shop.Ingredients;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
+import com.coffeeshop.repository.interfaces.CoffeeShopRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository("ingredientsRepository")
-@DependsOn(value = "sessionFactory")
-public class IngredientsRepository implements IIngredientsRepository {
+public class IngredientsRepository implements CoffeeShopRepository<IngredientDto> {
 
-    private final SessionFactory sessionFactory;
+    private final IngredientsDao ingredientsDAO;
 
-    @Autowired
-    public IngredientsRepository(SessionFactory sessionFactory){
-        this.sessionFactory = sessionFactory;
+    public IngredientsRepository(IngredientsDao ingredientsDAO){
+        this.ingredientsDAO = ingredientsDAO;
     }
 
     @Override
-    public Map<Ingredients, Integer> getAll() throws Exception {
-        try(Session session = sessionFactory.openSession()){
-            session.beginTransaction();
-            List<IngredientDto> ingredientsDtoToMap = session.createQuery("from IngredientDto", IngredientDto.class).list();
-            Map<Ingredients, Integer> createIngredientsMap = new HashMap<>();
-            for(IngredientDto ingredientDto: ingredientsDtoToMap){
-                createIngredientsMap.put(ingredientDto.getIngredient(), ingredientDto.getQuantity());
-            }
-            session.getTransaction().commit();
-            return createIngredientsMap;
-        }
-        catch (Exception exception){
-            throw new Exception(exception.getMessage());
-        }
+    public List<IngredientDto> getAll() throws Exception {
+        return ingredientsDAO.getAll();
     }
 
-    /**
-     * method updates the current stock of ingredients after preparing a coffee
-     * @param consumedIngredients - ingredients consumed after making a certain coffee
-     */
     @Override
-    public void updateIngredients(Map<Ingredients, Integer> consumedIngredients) throws Exception {
-        try(Session session = sessionFactory.openSession()){
-            for(Ingredients ingredient: consumedIngredients.keySet()){
-                Integer amountOfIngredient = consumedIngredients.get(ingredient);
-                session.beginTransaction();
-                Query updateQuery = session.createQuery("update IngredientDto set quantity=(quantity - :quantityParam) where ingredient=:ingredientParam");
-                updateQuery.setParameter("quantityParam", amountOfIngredient);
-                updateQuery.setParameter("ingredientParam", ingredient);
-                updateQuery.executeUpdate();
-                session.getTransaction().commit();
-            }
-        }
-        catch (Exception exception){
-            throw new Exception(exception.getMessage());
-        }
+    public void save(IngredientDto entity) {}
+
+    @Override
+    public void update(IngredientDto entity) throws Exception {
+        ingredientsDAO.update(entity);
     }
 }

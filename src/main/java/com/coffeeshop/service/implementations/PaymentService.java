@@ -2,13 +2,14 @@ package com.coffeeshop.service.implementations;
 
 import com.coffeeshop.models.customer.Payment;
 import com.coffeeshop.repository.implementations.PaymentRepository;
+import com.coffeeshop.service.interfaces.CoffeeShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service("paymentService")
-public class PaymentService implements com.coffeeshop.service.interfaces.IPaymentService {
+public class PaymentService implements CoffeeShopService{
     private PaymentRepository paymentRepository;
 
     public PaymentService() {}
@@ -18,12 +19,10 @@ public class PaymentService implements com.coffeeshop.service.interfaces.IPaymen
         this.paymentRepository = paymentRepository;
     }
 
-    @Override
     public List<Payment> getAllPayments(){
         return paymentRepository.getAll();
     }
 
-    @Override
     public void savePayment(Payment paymentToSave){
         paymentRepository.save(paymentToSave);
     }
