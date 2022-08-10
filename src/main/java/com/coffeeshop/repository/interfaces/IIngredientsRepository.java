@@ -7,5 +7,5 @@ import java.util.Map;
 public interface IIngredientsRepository {
     Map<Ingredients, Integer> getAll() throws Exception;
 
-    void updateIngredients(Map<Ingredients, Integer> consumedIngredients);
+    void updateIngredients(Map<Ingredients, Integer> consumedIngredients) throws Exception;
 }

@@ -5,6 +5,7 @@ import com.coffeeshop.repository.interfaces.IIngredientsRepository;
 import com.coffeeshop.models.shop.Ingredients;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
@@ -46,11 +47,20 @@ public class IngredientsRepository implements IIngredientsRepository {
      * @param consumedIngredients - ingredients consumed after making a certain coffee
      */
     @Override
-    public void updateIngredients(Map<Ingredients, Integer> consumedIngredients){
-        /*for(Ingredients iteratedConsumedIngredient: consumedIngredients.keySet()){
-            int updatedQuantityForIngredient = stockOfIngredients.get(iteratedConsumedIngredient) -
-                    consumedIngredients.get(iteratedConsumedIngredient);
-            stockOfIngredients.put(iteratedConsumedIngredient, updatedQuantityForIngredient);
-        }*/
+    public void updateIngredients(Map<Ingredients, Integer> consumedIngredients) throws Exception {
+        try(Session session = sessionFactory.openSession()){
+            for(Ingredients ingredient: consumedIngredients.keySet()){
+                Integer amountOfIngredient = consumedIngredients.get(ingredient);
+                session.beginTransaction();
+                Query updateQuery = session.createQuery("update IngredientDto set quantity=(quantity - :quantityParam) where ingredient=:ingredientParam");
+                updateQuery.setParameter("quantityParam", amountOfIngredient);
+                updateQuery.setParameter("ingredientParam", ingredient);
+                updateQuery.executeUpdate();
+                session.getTransaction().commit();
+            }
+        }
+        catch (Exception exception){
+            throw new Exception(exception.getMessage());
+        }
     }
 }

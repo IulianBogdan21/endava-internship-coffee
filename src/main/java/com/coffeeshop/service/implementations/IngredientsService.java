@@ -30,7 +30,7 @@ public class IngredientsService implements IIngredientsService {
     }
 
     @Override
-    public void updateStock(Map<Ingredients, Integer> consumedIngredients){
+    public void updateStock(Map<Ingredients, Integer> consumedIngredients) throws Exception {
         ingredientsRepository.updateIngredients(consumedIngredients);
     }
 
