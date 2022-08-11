@@ -27,5 +27,5 @@ public class RecipesRepository implements CoffeeShopRepository<Coffee> {
     }
 
     @Override
-    public void update(Coffee entity) throws Exception {}
+    public void update(Coffee entity) throws Exception{}
 }

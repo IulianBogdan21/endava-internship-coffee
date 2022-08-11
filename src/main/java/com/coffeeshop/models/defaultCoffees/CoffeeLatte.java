@@ -2,6 +2,9 @@ package com.coffeeshop.models.defaultCoffees;
 
 import com.coffeeshop.models.shop.Ingredients;
 
+import javax.persistence.Entity;
+
+@Entity
 public class CoffeeLatte extends Espresso {
 
     public CoffeeLatte() {}

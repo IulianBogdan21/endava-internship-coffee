@@ -6,8 +6,6 @@ import com.coffeeshop.models.shop.Ingredients;
 import javax.persistence.Entity;
 
 @Entity
-//@Table(name = "recipes")
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Espresso extends Coffee {
 
     public Espresso() {}

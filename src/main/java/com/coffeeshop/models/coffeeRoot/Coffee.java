@@ -5,14 +5,13 @@ import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.managers.PricesManager;
 
 import javax.persistence.*;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * abstract class Coffee - further coffee types will inherit this class
  */
-//@MappedSuperclass
 @Entity
 @Table(name = "recipes")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -25,7 +24,7 @@ public abstract class Coffee {
     @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn
     @MapKeyEnumerated(EnumType.STRING)
-    protected Map<Ingredients, Integer> recipe = new HashMap<Ingredients, Integer>();
+    protected Map<Ingredients, Integer> recipe = new LinkedHashMap<Ingredients, Integer>();
 
     /**
      * @return double = the price of the coffee (in euros)
