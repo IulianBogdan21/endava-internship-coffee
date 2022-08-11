@@ -11,9 +11,10 @@ public class BlackCoffee extends Coffee {
     public BlackCoffee(String customerName) {
         ingredientsForCoffeeAndAmount.put(Ingredients.BLACK_COFFEE, 1);
         this.customerName = customerName;
+        setCoffeeName("Black coffee");
     }
 
     public String getCoffeeName() {
-        return "Black coffee";
+        return coffeeName;
     }
 }

@@ -12,11 +12,13 @@ public class BlackCoffeeBasedBeverage extends CoffeeBase {
 
     public BlackCoffeeBasedBeverage(Integer shotsOfBlackCoffee) {
         ingredientsForCoffeeAndAmount.put(Ingredients.BLACK_COFFEE, shotsOfBlackCoffee);
+        this.coffeeName = customerName;
     }
 
     public BlackCoffeeBasedBeverage(String customerName, Integer shotsOfBlackCoffee) {
         ingredientsForCoffeeAndAmount.put(Ingredients.BLACK_COFFEE, shotsOfBlackCoffee);
         this.customerName = customerName;
+        this.coffeeName = customerName;
     }
 
     public String getCoffeeName() {

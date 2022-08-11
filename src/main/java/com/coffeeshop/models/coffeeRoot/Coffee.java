@@ -12,6 +12,7 @@ import java.util.Objects;
  * abstract class Coffee - further coffee types will inherit this class
  */
 public abstract class Coffee {
+    protected String coffeeName;
     protected String customerName;
     protected Map<Ingredients, Integer> ingredientsForCoffeeAndAmount = new HashMap<>();
 
@@ -36,6 +37,10 @@ public abstract class Coffee {
     }
 
     public abstract String getCoffeeName();
+
+    public void setCoffeeName(String coffeeName) {
+        this.coffeeName = coffeeName;
+    }
 
     public void setCustomerName(String customerName){
         this.customerName = customerName;

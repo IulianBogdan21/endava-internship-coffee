@@ -11,9 +11,10 @@ public class Machiatto extends Espresso {
         super(customerName);
         ingredientsForCoffeeAndAmount.put(Ingredients.MILK_FOAM, 1);
         this.customerName = customerName;
+        setCoffeeName("Machiatto");
     }
 
     public String getCoffeeName() {
-        return "Machiatto";
+        return coffeeName;
     }
 }

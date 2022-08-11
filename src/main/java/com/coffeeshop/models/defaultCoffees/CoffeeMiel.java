@@ -13,9 +13,10 @@ public class CoffeeMiel extends BlackCoffee {
         ingredientsForCoffeeAndAmount.put(Ingredients.CINNAMON, 1);
         ingredientsForCoffeeAndAmount.put(Ingredients.STEAMED_MILK, 1);
         this.customerName = customerName;
+        setCoffeeName("Coffee Miel");
     }
 
     public String getCoffeeName() {
-        return "Coffee Miel";
+        return coffeeName;
     }
 }
