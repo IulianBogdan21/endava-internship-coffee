@@ -9,9 +9,9 @@ public class CoffeeMiel extends BlackCoffee {
 
     public CoffeeMiel(String customerName) {
         super(customerName);
-        ingredientsForCoffeeAndAmount.put(Ingredients.HONEY, 1);
-        ingredientsForCoffeeAndAmount.put(Ingredients.CINNAMON, 1);
-        ingredientsForCoffeeAndAmount.put(Ingredients.STEAMED_MILK, 1);
+        recipe.put(Ingredients.HONEY, 1);
+        recipe.put(Ingredients.CINNAMON, 1);
+        recipe.put(Ingredients.STEAMED_MILK, 1);
         this.customerName = customerName;
         setCoffeeName("Coffee Miel");
     }

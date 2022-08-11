@@ -9,7 +9,7 @@ public class Machiatto extends Espresso {
 
     public Machiatto(String customerName) {
         super(customerName);
-        ingredientsForCoffeeAndAmount.put(Ingredients.MILK_FOAM, 1);
+        recipe.put(Ingredients.MILK_FOAM, 1);
         this.customerName = customerName;
         setCoffeeName("Machiatto");
     }

@@ -7,5 +7,5 @@ public interface CoffeeShopDao<E> {
 
     void update(E entity) throws Exception;
 
-    void save(E entity);
+    void save(E entity) throws Exception;
 }

@@ -6,10 +6,13 @@ import com.coffeeshop.models.customer.Card;
 import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.customer.OrderStatus;
 import com.coffeeshop.models.customer.Payment;
+import com.coffeeshop.models.defaultCoffees.Cappucino;
+import com.coffeeshop.models.defaultCoffees.Espresso;
 import com.coffeeshop.models.shop.CoffeeShop;
 import com.coffeeshop.rest.RestClient;
 import com.coffeeshop.service.implementations.CardValidationService;
 import com.coffeeshop.service.implementations.IngredientsService;
+import com.coffeeshop.service.implementations.RecipesService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.IdGenerator;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
@@ -22,6 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+
 @SpringBootApplication
 public class Main {
 
@@ -33,9 +38,17 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
-        CoffeeShop coffeeShop = openCoffeeShop();
+        RecipesService recipesService = ApplicationContextFactory.getInstance()
+                .getBean("recipesService", RecipesService.class);
+        recipesService.saveCoffee(new Cappucino("b"));
+        /*List<Coffee> getAllCoffees = recipesService.getAllRecipes();
+        for(Coffee coffee1: getAllCoffees){
+            System.out.println(coffee1.getCoffeeName());
+            System.out.println(coffee1.getRecipe());
+        }*/
+        /*CoffeeShop coffeeShop = openCoffeeShop();
         coffeeShop.scheduleInventoryCheck();
-        handleOrdersFromClients(coffeeShop);
+        handleOrdersFromClients(coffeeShop);*/
     }
 
     /**
@@ -140,7 +153,7 @@ public class Main {
             updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
             ApplicationContextFactory.getInstance().getBean("ingredientsService", IngredientsService.class)
                     .updateStock(ApplicationContextFactory.getInstance().getBean("stockManager", StockManager.class)
-                            .evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getIngredientsForCoffeeAndAmount(), amountOfCoffee));
+                            .evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getRecipe(), amountOfCoffee));
         }
     }
 
