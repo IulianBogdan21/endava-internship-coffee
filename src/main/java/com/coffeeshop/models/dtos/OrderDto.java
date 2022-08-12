@@ -1,24 +1,47 @@
 package com.coffeeshop.models.dtos;
 
 import com.coffeeshop.models.customer.OrderStatus;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "orders")
 public class OrderDto {
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    @Column(name = "order_id", unique = true)
     private Integer orderId;
+    @Column(name = "customer_name")
     private String customerName;
+    @Column(name = "order_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime timeOfOrdering;
+    @Column(name = "order_type")
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<CoffeeDto> coffeesFromOrder;
-    private Integer costOfOrder;
+    @Column(name = "total_cost")
+    private Double costOfOrder;
 
     public OrderDto() {}
 
     public OrderDto(Integer orderId, String customerName, LocalDateTime timeOfOrdering,
-                    OrderStatus orderStatus, List<CoffeeDto> coffeesFromOrder, Integer costOfOrder) {
+                    OrderStatus orderStatus, List<CoffeeDto> coffeesFromOrder, Double costOfOrder) {
         this.orderId = orderId;
+        this.customerName = customerName;
+        this.timeOfOrdering = timeOfOrdering;
+        this.orderStatus = orderStatus;
+        this.coffeesFromOrder = coffeesFromOrder;
+        this.costOfOrder = costOfOrder;
+    }
+
+    public OrderDto(String customerName, LocalDateTime timeOfOrdering,
+                    OrderStatus orderStatus, List<CoffeeDto> coffeesFromOrder, Double costOfOrder) {
         this.customerName = customerName;
         this.timeOfOrdering = timeOfOrdering;
         this.orderStatus = orderStatus;
@@ -66,11 +89,11 @@ public class OrderDto {
         this.coffeesFromOrder = coffeesFromOrder;
     }
 
-    public Integer getCostOfOrder() {
+    public Double getCostOfOrder() {
         return costOfOrder;
     }
 
-    public void setCostOfOrder(Integer costOfOrder) {
+    public void setCostOfOrder(Double costOfOrder) {
         this.costOfOrder = costOfOrder;
     }
 

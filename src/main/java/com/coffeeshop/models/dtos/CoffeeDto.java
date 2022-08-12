@@ -1,15 +1,17 @@
 package com.coffeeshop.models.dtos;
 
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class CoffeeDto {
     private String coffeeName;
     private Integer amount;
-    private Integer price;
+    private Double price;
 
     public CoffeeDto() {}
 
-    public CoffeeDto(String coffeeName, Integer amount, Integer price) {
+    public CoffeeDto(String coffeeName, Integer amount, Double price) {
         this.coffeeName = coffeeName;
         this.amount = amount;
         this.price = price;
@@ -31,11 +33,11 @@ public class CoffeeDto {
         this.amount = amount;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
