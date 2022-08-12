@@ -6,10 +6,14 @@ import com.coffeeshop.models.customer.Card;
 import com.coffeeshop.models.customer.CoffeeOrder;
 import com.coffeeshop.models.customer.OrderStatus;
 import com.coffeeshop.models.customer.Payment;
+import com.coffeeshop.models.dtos.CoffeeDto;
+import com.coffeeshop.models.dtos.OrderDto;
 import com.coffeeshop.models.shop.CoffeeShop;
 import com.coffeeshop.rest.RestClient;
 import com.coffeeshop.service.implementations.CardValidationService;
 import com.coffeeshop.service.implementations.IngredientsService;
+import com.coffeeshop.service.implementations.OrdersService;
+import com.coffeeshop.utilitary.converters.CoffeeDtoConverter;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.generators.IdGenerator;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
@@ -22,13 +26,16 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @SpringBootApplication
 public class Main {
 
     private static final int DELIVERY_STATUS_LOWER_LIMIT = 1;
     private static final int DELIVERY_STATUS_HIGHER_LIMIT = 2;
     private static final int COFFEE_TYPE_LOWER_LIMIT = 0;
-    private static final int COFFEE_TYPE_HIGHER_LIMIT = 6;
+    private static final int COFFEE_TYPE_HIGHER_LIMIT = 7;
     private static final int FINISH_ORDER = 0;
 
     public static void main(String[] args) throws Exception {
@@ -81,12 +88,20 @@ public class Main {
      * @param coffeeShop CoffeeShop
      * @param coffeeOrder - customer's order
      */
-    private static void finishCustomerOrder(@NotNull CoffeeShop coffeeShop, CoffeeOrder coffeeOrder){
+    private static void finishCustomerOrder(@NotNull CoffeeShop coffeeShop, CoffeeOrder coffeeOrder) throws Exception {
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printOrderedCoffeesAndTheirAmount(coffeeOrder);
         double profitObtained = coffeeOrder.getPriceOfOrder();
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCostOfOrder(profitObtained);
         coffeeShop.addToProfit(profitObtained);
         ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCurrentProfitOfCoffeeShop(coffeeShop);
+        List<CoffeeDto> convertedCoffees = ApplicationContextFactory.getInstance()
+                .getBean("coffeeDtoConverter", CoffeeDtoConverter.class)
+                .convertMapToListOfCoffeeDtos(coffeeOrder.getOrderedCoffeesAndQuantity());
+        OrderDto convertedOrder = new OrderDto(coffeeOrder.getCustomerName(), LocalDateTime.now(),
+                coffeeOrder.getOrderStatus(), convertedCoffees, coffeeOrder.getPriceOfOrder());
+        ApplicationContextFactory.getInstance().getBean("ordersService", OrdersService.class)
+                .saveOrder(convertedOrder);
+
     }
 
     /**

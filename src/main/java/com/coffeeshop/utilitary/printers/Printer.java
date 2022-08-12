@@ -27,7 +27,7 @@ public class Printer {
     }
 
     public void printMenu(CoffeeShop openCoffeeShop){
-        System.out.println("0: Finish order\n" + openCoffeeShop.getAllBeverages() + "6: Design your own coffee\n\nIntroduce option: ");
+        System.out.println("0: Finish order\n" + openCoffeeShop.getAllBeverages() + "7: Design your own coffee\n\nIntroduce option: ");
     }
 
     public void printMenuInvalidOption(){

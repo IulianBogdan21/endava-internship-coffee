@@ -73,13 +73,15 @@ public class CoffeeManager {
         Coffee customisedCoffee;
         switch (menuOption) {
             case 1 -> customisedCoffee = new Espresso(customerName);
-            case 2 -> customisedCoffee = new Machiatto(customerName);
-            case 3 -> customisedCoffee = new CoffeeLatte(customerName);
-            case 4 -> customisedCoffee = new Cappucino(customerName);
-            case 5 -> customisedCoffee = new CoffeeMiel(customerName);
-            case 6 -> {
+            case 2 -> customisedCoffee = new BlackCoffee(customerName);
+            case 3 -> customisedCoffee = new Machiatto(customerName);
+            case 4 -> customisedCoffee = new CoffeeLatte(customerName);
+            case 5 -> customisedCoffee = new Cappucino(customerName);
+            case 6 -> customisedCoffee = new CoffeeMiel(customerName);
+            case 7 -> {
                 customisedCoffee = buildCustomisableCoffee();
                 customisedCoffee.setCustomerName(customerName);
+                customisedCoffee.setCoffeeName(customerName);
             }
             default -> customisedCoffee = null;
         }
