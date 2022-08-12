@@ -5,7 +5,7 @@
 -- Dumped from database version 14.1
 -- Dumped by pg_dump version 14.1
 
--- Started on 2022-08-11 18:05:37
+-- Started on 2022-08-12 12:51:15
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -50,6 +50,62 @@ CREATE TABLE public.ingredients (
 ALTER TABLE public.ingredients OWNER TO postgres;
 
 --
+-- TOC entry 214 (class 1259 OID 41558)
+-- Name: orderdto_coffeesfromorder; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orderdto_coffeesfromorder (
+    orderdto_order_id integer NOT NULL,
+    amount integer,
+    coffeename character varying(255),
+    price double precision
+);
+
+
+ALTER TABLE public.orderdto_coffeesfromorder OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 41541)
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders (
+    order_id integer NOT NULL,
+    customer_name character varying(30),
+    order_type character varying(15),
+    total_cost double precision,
+    order_date timestamp without time zone
+);
+
+
+ALTER TABLE public.orders OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 41540)
+-- Name: orders_order_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_order_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_order_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3344 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: orders_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_order_id_seq OWNED BY public.orders.order_id;
+
+
+--
 -- TOC entry 210 (class 1259 OID 41365)
 -- Name: recipes; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -65,7 +121,15 @@ CREATE TABLE public.recipes (
 ALTER TABLE public.recipes OWNER TO postgres;
 
 --
--- TOC entry 3321 (class 0 OID 41528)
+-- TOC entry 3180 (class 2604 OID 41544)
+-- Name: orders order_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders ALTER COLUMN order_id SET DEFAULT nextval('public.orders_order_id_seq'::regclass);
+
+
+--
+-- TOC entry 3335 (class 0 OID 41528)
 -- Dependencies: 211
 -- Data for Name: coffee_recipe; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -89,24 +153,52 @@ Machiatto	1	MILK_FOAM
 
 
 --
--- TOC entry 3319 (class 0 OID 41359)
+-- TOC entry 3333 (class 0 OID 41359)
 -- Dependencies: 209
 -- Data for Name: ingredients; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.ingredients (ingredient, quantity) FROM stdin;
 STEAMED_MILK	15
-HONEY	10
-CINNAMON	10
-ESPRESSO	20
 MILK_FOAM	15
-BLACK_COFFEE	20
 SYRUP	10
+BLACK_COFFEE	20
+HONEY	10
+ESPRESSO	20
+CINNAMON	10
 \.
 
 
 --
--- TOC entry 3320 (class 0 OID 41365)
+-- TOC entry 3338 (class 0 OID 41558)
+-- Dependencies: 214
+-- Data for Name: orderdto_coffeesfromorder; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orderdto_coffeesfromorder (orderdto_order_id, amount, coffeename, price) FROM stdin;
+1	2	Espresso	2.5
+1	2	Machiatto	6
+2	2	Espresso	2.5
+2	2	Hari	10.1
+3	2	Espresso	2.5
+\.
+
+
+--
+-- TOC entry 3337 (class 0 OID 41541)
+-- Dependencies: 213
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders (order_id, customer_name, order_type, total_cost, order_date) FROM stdin;
+1	Mircea	PICKUP	17	2022-08-12 11:53:51.109686
+2	Hari	DELIVERY	25.2	2022-08-12 12:32:29.497758
+3	Horia	PICKUP	5	2022-08-12 12:45:35.839153
+\.
+
+
+--
+-- TOC entry 3334 (class 0 OID 41365)
 -- Dependencies: 210
 -- Data for Name: recipes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -122,7 +214,16 @@ Machiatto	\N	\N	Machiatto
 
 
 --
--- TOC entry 3178 (class 2606 OID 41534)
+-- TOC entry 3345 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: orders_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_order_id_seq', 1, false);
+
+
+--
+-- TOC entry 3188 (class 2606 OID 41534)
 -- Name: coffee_recipe coffee_recipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -131,7 +232,7 @@ ALTER TABLE ONLY public.coffee_recipe
 
 
 --
--- TOC entry 3173 (class 2606 OID 41364)
+-- TOC entry 3183 (class 2606 OID 41364)
 -- Name: ingredients ingredients_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -140,7 +241,16 @@ ALTER TABLE ONLY public.ingredients
 
 
 --
--- TOC entry 3176 (class 2606 OID 41370)
+-- TOC entry 3191 (class 2606 OID 41547)
+-- Name: orders orders_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pk PRIMARY KEY (order_id);
+
+
+--
+-- TOC entry 3186 (class 2606 OID 41370)
 -- Name: recipes recipes_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -149,7 +259,7 @@ ALTER TABLE ONLY public.recipes
 
 
 --
--- TOC entry 3171 (class 1259 OID 41362)
+-- TOC entry 3181 (class 1259 OID 41362)
 -- Name: ingredients_name_uindex; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -157,7 +267,15 @@ CREATE UNIQUE INDEX ingredients_name_uindex ON public.ingredients USING btree (i
 
 
 --
--- TOC entry 3174 (class 1259 OID 41368)
+-- TOC entry 3189 (class 1259 OID 41545)
+-- Name: orders_order_id_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX orders_order_id_uindex ON public.orders USING btree (order_id);
+
+
+--
+-- TOC entry 3184 (class 1259 OID 41368)
 -- Name: recipes_name_uindex; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -165,7 +283,16 @@ CREATE UNIQUE INDEX recipes_name_uindex ON public.recipes USING btree (name);
 
 
 --
--- TOC entry 3179 (class 2606 OID 41535)
+-- TOC entry 3193 (class 2606 OID 41561)
+-- Name: orderdto_coffeesfromorder fkjguqabco5e7c58sgfs0abrl70; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orderdto_coffeesfromorder
+    ADD CONSTRAINT fkjguqabco5e7c58sgfs0abrl70 FOREIGN KEY (orderdto_order_id) REFERENCES public.orders(order_id);
+
+
+--
+-- TOC entry 3192 (class 2606 OID 41535)
 -- Name: coffee_recipe fkocllr2xmna3u63v8ynudlkp3h; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -173,7 +300,7 @@ ALTER TABLE ONLY public.coffee_recipe
     ADD CONSTRAINT fkocllr2xmna3u63v8ynudlkp3h FOREIGN KEY (coffee_name) REFERENCES public.recipes(name);
 
 
--- Completed on 2022-08-11 18:05:37
+-- Completed on 2022-08-12 12:51:16
 
 --
 -- PostgreSQL database dump complete
