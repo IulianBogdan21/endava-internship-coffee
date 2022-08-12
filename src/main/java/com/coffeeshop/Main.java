@@ -101,6 +101,14 @@ public class Main {
                 coffeeOrder.getOrderStatus(), convertedCoffees, coffeeOrder.getPriceOfOrder());
         ApplicationContextFactory.getInstance().getBean("ordersService", OrdersService.class)
                 .saveOrder(convertedOrder);
+        IngredientsService ingredientsService = ApplicationContextFactory.getInstance()
+                .getBean("ingredientsService", IngredientsService.class);
+        StockManager stockManager = ApplicationContextFactory.getInstance()
+                .getBean("stockManager", StockManager.class);
+        for(Coffee coffee: coffeeOrder.getOrderedCoffeesAndQuantity().keySet()) {
+            ingredientsService.updateStock(stockManager.evaluateAllIngredientsPerCoffeeCommand
+                    (coffee.getRecipe(), coffeeOrder.getOrderedCoffeesAndQuantity().get(coffee)));
+        }
 
     }
 
@@ -145,9 +153,6 @@ public class Main {
             int amountOfCoffee = ApplicationContextFactory.getInstance().getBean("consoleManager", ConsoleManager.class)
                     .getAmountOfOrderedCoffee();
             updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
-            ApplicationContextFactory.getInstance().getBean("ingredientsService", IngredientsService.class)
-                    .updateStock(ApplicationContextFactory.getInstance().getBean("stockManager", StockManager.class)
-                            .evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getRecipe(), amountOfCoffee));
         }
     }
 
