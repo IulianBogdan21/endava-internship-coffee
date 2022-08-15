@@ -4,3 +4,4 @@ build
 tmp/
 classes/
 gradle
+logging/
