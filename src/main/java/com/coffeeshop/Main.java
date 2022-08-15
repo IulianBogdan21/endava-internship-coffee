@@ -31,7 +31,7 @@ public class Main {
     private static final int COFFEE_TYPE_HIGHER_LIMIT = 6;
     private static final int FINISH_ORDER = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
         CoffeeShop coffeeShop = openCoffeeShop();
         coffeeShop.scheduleInventoryCheck();
@@ -43,7 +43,7 @@ public class Main {
      * @param coffeeShop - CoffeeShop
      */
     @SuppressWarnings("InfiniteLoopStatement")
-    private static void handleOrdersFromClients(CoffeeShop coffeeShop){
+    private static void handleOrdersFromClients(CoffeeShop coffeeShop) throws Exception {
         while(true){
             ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printCoffeeShopName(coffeeShop);
             String customerName = ApplicationContextFactory.getInstance().getBean("consoleManager", ConsoleManager.class)
@@ -113,7 +113,7 @@ public class Main {
      * @param customerName - the name of the customer
      * @param coffeeOrder - the customer's order
      */
-    private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder){
+    private static void getOrderFromClient(CoffeeShop coffeeShop, String customerName, CoffeeOrder coffeeOrder) throws Exception {
         while(true){
             ApplicationContextFactory.getInstance().getBean("printer", Printer.class).printMenu(coffeeShop);
             int menuOption = ApplicationContextFactory.getInstance().getBean("numberGenerator", NumberGenerator.class)

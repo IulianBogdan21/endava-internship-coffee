@@ -82,7 +82,7 @@ public class CoffeeShop {
      * every 20 seconds, this function realises an inventory check on the shop's ingredients
      */
     @Scheduled(fixedDelay = 1000 * 20, initialDelay = 1000 * 10)
-    public void scheduleInventoryCheck(){
+    public void scheduleInventoryCheck() throws Exception {
         IngredientsService ingredientsService = ApplicationContextFactory.getInstance()
                 .getBean("ingredientsService", IngredientsService.class);
         Map<Ingredients, Integer> stock = ingredientsService.getAllIngredients();

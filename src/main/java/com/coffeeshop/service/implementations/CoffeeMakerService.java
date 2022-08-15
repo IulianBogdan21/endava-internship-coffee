@@ -4,18 +4,17 @@ import com.coffeeshop.models.coffeeRoot.Coffee;
 import com.coffeeshop.models.coffeeRoot.CoffeeBase;
 import com.coffeeshop.models.customisedBaseCoffees.BlackCoffeeBasedBeverage;
 import com.coffeeshop.models.customisedBaseCoffees.EspressoBasedBeverage;
-import com.coffeeshop.service.interfaces.ICoffeeMakerService;
 import com.coffeeshop.models.shop.Ingredients;
+import com.coffeeshop.service.interfaces.CoffeeShopService;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service("coffeeMakerService")
-public class CoffeeMakerService implements ICoffeeMakerService {
+public class CoffeeMakerService implements CoffeeShopService {
 
     public CoffeeMakerService(){}
 
-    @Override
     public Coffee brewCoffeeAfterRecipe(Map<Ingredients, Integer> ingredients){
         Integer amountOfEspresso = ingredients.get(Ingredients.ESPRESSO);
         Integer amountOfBlackCoffee = ingredients.get(Ingredients.BLACK_COFFEE);

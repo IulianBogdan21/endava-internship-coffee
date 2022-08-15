@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * class with a single static method that builds the prices for every ingredient and returns a dictionary
  */
-@Component
+@Component("pricesManager")
 public class PricesManager {
     private final Map<Ingredients, Double> pricesForEachIngredient;
 

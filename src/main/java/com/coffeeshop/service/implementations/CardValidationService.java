@@ -2,10 +2,11 @@ package com.coffeeshop.service.implementations;
 
 import com.coffeeshop.exceptions.CardException;
 import com.coffeeshop.models.customer.Card;
+import com.coffeeshop.service.interfaces.CoffeeShopService;
 import org.springframework.stereotype.Service;
 
 @Service("cardValidationService")
-public class CardValidationService implements com.coffeeshop.service.interfaces.ICardValidationService {
+public class CardValidationService implements CoffeeShopService{
 
     public CardValidationService(){}
 
@@ -13,7 +14,6 @@ public class CardValidationService implements com.coffeeshop.service.interfaces.
      * @param cardToValidate - Card instance - the card that needs to be validated
      * @throws CardException - if card is not valid(number, civ, name or expiry date are invalid )
      */
-    @Override
     public void validateCard(Card cardToValidate) throws CardException {
         String validationString = "";
         if(!isCardNumberValid(cardToValidate.getCardNumber()))

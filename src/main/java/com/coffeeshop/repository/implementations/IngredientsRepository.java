@@ -1,40 +1,31 @@
 package com.coffeeshop.repository.implementations;
 
-import com.coffeeshop.repository.interfaces.IIngredientsRepository;
-import com.coffeeshop.models.shop.Ingredients;
-import com.coffeeshop.utilitary.managers.StockManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
+import com.coffeeshop.dao.implementations.IngredientsDao;
+import com.coffeeshop.models.dtos.IngredientDto;
+import com.coffeeshop.repository.interfaces.CoffeeShopRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
+import java.util.List;
 
 @Repository("ingredientsRepository")
-@DependsOn(value = "stockManager")
-public class IngredientsRepository implements IIngredientsRepository {
+public class IngredientsRepository implements CoffeeShopRepository<IngredientDto> {
 
-    private final Map<Ingredients, Integer> stockOfIngredients;
+    private final IngredientsDao ingredientsDAO;
 
-    @Autowired
-    public IngredientsRepository(StockManager stockManager){
-        this.stockOfIngredients = stockManager.buildInitialStocks();
+    public IngredientsRepository(IngredientsDao ingredientsDAO){
+        this.ingredientsDAO = ingredientsDAO;
     }
 
     @Override
-    public Map<Ingredients, Integer> getAll(){
-        return stockOfIngredients;
+    public List<IngredientDto> getAll() throws Exception {
+        return ingredientsDAO.getAll();
     }
 
-    /**
-     * method updates the current stock of ingredients after preparing a coffee
-     * @param consumedIngredients - ingredients consumed after making a certain coffee
-     */
     @Override
-    public void updateIngredients(Map<Ingredients, Integer> consumedIngredients){
-        for(Ingredients iteratedConsumedIngredient: consumedIngredients.keySet()){
-            int updatedQuantityForIngredient = stockOfIngredients.get(iteratedConsumedIngredient) -
-                    consumedIngredients.get(iteratedConsumedIngredient);
-            stockOfIngredients.put(iteratedConsumedIngredient, updatedQuantityForIngredient);
-        }
+    public void save(IngredientDto entity) {}
+
+    @Override
+    public void update(IngredientDto entity) throws Exception {
+        ingredientsDAO.update(entity);
     }
 }

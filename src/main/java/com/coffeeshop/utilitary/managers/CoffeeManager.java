@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Component("coffeeManager")
 @DependsOn(value = {"printer", "numberGenerator", "coffeeMakerService"})
 public class CoffeeManager {
     private static final int BASE_TYPE_LOWER_LIMIT = 1;
