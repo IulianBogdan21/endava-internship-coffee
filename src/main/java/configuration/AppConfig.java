@@ -1,6 +1,7 @@
 package configuration;
 
 import com.coffeeshop.rest.RestClient;
+import com.coffeeshop.service.implementations.CardValidationService;
 import com.coffeeshop.utilitary.generators.IdGenerator;
 import com.coffeeshop.utilitary.generators.NumberGenerator;
 import com.coffeeshop.utilitary.managers.CoffeeManager;
@@ -72,5 +73,10 @@ public class AppConfig {
     @Bean(name = "coffeeManager")
     public CoffeeManager getCoffeeManager(){
         return new CoffeeManager();
+    }
+
+    @Bean(name = "cardValidationService")
+    public CardValidationService getCardValidationService(){
+        return new CardValidationService();
     }
 }

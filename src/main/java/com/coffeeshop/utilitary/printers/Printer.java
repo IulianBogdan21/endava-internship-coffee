@@ -139,4 +139,8 @@ public class Printer {
     public void printIntroduceCardCiv(){
         System.out.println("Introduce CIV: ");
     }
+
+    public void printExceptionMessage(String message){
+        System.out.println(message);
+    }
 }
