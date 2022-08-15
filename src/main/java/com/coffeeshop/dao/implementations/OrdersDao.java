@@ -1,7 +1,7 @@
 package com.coffeeshop.dao.implementations;
 
 import com.coffeeshop.dao.interfaces.CoffeeShopDao;
-import com.coffeeshop.models.coffeeRoot.Coffee;
+import com.coffeeshop.models.dtos.OrderDto;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,24 +10,24 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component("recipesDAO")
+@Component("ordersDAO")
 @DependsOn(value = "sessionFactory")
-public class RecipesDao implements CoffeeShopDao<Coffee>{
+public class OrdersDao implements CoffeeShopDao<OrderDto>{
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public RecipesDao(SessionFactory sessionFactory){
+    public OrdersDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<Coffee> getAll() throws Exception {
+    public List<OrderDto> getAll() throws Exception {
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
-            List<Coffee> coffees = session.createQuery("from Coffee", Coffee.class).list();
+            List<OrderDto> ordersFromDatabase = session.createQuery("from OrderDto", OrderDto.class).list();
             session.getTransaction().commit();
-            return coffees;
+            return ordersFromDatabase;
         }
         catch (Exception exception){
             throw new Exception(exception.getMessage());
@@ -35,12 +35,12 @@ public class RecipesDao implements CoffeeShopDao<Coffee>{
     }
 
     @Override
-    public void update(Coffee entity) throws Exception {
+    public void update(OrderDto entity) throws Exception {
 
     }
 
     @Override
-    public void save(Coffee entity) throws Exception {
+    public void save(OrderDto entity) throws Exception {
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
             session.save(entity);

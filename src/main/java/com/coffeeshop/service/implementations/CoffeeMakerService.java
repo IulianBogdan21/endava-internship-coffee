@@ -27,6 +27,7 @@ public class CoffeeMakerService implements CoffeeShopService {
             newCoffee = new EspressoBasedBeverage(amountOfEspresso);
             ingredients.remove(Ingredients.ESPRESSO);
         }
+        System.out.println();
         for(Ingredients currentIngredient: ingredients.keySet()){
             newCoffee.addIngredient(currentIngredient, ingredients.get(currentIngredient));
         }
