@@ -18,5 +18,12 @@
         <property name="show_sql">false</property>
         <property name="format_sql">true</property>
         <mapping class="com.coffeeshop.models.dtos.IngredientDto"/>
+        <mapping class="com.coffeeshop.models.coffeeRoot.Coffee"/>
+        <mapping class="com.coffeeshop.models.defaultCoffees.Espresso"/>
+        <mapping class="com.coffeeshop.models.defaultCoffees.Cappucino"/>
+        <mapping class="com.coffeeshop.models.defaultCoffees.BlackCoffee"/>
+        <mapping class="com.coffeeshop.models.defaultCoffees.CoffeeLatte"/>
+        <mapping class="com.coffeeshop.models.defaultCoffees.CoffeeMiel"/>
+        <mapping class="com.coffeeshop.models.defaultCoffees.Machiatto"/>
     </session-factory>
 </hibernate-configuration>

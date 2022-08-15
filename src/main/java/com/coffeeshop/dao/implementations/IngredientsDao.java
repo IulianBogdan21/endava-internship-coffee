@@ -58,4 +58,9 @@ public class IngredientsDao implements CoffeeShopDao<IngredientDto> {
             throw new Exception(exception.getMessage());
         }
     }
+
+    @Override
+    public void save(IngredientDto entity) {
+
+    }
 }

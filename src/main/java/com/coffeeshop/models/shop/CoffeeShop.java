@@ -1,34 +1,37 @@
 package com.coffeeshop.models.shop;
 
 import com.coffeeshop.models.coffeeRoot.Coffee;
-import com.coffeeshop.models.defaultCoffees.*;
 import com.coffeeshop.service.implementations.IngredientsService;
+import com.coffeeshop.service.implementations.RecipesService;
 import com.coffeeshop.utilitary.factories.ApplicationContextFactory;
 import com.coffeeshop.utilitary.printers.Printer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Component("coffeeShop")
 public class CoffeeShop {
     private final String coffeeShopName;
-    private final List<Coffee> allCoffees;
+    private List<Coffee> allCoffees;
     private Double profit;
     private static Map<Ingredients, String> nameOfIngredients;
+    private final RecipesService recipesService;
 
-    public CoffeeShop() {
+    @Autowired
+    public CoffeeShop(RecipesService recipesService) {
+        this.recipesService = recipesService;
         this.coffeeShopName = "Good to go";
         this.profit = 0.0;
-        allCoffees = new ArrayList<>();
-        allCoffees.add(new Espresso());
-        allCoffees.add(new Machiatto());
-        allCoffees.add(new CoffeeLatte());
-        allCoffees.add(new Cappucino());
-        allCoffees.add(new CoffeeMiel());
+    }
+
+    @PostConstruct
+    private void initializeCoffeeShop() throws Exception {
+        allCoffees = recipesService.getAllRecipes();
     }
 
     public String getCoffeeShopName() {

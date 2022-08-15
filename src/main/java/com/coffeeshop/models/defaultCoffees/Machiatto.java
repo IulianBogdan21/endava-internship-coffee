@@ -2,6 +2,9 @@ package com.coffeeshop.models.defaultCoffees;
 
 import com.coffeeshop.models.shop.Ingredients;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Machiatto extends Espresso {
 
     public Machiatto() {
@@ -9,11 +12,12 @@ public class Machiatto extends Espresso {
 
     public Machiatto(String customerName) {
         super(customerName);
-        ingredientsForCoffeeAndAmount.put(Ingredients.MILK_FOAM, 1);
+        recipe.put(Ingredients.MILK_FOAM, 1);
         this.customerName = customerName;
+        setCoffeeName("Machiatto");
     }
 
     public String getCoffeeName() {
-        return "Machiatto";
+        return coffeeName;
     }
 }

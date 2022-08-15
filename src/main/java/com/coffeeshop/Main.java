@@ -33,7 +33,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
-        CoffeeShop coffeeShop = openCoffeeShop();
+        CoffeeShop coffeeShop = ApplicationContextFactory.getInstance().getBean("coffeeShop", CoffeeShop.class);
         coffeeShop.scheduleInventoryCheck();
         handleOrdersFromClients(coffeeShop);
     }
@@ -51,14 +51,6 @@ public class Main {
             CoffeeOrder coffeeOrder = createNewCoffeeOrder(customerName);
             getOrderFromClient(coffeeShop, customerName, coffeeOrder);
         }
-    }
-
-    /**
-     * @return new instance of CoffeeShop class
-     */
-    @Contract(" -> new")
-    private static @NotNull CoffeeShop openCoffeeShop(){
-        return new CoffeeShop();
     }
 
     /**
@@ -140,7 +132,7 @@ public class Main {
             updateCoffeeOrder(coffeeOrder, orderedCoffee, amountOfCoffee);
             ApplicationContextFactory.getInstance().getBean("ingredientsService", IngredientsService.class)
                     .updateStock(ApplicationContextFactory.getInstance().getBean("stockManager", StockManager.class)
-                            .evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getIngredientsForCoffeeAndAmount(), amountOfCoffee));
+                            .evaluateAllIngredientsPerCoffeeCommand(orderedCoffee.getRecipe(), amountOfCoffee));
         }
     }
 

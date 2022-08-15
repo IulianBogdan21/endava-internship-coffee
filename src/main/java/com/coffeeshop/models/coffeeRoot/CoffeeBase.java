@@ -14,6 +14,6 @@ public abstract class CoffeeBase extends Coffee {
      * @param amountOfIngredient integer
      */
     public void addIngredient(Ingredients ingredientToAdd, Integer amountOfIngredient){
-        ingredientsForCoffeeAndAmount.put(ingredientToAdd, amountOfIngredient);
+        recipe.put(ingredientToAdd, amountOfIngredient);
     }
 }
